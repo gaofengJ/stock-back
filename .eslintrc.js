@@ -23,7 +23,26 @@ module.exports = {
   plugins: [
     '@typescript-eslint',
   ],
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.ts', '.js'],
+      },
+      alias: {
+        map: [['@', './src']],
+        extensions: ['.ts', '.js'],
+      },
+    },
+  },
   // 规则
   rules: {
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        ts: 'never',
+      }
+   ]
   },
 };

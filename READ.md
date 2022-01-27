@@ -2,7 +2,7 @@
 
 参考：[https://juejin.cn/post/6844904008834875400](https://juejin.cn/post/6844904008834875400)
 
-## 1、初始化package.json。
+## 一、初始化package.json。
 
 ```
 mkdir koa-demo
@@ -10,11 +10,11 @@ cd koa-demo
 npm init
 ```
 
-## 2、安装koa
+## 二、安装koa
 
 ```npm install koa```
 
-## 3、TypeScript的安装与配置
+## 三、TypeScript的安装与配置
 
 ```npm install typescript --save-dev```
 
@@ -30,8 +30,12 @@ npm init
     "module": "commonjs",                     /* 编译目标模块系统*/
     // "lib": [],                             /* 编译过程中需要引入的库文件列表*/
     "declaration": true,                      /* 编译时创建声明文件 */
+    "rootDir": "./",                          /* ts编译根目录. */
     "outDir": "dist",                         /* ts编译输出目录 */
-    "rootDir": "src",                         /* ts编译根目录. */
+    "baseUrl": "./",                          /* ts基础路径 */
+    "paths": {                                /* 别名 */
+      "@/*": ["./src/*"]
+    },
     // "importHelpers": true,                 /* 从tslib导入辅助工具函数(如__importDefault)*/
     "strict": true,                           /* 严格模式开关 等价于noImplicitAny、strictNullChecks、strictFunctionTypes、strictBindCallApply等设置true */
     "noUnusedLocals": true,                   /* 未使用局部变量报错*/
@@ -46,7 +50,8 @@ npm init
     "allowSyntheticDefaultImports": true,    /* 允许从没有设置默认导出的模块中默认导入，仅用于提示，不影响编译结果*/
     "esModuleInterop": false                  /* 允许编译生成文件时，在代码中注入工具类(__importDefault、__importStar)对ESM与commonjs混用情况做兼容处理*/
   },
-  "include": [                                /* 需要编译的文件 */
+  "include": [    
+    "index.ts",                            /* 需要编译的文件 */
     "src/**/*.ts",
     "typings/**/*.ts"
   ],
@@ -60,7 +65,7 @@ npm init
 
 ```npm install @types/koa @types/node --save-dev```
 
-## 4、安装ESLint
+## 四、安装ESLint
 
 这里我安装了以下几个插件：
 
@@ -76,19 +81,31 @@ npm init
 
 ![image.png](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7b3599fd91e241dfa06746714a1afc6a~tplv-k3u1fbpfcp-watermark.image?)
 
-## 5、添加文件，/src/index.ts
+## 五、添加文件
 
-```
+/src/app.ts：
+
+```javascript
 import Koa from 'koa';
 
 const app = new Koa();
 
-app.listen(3000, () => {
-  console.log('server: http://localhost:3000');
+export default app;
+```
+
+index.ts:
+
+```javascript
+import app from './src/app';
+
+const port = process.env.PORT;
+
+app.listen(port, () => {
+  console.log(`项目启动成功，端口号：${port}`);
 });
 ```
 
-## 6、添加执行脚本
+## 六、添加执行脚本
 
 在package.json的scripts中添加执行脚本，这里使用了nodemon的配置文件nodemon.json：
 
@@ -97,7 +114,7 @@ app.listen(3000, () => {
   "watch": ["src"],
   "ext": "ts",
   "ignore": [],
-  "exec": "ts-node ./src/index"
+  "exec": "cross-env NODE_ENV=dev ts-node -r tsconfig-paths/register ./index"
 }
 ```
 
@@ -106,7 +123,77 @@ package.json中命令如下：
 ```json
 "scripts": {
   "dev": "nodemon",
+  "start": "cross-env NODE_ENV=prod ts-node -r tsconfig-paths/register ./index"
 },
 ```
 
-## 7、执行```npm run dev```，成功启动项目。
+## 七、执行```npm run dev```，成功启动项目。
+
+## FAQ
+
+### 设置别名
+
+tsconfig中添加：
+
+```json
+"baseUrl": "./",                          /* ts基础路径 */
+"paths": {                                /* 别名 */
+  "@/*": ["./src/*"]
+},
+```
+
+项目总用到了ts-node，所以需要安装一个新包tsconfig-paths，修改脚本：
+
+```json
+"exec": "cross-env NODE_ENV=dev ts-node -r tsconfig-paths/register ./index"
+```
+
+eslint也需要安装一个新包eslint-import-resolver-alias，然后修改.eslintrc.js文件：
+
+```javascript
+'import/resolver': {
+  alias: {
+    map: [['@', './src']],
+    extensions: ['.ts', '.js'],
+  }
+},
+```
+
+### 报错：Unable to resolve path to module '@/app'.eslint(import/no-unresolved)
+
+在.eslintrc.js中添加
+
+```javascript
+settings: {
+  'import/resolver': {
+    node: {
+      extensions: ['.ts', '.js'],
+    },
+  },
+},
+```
+
+### 报错：Missing file extension "ts" for "@/app"eslint(import/extensions)
+
+在.eslintrc.js中添加
+
+```javascript
+rules: {
+  'import/extensions': [
+    'error',
+    'ignorePackages',
+    {
+      js: 'never',
+      ts: 'never',
+    }
+  ]
+},
+```
+
+### 报错：index.d.ts(753, 1): 此模块是使用 "export =" 声明的，只能在使用 "esModuleInterop" 标志时进行默认导入。
+
+在tsconfig.json中添加
+
+```json
+"allowSyntheticDefaultImports": true,    /* 允许从没有设置默认导出的模块中默认导入，仅用于提示，不影响编译结果*/
+```
