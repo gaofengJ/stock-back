@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    // "incremental": true,                   /* 增量编译 提高编译速度*/
+    "incremental": true,                      /* 增量编译 提高编译速度*/
     "target": "ES2017",                       /* 编译目标ES版本*/
     "module": "commonjs",                     /* 编译目标模块系统*/
     // "lib": [],                             /* 编译过程中需要引入的库文件列表*/
@@ -23,14 +23,16 @@
       "./node_modules/@types"
       ],                      
     "allowSyntheticDefaultImports": true,    /* 允许从没有设置默认导出的模块中默认导入，仅用于提示，不影响编译结果*/
-    "esModuleInterop": true                  /* 允许编译生成文件时，在代码中注入工具类(__importDefault、__importStar)对ESM与commonjs混用情况做兼容处理*/
+    "esModuleInterop": true,                  /* 允许编译生成文件时，在代码中注入工具类(__importDefault、__importStar)对ESM与commonjs混用情况做兼容处理*/
+    "emitDecoratorMetadata": true,             /* routing-controllers相关配置 */
+    "experimentalDecorators": true              /* routing-controllers相关配置 */
   },
   "include": [    
-    "index.ts",                            /* 需要编译的文件 */
+    "index.ts",                              /* 需要编译的文件 */
     "src/**/*.ts",
     "typings/**/*.ts"
   ],
-  "exclude": [                                /* 编译需要排除的文件 */
+  "exclude": [                               /* 编译需要排除的文件 */
     "node_modules/**"
   ],
 }

@@ -1,8 +1,10 @@
-import Koa from 'koa';
-import useRouter from '@/router/index';
+import 'reflect-metadata';
+import { createKoaServer } from 'routing-controllers';
+import CustomErrorHandler from '@/middlewares/custom-error-handler';
 
-const app = new Koa();
-
-useRouter(app);
-
-export default app;
+export default createKoaServer({
+  routePrefix: '/api',
+  defaultErrorHandler: false,
+  controllers: [`${__dirname}/controllers/**/*.js`],
+  middlewares: [CustomErrorHandler],
+});
