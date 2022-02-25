@@ -10,7 +10,6 @@ import {
 export default class AnalysisSentimentController {
   @Get('/')
   getSentiment() {
-    console.log(111);
     return 'getSentiment';
   }
 

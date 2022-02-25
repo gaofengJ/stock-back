@@ -5,6 +5,6 @@ import CustomErrorHandler from '@/middlewares/custom-error-handler';
 export default createKoaServer({
   routePrefix: '/api',
   defaultErrorHandler: false,
-  controllers: [`${__dirname}/controllers/**/*.js`],
+  controllers: [`${__dirname}/controllers/**/*.ts`],
   middlewares: [CustomErrorHandler],
 });
