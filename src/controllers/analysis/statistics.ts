@@ -4,13 +4,18 @@ import {
   Post,
   Put,
   Delete,
+  QueryParam,
 } from 'routing-controllers';
+import StatisticsService from '@/services/analysis/statistics';
 
 @JsonController('/analysis/statistics')
 export default class AnalysisStatisticsController {
   @Get('/')
-  getStatistics() {
-    return 'getStatistics';
+  getStatistics(
+    @QueryParam('startDate') startDate: string,
+    @QueryParam('endDate') endDate: string,
+  ) {
+    return StatisticsService.getStatistics(startDate, endDate);
   }
 
   @Post('/create')
