@@ -1,4 +1,5 @@
 import { Sequelize } from 'sequelize';
+import { log } from 'console';
 import { MYSQL_CONF } from '../../db.config';
 
 const mysql = new Sequelize(
@@ -35,5 +36,14 @@ const mysql = new Sequelize(
     },
   },
 );
+
+// mysql.sync({ alter: true }); // 模型新增字段会在数据库中新增
+mysql.authenticate()
+  .then(() => {
+    log('mysql connect success!');
+  })
+  .catch(() => {
+    log('mysql connect fail');
+  });
 
 export default mysql;
