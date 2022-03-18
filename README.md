@@ -96,12 +96,13 @@ export default app;
 index.ts:
 
 ```javascript
+import { log } from 'console';
 import app from './src/app';
 
 const port = process.env.PORT;
 
 app.listen(port, () => {
-  console.log(`项目启动成功，端口号：${port}`);
+  log(`项目启动成功，端口号：${port}`);
 });
 ```
 

@@ -1,34 +1,23 @@
 import {
   JsonController,
   Get,
-  Post,
-  Put,
-  Delete,
   QueryParam,
 } from 'routing-controllers';
+import { dateFormat } from 'mufeng-tools';
 import AnalysisStatisticsService from '@/services/analysis/statistics';
 
 @JsonController('/analysis/statistics')
 export default class AnalysisStatisticsController {
   @Get('/')
-  getStatistics(
+  async getStatistics(
     @QueryParam('date') date: string,
   ) {
-    return AnalysisStatisticsService.getStatistics(date);
-  }
-
-  @Post('/create')
-  createStatistics() {
-    return 'createStatistics';
-  }
-
-  @Put('/update')
-  updateStatistics() {
-    return 'updateStatistics';
-  }
-
-  @Delete('/delete')
-  deleteStatistics() {
-    return 'deleteStatistics';
+    // eslint-disable-next-line no-param-reassign
+    date = dateFormat(date, 'yyyyMMdd');
+    const list = await AnalysisStatisticsService.getStatistics(date);
+    return {
+      total: list.length,
+      list,
+    };
   }
 }

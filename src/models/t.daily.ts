@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 import mysql from '@/db/mysql';
 
 const TDaily = mysql.define('t_daily', {
-  // id
+  // 主键
   id: {
     field: 'id',
     type: DataTypes.UUIDV4,
