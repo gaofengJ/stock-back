@@ -46,25 +46,25 @@ const TMarketMood = mysql.define('t_market_mood', {
     allowNull: false,
   },
   // 非一字涨停
-  sentiment_a: {
+  sentimentA: {
     field: 'sentiment_a',
     type: DataTypes.INTEGER,
     allowNull: false,
   },
   // 打板高开率
-  sentiment_b: {
+  sentimentB: {
     field: 'sentiment_b',
     type: DataTypes.INTEGER,
     allowNull: false,
   },
   // 打板成功率
-  sentiment_c: {
+  sentimentC: {
     field: 'sentiment_c',
     type: DataTypes.INTEGER,
     allowNull: false,
   },
   // 打板被砸率
-  sentiment_d: {
+  sentimentD: {
     field: 'sentiment_d',
     type: DataTypes.INTEGER,
     allowNull: false,

@@ -1,30 +1,10 @@
-import {
-  JsonController,
-  Get,
-  Post,
-  Put,
-  Delete,
-} from 'routing-controllers';
+import AnalysisSentimentDao from '@/dao/analysis/sentiment';
 
-@JsonController('/analysis/sentiment')
-export default class AnalysisSentimentController {
-  @Get('/')
-  getSentiment() {
-    return 'getSentiment';
-  }
-
-  @Post('/create')
-  createSentiment() {
-    return 'createSentiment';
-  }
-
-  @Put('/update')
-  updateSentiment() {
-    return 'updateSentiment';
-  }
-
-  @Delete('/delete')
-  deleteSentiment() {
-    return 'deleteSentiment';
+export default class AnalysisSentimentService {
+  static async getSentiment(startDate: string, endDate: string, fields: string[]) {
+    const res: Array<Record<string, any>> = await AnalysisSentimentDao.getSentiment(
+      startDate, endDate, fields,
+    );
+    return res;
   }
 }
