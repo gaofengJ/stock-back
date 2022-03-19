@@ -13,12 +13,12 @@ import {
 export default class TestController {
   @Get('/')
   getAll(@QueryParam('enable') enable: string) {
-    return `测试-获取所有用户，状态：${enable || '在线'}`;
+    return `测试-查询所有用户，状态：${enable || '在线'}`;
   }
 
   @Get('/:id')
   getTest(@Param('id') testId: string) {
-    return `测试-获取id为${testId}的用户`;
+    return `测试-查询id为${testId}的用户`;
   }
 
   @Post('/create')

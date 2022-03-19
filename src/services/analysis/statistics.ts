@@ -1,6 +1,11 @@
 import AnalysisStatisticsDao from '@/dao/analysis/statistics';
 
 export default class AnalysisStatisticsService {
+  /**
+   * @description 查询涨跌统计
+   * @param date 日期
+   * @returns Array<Record<string, string | number>>
+   */
   static async getStatistics(date: string) {
     const res: Array<Record<string, any>> = await AnalysisStatisticsDao.getStatistics(date);
     const ret: Array<Record<string, string | number>> = [

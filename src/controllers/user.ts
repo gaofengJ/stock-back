@@ -13,12 +13,12 @@ import {
 export default class UserController {
   @Get('/')
   getAll(@QueryParam('enable') enable: string) {
-    return `获取所有用户，状态：${enable}`;
+    return `查询所有用户，状态：${enable}`;
   }
 
   @Get('/:id')
   getUser(@Param('id') userId: string) {
-    return `获取id为${userId}的用户`;
+    return `查询id为${userId}的用户`;
   }
 
   @Post('/create')

@@ -9,6 +9,13 @@ import AnalysisNumService from '@/services/analysis/num';
 
 @JsonController('/analysis/num')
 export default class AnalysisNumController {
+  /**
+   * @description 查询上涨、下跌、平盘数据
+   * @param startDate 开始日期
+   * @param endDate 结束日期
+   * @param fields 字段
+   * @returns { total, list }
+   */
   @Get('/')
   async getRiseNum(
     @QueryParam('startDate') startDate: string,

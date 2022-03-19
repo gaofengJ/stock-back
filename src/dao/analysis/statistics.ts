@@ -2,6 +2,11 @@ import { Op } from 'sequelize';
 import TDaily from '@/models/t.daily';
 
 export default class AnalysisStatisticsDao {
+  /**
+   * @description 查询涨跌统计
+   * @param date 日期
+   * @returns 查询结果
+   */
   static async getStatistics(date: string) {
     const ret = await TDaily.findAll({
       attributes: ['pctChange'],

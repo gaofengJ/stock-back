@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize';
 import mysql from '@/db/mysql';
 
+// 短线情绪指标
 const TMarketMood = mysql.define('t_market_mood', {
   // 主键
   id: {

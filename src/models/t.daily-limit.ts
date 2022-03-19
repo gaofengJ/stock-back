@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize';
 import mysql from '@/db/mysql';
 
+// 每日涨停价、跌停价
 const TDailyLimit = mysql.define('t_daily_limit', {
   // id
   id: {

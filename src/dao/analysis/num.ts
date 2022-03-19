@@ -2,6 +2,13 @@ import { Op } from 'sequelize';
 import TMarketMood from '@/models/t.market-mood';
 
 export default class AnalysisNumDao {
+  /**
+   * @description 查询上涨、下跌、平盘数据
+   * @param startDate 开始日期
+   * @param endDate 结束日期
+   * @param fields 字段
+   * @returns 查询结果
+   */
   static async getNum(startDate: string, endDate: string, fields: string[]) {
     const ret = await TMarketMood.findAll({
       attributes: ['date'].concat(fields || ['up', 'down', 'zero']),

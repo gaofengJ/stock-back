@@ -9,6 +9,13 @@ import AnalysisSentimentService from '@/services/analysis/sentiment';
 
 @JsonController('/analysis/sentiment')
 export default class AnalysisSentimentController {
+  /**
+   * @description 查询短线情绪指标
+   * @param startDate 开始日期
+   * @param endDate 结束日期
+   * @param fields 字段
+   * @returns { total, list }
+   */
   @Get('/')
   async getRiseSentiment(
     @QueryParam('startDate') startDate: string,

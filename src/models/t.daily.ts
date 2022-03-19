@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize';
 import mysql from '@/db/mysql';
 
+// 每日统计
 const TDaily = mysql.define('t_daily', {
   // 主键
   id: {
