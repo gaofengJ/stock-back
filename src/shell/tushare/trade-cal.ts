@@ -1,13 +1,18 @@
 // import { v4 as uuidv4 } from 'uuid';
-
-import { tradeCal } from '@/api/tushare/index';
+import { getTradeCal } from '@/api/tushare/index';
+import { mixinFieldAndItem } from '@/utils';
 // import { create } from '@/dao/curd/trade-cal';
 
-export default async function shellTradeCal(year: string) {
-  const res = await tradeCal(year);
-  return res;
-  // if (code) return;
-  // const { fields, items } = data;
+export default async function createTradeCal(year: string): Promise<any> {
+  const { code, data } = await getTradeCal(year);
+  if (code) return null;
+  const { fields, items } = data;
+  const params = mixinFieldAndItem(fields, items);
+  console.log(params);
+  return {
+    fields,
+    items,
+  };
 
   // const sucCount = 0;
   // const errCount = 0;

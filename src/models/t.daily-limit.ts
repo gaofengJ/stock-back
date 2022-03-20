@@ -9,7 +9,7 @@ const TDailyLimit = mysql.define('t_daily_limit', {
     type: DataTypes.UUIDV4,
     allowNull: false,
     primaryKey: true,
-    autoIncrement: true,
+    // autoIncrement: true,
   },
   // 交易日期
   tradeDate: {
@@ -35,6 +35,8 @@ const TDailyLimit = mysql.define('t_daily_limit', {
     type: DataTypes.FLOAT(16, 2),
     allowNull: false,
   },
+}, {
+  timestamps: false,
 });
 
 export default TDailyLimit;

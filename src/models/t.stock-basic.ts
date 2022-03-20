@@ -9,7 +9,7 @@ const TStockBasic = mysql.define('t_stock_basic', {
     type: DataTypes.UUIDV4,
     allowNull: false,
     primaryKey: true,
-    autoIncrement: true,
+    // autoIncrement: true,
   },
   // 股票代码（包含交易所）
   tsCode: {
@@ -53,6 +53,8 @@ const TStockBasic = mysql.define('t_stock_basic', {
     type: DataTypes.STRING(8),
     allowNull: false,
   },
+}, {
+  timestamps: false,
 });
 
 export default TStockBasic;

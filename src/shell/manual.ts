@@ -1,8 +1,8 @@
 import { dateFormat } from 'mufeng-tools';
-import shellDaily from './tushare/daily';
 
-const { queryIsOpen } = require('../dao/tushare/trade-cal');
+import TTradeCalDao from '@/dao/curd/trade-cal';
 
+// import shellDaily from './tushare/daily';
 const { shellDailyLimit } = require('./tushare/daily-limit');
 const { shellLimitList } = require('./tushare/limit-list');
 const { shellDailyMarketMood } = require('./tushare/daily-market-mood');
@@ -16,7 +16,7 @@ let _date = new Date(dateArgv);
 _date = dateFormat(_date, 'yyyyMMdd');
 
 async function tasks() {
-  const isOpen = await queryIsOpen(_date);
+  const isOpen = await TTradeCalDao.getIsOpen(_date);
 
   if (!isOpen) {
     console.log(`${_date}非交易日，请重新选择时间`);

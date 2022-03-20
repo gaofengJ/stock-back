@@ -2,18 +2,12 @@ import {
   JsonController,
   Post,
   BodyParam,
-  Get,
 } from 'routing-controllers';
 import shellTradeCal from '@/shell/tushare/trade-cal';
 
-@JsonController('/shell')
+@JsonController('/shell/manual')
 export default class ShellController {
-  @Get('/')
-  shell() {
-    return 'shell';
-  }
-
-  @Post('/trade-cal')
+  @Post('/')
   async tradeCal(@BodyParam('year') year: string) {
     const res = await shellTradeCal(year);
     return res;

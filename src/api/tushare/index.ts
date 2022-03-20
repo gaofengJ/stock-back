@@ -28,7 +28,11 @@ const request = async (config: AxiosRequestConfig) => {
   // 业务
 
   // 这里request会返回一个对象 { status: 200, statusText: 'OK', headers: {}, config: {}, request, data: {} }
-  return data.data;
+  return { // 不直接返回data是为了过滤request_id
+    code: data.code,
+    msg: !data.code ? 'success' : data.msg,
+    data: data.data,
+  };
 };
 
 /**
@@ -36,7 +40,7 @@ const request = async (config: AxiosRequestConfig) => {
  * @param date 日期
  * @returns AxiosPromise
  */
-export const dailyLimit = (date: string): Promise<Base.TypeRes> => request({
+export const getDailyLimit = (date: string): Promise<Base.TypeRes> => request({
   data: {
     api_name: 'stk_limit',
     params: {
@@ -50,7 +54,7 @@ export const dailyLimit = (date: string): Promise<Base.TypeRes> => request({
  * @param date 日期
  * @returns AxiosPromise
  */
-export const daily = (date: string): Promise<Base.TypeRes> => request({
+export const getDaily = (date: string): Promise<Base.TypeRes> => request({
   data: {
     api_name: 'daily',
     params: {
@@ -64,7 +68,7 @@ export const daily = (date: string): Promise<Base.TypeRes> => request({
  * @param date 日期
  * @returns AxiosPromise
  */
-export const limitList = (date: string): Promise<Base.TypeRes> => request({
+export const getLimitList = (date: string): Promise<Base.TypeRes> => request({
   data: {
     api_name: 'limit_list',
     params: {
@@ -78,7 +82,7 @@ export const limitList = (date: string): Promise<Base.TypeRes> => request({
  * @param exchange 交易所
  * @returns AxiosPromise
  */
-export const stockBasic = (exchange: string): Promise<Base.TypeRes> => request({
+export const getStockBasic = (exchange: string): Promise<Base.TypeRes> => request({
   data: {
     api_name: 'stock_basic',
     params: {
@@ -92,7 +96,7 @@ export const stockBasic = (exchange: string): Promise<Base.TypeRes> => request({
  * @param year 年份
  * @returns AxiosPromise
  */
-export const tradeCal = (year: string): Promise<Base.TypeRes> => request({
+export const getTradeCal = (year: string): Promise<Base.TypeRes> => request({
   data: {
     api_name: 'trade_cal',
     params: {

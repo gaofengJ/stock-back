@@ -9,7 +9,7 @@ const TLimitList = mysql.define('t_limit_list', {
     type: DataTypes.UUIDV4,
     allowNull: false,
     primaryKey: true,
-    autoIncrement: true,
+    // autoIncrement: true,
   },
   // 交易日期
   tradeDate: {
@@ -95,6 +95,8 @@ const TLimitList = mysql.define('t_limit_list', {
     type: DataTypes.STRING(1),
     allowNull: false,
   },
+}, {
+  timestamps: false,
 });
 
 export default TLimitList;

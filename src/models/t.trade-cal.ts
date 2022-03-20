@@ -9,7 +9,7 @@ const TTradeCal = mysql.define('t_trade_cal', {
     type: DataTypes.UUIDV4,
     allowNull: false,
     primaryKey: true,
-    autoIncrement: true,
+    // autoIncrement: true,
   },
   // 日期
   calDate: {
@@ -23,6 +23,14 @@ const TTradeCal = mysql.define('t_trade_cal', {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  // 日期
+  preTradeDate: {
+    field: 'pre_trade_date',
+    type: DataTypes.STRING(32),
+    allowNull: false,
+  },
+}, {
+  timestamps: false,
 });
 
 export default TTradeCal;

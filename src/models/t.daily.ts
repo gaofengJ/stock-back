@@ -9,7 +9,7 @@ const TDaily = mysql.define('t_daily', {
     type: DataTypes.UUIDV4,
     allowNull: false,
     primaryKey: true,
-    autoIncrement: true,
+    // autoIncrement: true,
   },
   // 股票代码
   tsCode: {
@@ -83,6 +83,8 @@ const TDaily = mysql.define('t_daily', {
     type: DataTypes.FLOAT(16, 3),
     allowNull: false,
   },
+}, {
+  timestamps: false,
 });
 
 export default TDaily;

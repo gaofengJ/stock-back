@@ -24,7 +24,7 @@ const mysql = new Sequelize(
       underscored: true, // 注意需要加上这个，如果不加这个 update_at会被转变成 updateAt故报错
       freezeTableName: true,
       charset: 'utf8',
-      timestamps: true,
+      timestamps: true, // 是否添加时间戳（create_at和update_at）
     },
     // 是否同步
     sync: { force: true },

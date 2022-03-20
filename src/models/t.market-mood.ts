@@ -12,7 +12,7 @@ const TMarketMood = mysql.define('t_market_mood', {
   },
   // 日期
   tradeDate: {
-    field: 'date',
+    field: 'trade_date',
     type: DataTypes.STRING(32),
     allowNull: false,
   },
@@ -89,6 +89,8 @@ const TMarketMood = mysql.define('t_market_mood', {
     allowNull: false,
   },
 
+}, {
+  timestamps: false,
 });
 
 export default TMarketMood;
