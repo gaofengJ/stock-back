@@ -32,55 +32,55 @@ const TDaily = mysql.define('t_daily', {
   // 开盘价
   open: {
     field: 'open',
-    type: DataTypes.FLOAT,
+    type: DataTypes.FLOAT(16, 3),
     allowNull: false,
   },
   // 最高价
   high: {
     field: 'high',
-    type: DataTypes.FLOAT,
+    type: DataTypes.FLOAT(16, 3),
     allowNull: false,
   },
   // 最低价
   low: {
     field: 'low',
-    type: DataTypes.FLOAT,
+    type: DataTypes.FLOAT(16, 3),
     allowNull: false,
   },
   // 收盘价
   close: {
     field: 'close',
-    type: DataTypes.FLOAT,
+    type: DataTypes.FLOAT(16, 3),
     allowNull: false,
   },
   // 昨收价
   preClose: {
     field: 'pre_close',
-    type: DataTypes.FLOAT,
+    type: DataTypes.FLOAT(16, 3),
     allowNull: false,
   },
   // 涨跌额
   change: {
     field: 'change',
-    type: DataTypes.FLOAT,
+    type: DataTypes.FLOAT(16, 3),
     allowNull: false,
   },
   // 涨跌幅
   pctChange: {
     field: 'pct_chg',
-    type: DataTypes.FLOAT,
+    type: DataTypes.FLOAT(16, 3),
     allowNull: false,
   },
   // 成交量（手）
   vol: {
     field: 'vol',
-    type: DataTypes.FLOAT,
+    type: DataTypes.FLOAT(16, 3),
     allowNull: false,
   },
   // 成交额（千元）
   amount: {
     field: 'amount',
-    type: DataTypes.FLOAT,
+    type: DataTypes.FLOAT(16, 3),
     allowNull: false,
   },
 });

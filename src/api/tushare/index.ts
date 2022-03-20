@@ -1,27 +1,42 @@
-import axios, { AxiosRequestConfig, AxiosPromise } from 'axios';
+import Axios, { AxiosRequestConfig } from 'axios';
+import { TUSHARE_CONF } from '../../../db.config';
 
-const TOKEN = '50c7adac6b4ce0baa49b97e946c27826f832d903aa055822b9bd0544';
-
-const client = axios.create({
+/**
+ * @description tushare接口调用
+ */
+const client = Axios.create({
   method: 'post',
-  baseURL: 'api.waditu.com',
+  url: '/',
+  baseURL: 'http://api.waditu.com',
   headers: {
     'Content-Type': 'application/json',
   },
   transformRequest: [
-    (data) => JSON.stringify(Object.assign(data, {
-      token: TOKEN,
-    })),
+    (body) => JSON.stringify(
+      Object.assign(body, {
+        token: TUSHARE_CONF.token,
+      }),
+    ),
+  ],
+  transformResponse: [
+    (response) => (JSON.parse(response)),
   ],
 });
 
 const request = async (config: AxiosRequestConfig) => {
-  const reponse = await client.request(config);
+  const { data } = await client.request(config);
   // 业务
-  return reponse;
+
+  // 这里request会返回一个对象 { status: 200, statusText: 'OK', headers: {}, config: {}, request, data: {} }
+  return data.data;
 };
 
-export const dailyLimit = (date: string): AxiosPromise => request({
+/**
+ * @description 涨停价、跌停价
+ * @param date 日期
+ * @returns AxiosPromise
+ */
+export const dailyLimit = (date: string): Promise<Base.TypeRes> => request({
   data: {
     api_name: 'stk_limit',
     params: {
@@ -30,7 +45,12 @@ export const dailyLimit = (date: string): AxiosPromise => request({
   },
 });
 
-export const daily = (date: string): AxiosPromise => request({
+/**
+ * @description 每日统计
+ * @param date 日期
+ * @returns AxiosPromise
+ */
+export const daily = (date: string): Promise<Base.TypeRes> => request({
   data: {
     api_name: 'daily',
     params: {
@@ -39,7 +59,12 @@ export const daily = (date: string): AxiosPromise => request({
   },
 });
 
-export const limitList = (date: string): AxiosPromise => request({
+/**
+ * @description 涨跌停统计
+ * @param date 日期
+ * @returns AxiosPromise
+ */
+export const limitList = (date: string): Promise<Base.TypeRes> => request({
   data: {
     api_name: 'limit_list',
     params: {
@@ -48,7 +73,12 @@ export const limitList = (date: string): AxiosPromise => request({
   },
 });
 
-export const stockBasic = (exchange: string): AxiosPromise => request({
+/**
+ * @description 股票基本信息
+ * @param exchange 交易所
+ * @returns AxiosPromise
+ */
+export const stockBasic = (exchange: string): Promise<Base.TypeRes> => request({
   data: {
     api_name: 'stock_basic',
     params: {
@@ -57,8 +87,14 @@ export const stockBasic = (exchange: string): AxiosPromise => request({
   },
 });
 
-export const tradeCal = (year: string): AxiosPromise => request({
+/**
+ * @description 交易日期
+ * @param year 年份
+ * @returns AxiosPromise
+ */
+export const tradeCal = (year: string): Promise<Base.TypeRes> => request({
   data: {
+    api_name: 'trade_cal',
     params: {
       exchange: 'SSE', // 交易所 SSE 上交所, SZSE 深交所, CFFEX 中金所, SHFE 上期所, CZCE 郑商所, DCE 大商所,I NE 上能源
       start_date: `${year}0101`,

@@ -1,6 +1,8 @@
 module.exports = {
   // Eslint 会检测未声明的变量，并发出报错，可以在 globals 中进行变量声明（可以视作env的补充）
-  globals: {},
+  globals: {
+    Base: 'readonly',
+  },
   // 决定 js 运行在什么环境下，每一个环境都带有一组预定义的全局变量
   env: {
     browser: true, // 浏览器环境中的全局变量
@@ -9,9 +11,7 @@ module.exports = {
     es6: true, // 启用除了 modules 以外的所有 ECMAScript 6 特性（该选项会自动设置 ecmaVersion 解析器选项为 6）
   },
   // 启用预设的 rules
-  extends: [
-    'airbnb-base',
-  ],
+  extends: ['airbnb-base'],
   // 解析器，默认使用 Espree 作为其解析器，还支持：esprima、babel-eslint、@typescript-eslint/parser 等
   parser: '@typescript-eslint/parser',
   // 在使用自定义解析器时，为了让 ESLint 在处理非 ECMAScript 5 特性时正常工作，配置属性 parserOptions 仍然是必须的
@@ -20,9 +20,7 @@ module.exports = {
     ecmaVersion: 8,
   },
   // 插件
-  plugins: [
-    '@typescript-eslint',
-  ],
+  plugins: ['@typescript-eslint'],
   settings: {
     'import/resolver': {
       node: {
@@ -42,8 +40,8 @@ module.exports = {
       {
         js: 'never',
         ts: 'never',
-      }
-   ],
-   'class-methods-use-this': 'off',
+      },
+    ],
+    'class-methods-use-this': 'off',
   },
 };

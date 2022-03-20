@@ -12,7 +12,7 @@ export default class CustomErrorHandler implements KoaMiddlewareInterface {
     }).catch((err) => {
       ctx.body = {
         code: err.httpCode || 500,
-        message: err.message || err,
+        msg: err.message || err,
       };
     });
   }

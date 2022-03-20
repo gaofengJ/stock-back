@@ -11,28 +11,28 @@ const TDailyLimit = mysql.define('t_daily_limit', {
     primaryKey: true,
     autoIncrement: true,
   },
-  // 股票代码
-  tsCode: {
-    field: 'ts_code',
-    type: DataTypes.STRING(32),
-    allowNull: false,
-  },
   // 交易日期
   tradeDate: {
     field: 'trade_date',
-    type: DataTypes.STRING(32),
+    type: DataTypes.STRING(8),
+    allowNull: false,
+  },
+  // 股票代码
+  tsCode: {
+    field: 'ts_code',
+    type: DataTypes.STRING(16),
     allowNull: false,
   },
   // 涨停价
   upLimit: {
     field: 'up_limit',
-    type: DataTypes.FLOAT,
+    type: DataTypes.FLOAT(16, 2),
     allowNull: false,
   },
   // 跌停价
   downLimit: {
     field: 'down_limit',
-    type: DataTypes.FLOAT,
+    type: DataTypes.FLOAT(16, 2),
     allowNull: false,
   },
 });

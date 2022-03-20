@@ -56,7 +56,7 @@ class MarketSentiment {
     if ((currentDate as Date).getDay() === 0 || (currentDate as Date).getDay() === 6) {
       return {
         code: -1,
-        message: '搜索日期不能为周六或周日',
+        msg: '搜索日期不能为周六或周日',
       };
     }
 
