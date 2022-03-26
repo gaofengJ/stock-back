@@ -14,7 +14,7 @@ const TTradeCal = mysql.define('t_trade_cal', {
   // 日期
   calDate: {
     field: 'cal_date',
-    type: DataTypes.STRING(32),
+    type: DataTypes.STRING(16),
     allowNull: false,
   },
   // 是否为交易日期
@@ -26,7 +26,7 @@ const TTradeCal = mysql.define('t_trade_cal', {
   // 日期
   preTradeDate: {
     field: 'pre_trade_date',
-    type: DataTypes.STRING(32),
+    type: DataTypes.STRING(16),
     allowNull: false,
   },
 }, {

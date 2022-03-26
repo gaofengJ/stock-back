@@ -38,43 +38,43 @@ const TLimitList = mysql.define('t_limit_list', {
   // 涨跌幅
   pctChange: {
     field: 'pct_chg',
-    type: DataTypes.FLOAT(16, 3),
+    type: DataTypes.FLOAT(16, 2),
     allowNull: false,
   },
   // 振幅
   amp: {
     field: 'amp',
-    type: DataTypes.FLOAT(16, 3),
+    type: DataTypes.FLOAT(16, 2),
     allowNull: false,
   },
   // 封单金额 / 日成交金额
   fcRatio: {
     field: 'fc_ratio',
-    type: DataTypes.FLOAT(16, 4),
+    type: DataTypes.FLOAT(16, 2),
     allowNull: false,
   },
   // 封单手数 / 流通股本
   flRatio: {
     field: 'fl_ratio',
-    type: DataTypes.FLOAT(16, 4),
+    type: DataTypes.FLOAT(16, 2),
     allowNull: false,
   },
   // 封单金额
   fdAmount: {
     field: 'fd_amount',
-    type: DataTypes.FLOAT(16, 0),
+    type: DataTypes.FLOAT(16, 2),
     allowNull: false,
   },
   // 首次触板时间
   firstTime: {
     field: 'first_time',
-    type: DataTypes.STRING(8),
+    type: DataTypes.STRING(16),
     allowNull: false,
   },
   // 最后封板时间
   lastTime: {
     field: 'last_time',
-    type: DataTypes.STRING(8),
+    type: DataTypes.STRING(16),
     allowNull: false,
   },
   // 打开次数
@@ -86,7 +86,7 @@ const TLimitList = mysql.define('t_limit_list', {
   // 涨跌停强度
   strth: {
     field: 'open_times',
-    type: DataTypes.FLOAT(8),
+    type: DataTypes.FLOAT(16),
     allowNull: false,
   },
   // D跌停，U涨停

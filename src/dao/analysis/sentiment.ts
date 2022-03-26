@@ -16,13 +16,13 @@ export default class AnalysisSentimentDao {
       // 当raw的值为false时（默认)，这些方法对表进行查询操作后返回的值为sequelize进行装饰过的数据
       raw: true,
       where: {
-        date: {
+        tradeDate: {
           [Op.gte]: startDate,
           [Op.lte]: endDate,
         },
       },
       order: [
-        ['date', 'ASC'],
+        ['tradeDate', 'ASC'],
       ],
     });
     return ret;

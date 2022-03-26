@@ -20,7 +20,7 @@ const TStockBasic = mysql.define('t_stock_basic', {
   // 股票代码
   symbol: {
     field: 'symbol',
-    type: DataTypes.STRING(6),
+    type: DataTypes.STRING(16),
     allowNull: false,
   },
   // 股票名称
@@ -50,7 +50,7 @@ const TStockBasic = mysql.define('t_stock_basic', {
   // 上市时间
   listDate: {
     field: 'list_date',
-    type: DataTypes.STRING(8),
+    type: DataTypes.STRING(16),
     allowNull: false,
   },
 }, {

@@ -49,25 +49,25 @@ const TMarketMood = mysql.define('t_market_mood', {
   // 非一字涨停
   sentimentA: {
     field: 'sentiment_a',
-    type: DataTypes.FLOAT(8, 0),
+    type: DataTypes.FLOAT(16, 0),
     allowNull: false,
   },
   // 打板高开率
   sentimentB: {
     field: 'sentiment_b',
-    type: DataTypes.FLOAT(8, 0),
+    type: DataTypes.FLOAT(16, 0),
     allowNull: false,
   },
   // 打板成功率
   sentimentC: {
     field: 'sentiment_c',
-    type: DataTypes.FLOAT(8, 0),
+    type: DataTypes.FLOAT(16, 0),
     allowNull: false,
   },
   // 打板被砸率
   sentimentD: {
     field: 'sentiment_d',
-    type: DataTypes.FLOAT(8, 0),
+    type: DataTypes.FLOAT(16, 0),
     allowNull: false,
   },
   // 上涨家数

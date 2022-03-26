@@ -14,7 +14,7 @@ const TDailyLimit = mysql.define('t_daily_limit', {
   // 交易日期
   tradeDate: {
     field: 'trade_date',
-    type: DataTypes.STRING(8),
+    type: DataTypes.STRING(16),
     allowNull: false,
   },
   // 股票代码
