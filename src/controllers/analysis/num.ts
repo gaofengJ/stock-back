@@ -21,7 +21,7 @@ export default class AnalysisNumController {
     @QueryParam('startDate') startDate: string,
     @QueryParam('endDate') endDate: string,
     @QueryParam('fields', { type: 'string' }) fields: string | string[],
-  ) {
+  ): Promise<Base.listRes> {
     // eslint-disable-next-line no-param-reassign
     startDate = dateFormat(new Date(startDate), 'yyyyMMdd');
     // eslint-disable-next-line no-param-reassign
@@ -32,8 +32,10 @@ export default class AnalysisNumController {
       throw new BadRequestError('fields参数错误');
     }
     // eslint-disable-next-line no-param-reassign
-    const list = await AnalysisNumService.getNum(
-      startDate, endDate, fields as string[],
+    const list: Record<string, any>[] = await AnalysisNumService.getNum(
+      startDate,
+      endDate,
+      fields as string[],
     );
     return {
       total: list.length,

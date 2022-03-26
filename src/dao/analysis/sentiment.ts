@@ -9,8 +9,12 @@ export default class AnalysisSentimentDao {
    * @param fields 字段
    * @returns 查询结果
    */
-  static async getSentiment(startDate: string, endDate: string, fields: string[]) {
-    const ret = await TMarketMood.findAll({
+  static async getSentiment(
+    startDate: string,
+    endDate: string,
+    fields: string[],
+  ): Promise<Record<string, any>[]> {
+    const ret: Record<string, any>[] = await TMarketMood.findAll({
       attributes: ['tradeDate'].concat(fields || ['a', 'b', 'c', 'd', 'e', 'sentimentA', 'sentimentB', 'sentimentC', 'sentimentD']),
       // 当raw的值为true时，这些方法对表进行查询操作后返回的值为从数据库中查询到的原始数据；
       // 当raw的值为false时（默认)，这些方法对表进行查询操作后返回的值为sequelize进行装饰过的数据

@@ -4,11 +4,11 @@ export default class AnalysisStatisticsService {
   /**
    * @description 查询涨跌统计
    * @param date 日期
-   * @returns Array<Record<string, string | number>>
+   * @returns Record<string, string | number>[]
    */
-  static async getStatistics(date: string) {
-    const res: Array<Record<string, any>> = await AnalysisStatisticsDao.getStatistics(date);
-    const ret: Array<Record<string, string | number>> = [
+  static async getStatistics(date: string): Promise<Record<string, any>[]> {
+    const res: Record<string, any>[] = await AnalysisStatisticsDao.getStatistics(date);
+    const ret: Record<string, string | number>[] = [
       { key: '<-9', value: 0 },
       { key: '-9~-8', value: 0 },
       { key: '-8~-7', value: 0 },

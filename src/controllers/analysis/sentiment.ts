@@ -21,7 +21,7 @@ export default class AnalysisSentimentController {
     @QueryParam('startDate') startDate: string,
     @QueryParam('endDate') endDate: string,
     @QueryParam('fields', { type: 'string' }) fields: string | string[],
-  ) {
+  ): Promise<Base.listRes> {
     // eslint-disable-next-line no-param-reassign
     startDate = dateFormat(new Date(startDate), 'yyyyMMdd');
     // eslint-disable-next-line no-param-reassign
@@ -32,8 +32,10 @@ export default class AnalysisSentimentController {
       throw new BadRequestError('fields参数错误');
     }
     // eslint-disable-next-line no-param-reassign
-    const list = await AnalysisSentimentService.getSentiment(
-      startDate, endDate, fields as string[],
+    const list: Record<string, any>[] = await AnalysisSentimentService.getSentiment(
+      startDate,
+      endDate,
+      fields as string[],
     );
     return {
       total: list.length,

@@ -26,7 +26,7 @@ async function tasks() {
   // 涨跌停价
   await shellDailyLimit(_date);
 
-  // 获取日线行情
+  // 查询日线行情
   await shellDaily(_date);
 
   // 涨跌停统计

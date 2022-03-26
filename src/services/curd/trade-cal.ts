@@ -6,14 +6,30 @@ import { mixinFieldAndItem } from '@/utils';
 import { log } from 'console';
 
 export default class CurdTradeCalService {
-  static async create(params: { calDate: string, isOpen: number, preTradeDate: string }) {
-    const res = await CurdTradeCalDao.create({
+  /**
+   * 交易日历单条导入
+   * @param params { calDate: string, isOpen: number, preTradeDate: string }
+   * @returns id
+   */
+  static async create(
+    params: {
+      calDate: string,
+      isOpen: number,
+      preTradeDate: string
+    },
+  ): Promise<string> {
+    const res: string = await CurdTradeCalDao.create({
       id: uuidv4(),
       ...params,
     });
     return res;
   }
 
+  /**
+   * 交易日历批量导入
+   * @param year 年
+   * @returns 导入数量
+   */
   static async bulkImport(year: string) {
     const { code, data } = await getTradeCal(year);
     if (code) return null;
@@ -31,5 +47,10 @@ export default class CurdTradeCalService {
 
     log(`成功导入${year}年${res}条数据`);
     return res;
+  }
+
+  static async getIsOpen(date: string): Promise<boolean> {
+    const res: number = await CurdTradeCalDao.getIsOpen(date);
+    return !!res;
   }
 }

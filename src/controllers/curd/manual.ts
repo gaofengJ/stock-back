@@ -3,13 +3,21 @@ import {
   Post,
   BodyParam,
 } from 'routing-controllers';
-import shellTradeCal from '@/shell/tushare/trade-cal';
+import CurdManualService from '@/services/curd/manual';
+import { dateFormat } from 'mufeng-tools';
 
-@JsonController('/shell/manual')
-export default class ShellController {
+@JsonController('/curd/manual')
+export default class CurdManualController {
+  /**
+   * 手动导入每日数据
+   * @param date 交易日期
+   * @returns 'success' | Error
+   */
   @Post('/')
-  async tradeCal(@BodyParam('year') year: string) {
-    const res = await shellTradeCal(year);
-    return res;
+  async manual(@BodyParam('date') date: string) {
+    // eslint-disable-next-line no-param-reassign
+    date = dateFormat(new Date(date), 'yyyyMMdd');
+    const bool: boolean = await CurdManualService.manual(date);
+    return bool;
   }
 }

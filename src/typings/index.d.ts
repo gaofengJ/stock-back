@@ -2,7 +2,11 @@
 declare namespace Base {
   interface TypeRes {
     code: number,
-    msg: string,
+    msg?: string,
     data: any,
+  }
+  interface listRes {
+    total: number,
+    list: any[]
   }
 }
