@@ -18,6 +18,9 @@ export default class CurdManualController {
     // eslint-disable-next-line no-param-reassign
     date = dateFormat(new Date(date), 'yyyyMMdd');
     const bool: boolean = await CurdManualService.manual(date);
+    if (!bool) {
+      throw new Error(`${date}不是交易日，请重新选择交易日期`);
+    }
     return bool;
   }
 }

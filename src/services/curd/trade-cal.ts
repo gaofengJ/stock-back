@@ -45,7 +45,7 @@ export default class CurdTradeCalService {
     }));
     const res = await CurdTradeCalDao.bulkCreate(params);
 
-    log(`成功导入${year}年${res}条数据`);
+    log(`导入交易日历：成功导入${year}年${res}条数据`);
     return res;
   }
 
