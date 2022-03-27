@@ -2,6 +2,7 @@ import {
   JsonController,
   Post,
   BodyParam,
+  Delete,
 } from 'routing-controllers';
 import CurdTradeCalService from '@/services/curd/trade-cal';
 
@@ -33,9 +34,19 @@ export default class CurdTradeCalController {
    * @param year 年
    * @returns 导入数量
    */
-  @Post('/bulk-import')
-  async bulkCreate(@BodyParam('year') year: string) {
-    const res = await CurdTradeCalService.bulkImport(year);
+  @Post('/bulk-create')
+  async bulkCreate(@BodyParam('year') year: string): Promise<number | null> {
+    const res: number | null = await CurdTradeCalService.bulkCreate(year);
+    return res;
+  }
+
+  /**
+   * 清空交易日历
+   * @returns 提示信息
+   */
+  @Delete('/truncate-destroy')
+  async truncateDestroy(): Promise<string> {
+    const res: string = await CurdTradeCalService.truncateDestroy();
     return res;
   }
 }

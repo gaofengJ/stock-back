@@ -26,9 +26,20 @@ export default class CurdTradeCalDao {
    */
   static async bulkCreate(
     params: { id: string, calDate: string, isOpen: number, preTradeDate: string }[],
-  ) {
+  ): Promise<number> {
     const res = await TTradeCal.bulkCreate(params);
     return (res || []).length;
+  }
+
+  /**
+   * 清空交易日历
+   * @returns number
+   */
+  static async truncateDestroy(): Promise<number> {
+    const res: number = await TTradeCal.destroy({
+      truncate: true,
+    });
+    return res;
   }
 
   /**

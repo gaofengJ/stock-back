@@ -18,8 +18,8 @@ export default class AnalysisSentimentController {
    */
   @Get('/')
   async getRiseSentiment(
-    @QueryParam('startDate') startDate: string,
-    @QueryParam('endDate') endDate: string,
+    @QueryParam('startDate', { required: true }) startDate: string,
+    @QueryParam('endDate', { required: true }) endDate: string,
     @QueryParam('fields', { type: 'string' }) fields: string | string[],
   ): Promise<Base.listRes> {
     // eslint-disable-next-line no-param-reassign

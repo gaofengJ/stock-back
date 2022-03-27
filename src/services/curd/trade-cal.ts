@@ -30,7 +30,7 @@ export default class CurdTradeCalService {
    * @param year 年
    * @returns 导入数量
    */
-  static async bulkImport(year: string) {
+  static async bulkCreate(year: string): Promise<number | null> {
     const { code, data } = await getTradeCal(year);
     if (code) return null;
     let { fields } = data;
@@ -43,12 +43,28 @@ export default class CurdTradeCalService {
       isOpen: i.isOpen,
       preTradeDate: i.preTradeDate,
     }));
-    const res = await CurdTradeCalDao.bulkCreate(params);
+    const res: number = await CurdTradeCalDao.bulkCreate(params);
 
     log(`导入交易日历：成功导入${year}年${res}条数据`);
     return res;
   }
 
+  /**
+   * 清空交易日历
+   * @returns number
+   */
+  static async truncateDestroy(): Promise<string> {
+    const res: number = await CurdTradeCalDao.truncateDestroy();
+    const str = !res ? '清空交易日历：成功' : '清空交易日历：失败';
+    log(str);
+    return str;
+  }
+
+  /**
+   * 查询日期是否为交易日
+   * @param date 日期
+   * @returns isOpen 0：否 1：是
+   */
   static async getIsOpen(date: string): Promise<boolean> {
     const res: number = await CurdTradeCalDao.getIsOpen(date);
     return !!res;
