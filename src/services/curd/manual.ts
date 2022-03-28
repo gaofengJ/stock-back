@@ -1,6 +1,6 @@
-import CurdTradeCalService from '@/services/curd/trade-cal';
 import { dateFormat, dateGetBeforeDay } from 'mufeng-tools';
-// import { dateFormat } from 'mufeng-tools';
+import CurdTradeCalService from '@/services/curd/trade-cal';
+import CurdStockBasicService from '@/services/curd/stock-basic';
 // import { v4 as uuidv4 } from 'uuid';
 
 // import { getTradeCal } from '@/api/tushare/index';
@@ -20,6 +20,10 @@ export default class CurdManualService {
     }
     await this.getTradeCal(date); // 每年的最后一个交易日（最后一个周五）导入下一年的交易日历
     await this.getStockBasic(date); // 每周一导入股票基本信息（导入新增股票）
+    await this.getDailyLimit(date); // 每日涨跌停价
+    await this.getDaily(date); // 每日数据统计
+    await this.getLimitList(date); // 每日涨跌停统计
+    await this.getDailyMarketMood(date); // 每日短线情绪指标
     return `${date}所有交易数据导入成功`;
   }
 
@@ -52,7 +56,23 @@ export default class CurdManualService {
     const dateFormated: string = date.replace(pattern, '$1-$2-$3'); // 将yyyyMMdd转成yyyy-MM-dd
     const day: number = new Date(dateFormated).getDay();
     if (day !== 1) return;
-    // await CurdTradeCalService.bulkCreate();
-    console.log('111');
+    await CurdStockBasicService.truncateDestroy();
+    await CurdStockBasicService.bulkCreate(['SSE', 'SZSE']);
+  }
+
+  static async getDailyLimit(date: string): Promise<void> {
+
+  }
+
+  static async getDaily(date: string): Promise<void> {
+
+  }
+
+  static async getLimitList(date: string): Promise<void> {
+
+  }
+
+  static async getDailyMarketMood(date: string): Promise<void> {
+
   }
 }
