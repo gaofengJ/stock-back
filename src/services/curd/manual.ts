@@ -61,18 +61,18 @@ export default class CurdManualService {
   }
 
   static async getDailyLimit(date: string): Promise<void> {
-
+    console.log(date);
   }
 
   static async getDaily(date: string): Promise<void> {
-
+    console.log(date);
   }
 
   static async getLimitList(date: string): Promise<void> {
-
+    console.log(date);
   }
 
   static async getDailyMarketMood(date: string): Promise<void> {
-
+    console.log(date);
   }
 }
