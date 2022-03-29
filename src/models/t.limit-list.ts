@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import mysql from '@/db/mysql';
 
-// 每日涨停、跌停统计
+// 每日涨停、跌停个股统计
 const TLimitList = mysql.define('t_limit_list', {
   // id
   id: {
@@ -36,7 +36,7 @@ const TLimitList = mysql.define('t_limit_list', {
     allowNull: false,
   },
   // 涨跌幅
-  pctChange: {
+  pctChg: {
     field: 'pct_chg',
     type: DataTypes.FLOAT(16, 2),
     allowNull: false,
@@ -85,7 +85,7 @@ const TLimitList = mysql.define('t_limit_list', {
   },
   // 涨跌停强度
   strth: {
-    field: 'open_times',
+    field: 'strth',
     type: DataTypes.FLOAT(16),
     allowNull: false,
   },

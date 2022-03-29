@@ -66,7 +66,7 @@ const TDaily = mysql.define('t_daily', {
     allowNull: false,
   },
   // 涨跌幅
-  pctChange: {
+  pctChg: {
     field: 'pct_chg',
     type: DataTypes.FLOAT(16, 2),
     allowNull: false,

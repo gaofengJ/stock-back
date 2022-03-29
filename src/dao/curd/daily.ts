@@ -4,9 +4,9 @@ import { Op } from 'sequelize';
 export default class CurdDailyDao {
   /**
    * 每日交易数据批量导入
-   * @param <{ id: string, tsCode: string, name: string, tradeDate: string, open: string,
-   * high: string, low: string, close: string, preClose: string, change: string,
-   * pctChg: string, vol: string, amount: string, }>[]
+   * @param <{ id: string, tsCode: string, name: string, tradeDate: string, open: number,
+   * high: number, low: number, close: number, preClose: number, change: number,
+   * pctChg: number, vol: number, amount: number, }>[]
    * @returns 导入数量
    */
   static async bulkCreate(
@@ -15,15 +15,15 @@ export default class CurdDailyDao {
       tsCode: string,
       name: string,
       tradeDate: string,
-      open: string,
-      high: string,
-      low: string,
-      close: string,
-      preClose: string,
-      change: string,
-      pctChg: string,
-      vol: string,
-      amount: string,
+      open: number,
+      high: number,
+      low: number,
+      close: number,
+      preClose: number,
+      change: number,
+      pctChg: number,
+      vol: number,
+      amount: number,
     }[],
   ): Promise<number> {
     const res = await TDaily.bulkCreate(params);
