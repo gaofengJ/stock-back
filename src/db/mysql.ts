@@ -14,7 +14,7 @@ const mysql = new Sequelize(
     // 自定义端口，默认3306
     port: MYSQL_CONF.port,
     // 是否开始日志，默认是用console.log。建议开启，方便对照生成的sql语句
-    logging: true,
+    logging: false,
     // 是否将undefined转化为NULL。默认: false
     omitNull: true,
     // pg中开启ssl支持。默认: false
