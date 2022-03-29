@@ -1,12 +1,9 @@
 import { dateFormat, dateGetBeforeDay } from 'mufeng-tools';
-import CurdTradeCalService from '@/services/curd/trade-cal';
-import CurdStockBasicService from '@/services/curd/stock-basic';
+import CurdTradeCalService from './trade-cal';
+import CurdStockBasicService from './stock-basic';
 import CurdDailyLimitService from './daily-limit';
 import CurdDailyService from './daily';
-// import { v4 as uuidv4 } from 'uuid';
-
-// import { getTradeCal } from '@/api/tushare/index';
-// import { mixinFieldAndItem } from '@/utils';
+import CurdLimitListService from './limit-list';
 // import { log } from 'console';
 
 export default class CurdManualService {
@@ -71,7 +68,7 @@ export default class CurdManualService {
   }
 
   static async getLimitList(date: string): Promise<void> {
-    console.log(date);
+    await CurdLimitListService.bulkCreate(date);
   }
 
   static async getDailyMarketMood(date: string): Promise<void> {
