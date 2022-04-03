@@ -3,8 +3,11 @@ import {
   Post,
   BodyParam,
   Delete,
+  Get,
+  QueryParam,
 } from 'routing-controllers';
 import CurdTradeCalService from '@/services/curd/trade-cal';
+import { dateFormat } from 'mufeng-tools';
 
 @JsonController('/curd/trade-cal')
 export default class CurdTradeCalController {
@@ -47,6 +50,35 @@ export default class CurdTradeCalController {
   @Delete('/truncate-destroy')
   async truncateDestroy(): Promise<string> {
     const res: string = await CurdTradeCalService.truncateDestroy();
+    return res;
+  }
+
+  /**
+   * 查询日期是否为交易日
+   * @param date 日期
+   * @returns isOpen 0：否 1：是
+   */
+  @Get('/get-is-open')
+  async getIsOpen(
+    @QueryParam('date', { required: true }) date: string,
+  ): Promise<boolean> {
+    // eslint-disable-next-line no-param-reassign
+    date = dateFormat(new Date(date), 'yyyyMMdd');
+    const res: boolean = await CurdTradeCalService.getIsOpen(date);
+    return res;
+  }
+
+  /**
+   * 查询上一个交易日
+   * @param date 日期
+   */
+  @Get('/get-prev-date')
+  async getPrevDate(
+    @QueryParam('date', { required: true }) date: string,
+  ): Promise<string> {
+    // eslint-disable-next-line no-param-reassign
+    date = dateFormat(new Date(date), 'yyyyMMdd');
+    const res: string = await CurdTradeCalService.getPrevDate(date);
     return res;
   }
 }

@@ -47,8 +47,8 @@ export default class CurdLimitListDao {
     return res;
   }
 
-  static async getLimitUNotLine(dateArr: string[]): Promise<string> {
-    const res: Record<string, any> = await TLimitList.findAll({
+  static async getLimitUNotLine(date: string): Promise<Record<string, any>[]> {
+    const res: Record<string, any>[] = await TLimitList.findAll({
       attributes: [
         'tsCode',
         [Sequelize.fn('COUNT', Sequelize.col('tsCode')), 'count'],
@@ -60,19 +60,9 @@ export default class CurdLimitListDao {
               [Op.eq]: date,
             },
           },
-          // Sequelize.fn('LOCATE', Sequelize.col('fruit_name'), sample_fruit_string))
-          Sequelize.where(Sequelize.fn('LOCATE', Sequelize.col('name'), 'ST'), {
-            [Op.eq]: 0,
-          }),
-          Sequelize.where(Sequelize.fn('LOCATE', Sequelize.col('name'), 'N'), {
-            [Op.eq]: 0,
-          }),
-          Sequelize.where(Sequelize.fn('LOCATE', Sequelize.col('name'), 'C'), {
-            [Op.eq]: 0,
-          }),
         ],
       },
     });
-    return res?.count;
+    return res;
   }
 }

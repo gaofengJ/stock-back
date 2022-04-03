@@ -59,18 +59,34 @@ export default class CurdManualService {
     await CurdStockBasicService.bulkCreate(['SSE', 'SZSE']);
   }
 
+  /**
+   * 导入当日涨跌停价格
+   * @param date 日期
+   */
   static async getDailyLimit(date: string): Promise<void> {
     await CurdDailyLimitService.bulkCreate(date);
   }
 
+  /**
+   * 导入当日交易数据
+   * @param date 日期
+   */
   static async getDaily(date: string): Promise<void> {
     await CurdDailyService.bulkCreate(date);
   }
 
+  /**
+   * 导入当日涨跌停数据
+   * @param date 日期
+   */
   static async getLimitList(date: string): Promise<void> {
     await CurdLimitListService.bulkCreate(date);
   }
 
+  /**
+   * 导入当日短线情绪指标
+   * @param date 日期
+   */
   static async getDailyMarketMood(date: string): Promise<void> {
     const prevTradeDate: string = await CurdTradeCalService.getPrevDate(date);
 
@@ -84,11 +100,10 @@ export default class CurdManualService {
       sentimentB: '', // 打板高开率 sentimentB = c / b
       sentimentC: '', // 打板成功率 sentimentC = d / b
       sentimentD: '', // 打板被砸率 sentimentD = e / (a + e)
-      up: '', // 上涨家数
-      down: '', // 下跌家数
-      zero: '', // 平盘家数
     };
-    res.a = await CurdLimitListService.getLimitUNotLine([date, prevTradeDate]);
-    res.b = await CurdLimitListService.getLimitUNotLine(prevTradeDate);
+    const curData = await CurdLimitListService.getLimitUNotLine(date);
+    const prevData = await CurdLimitListService.getLimitUNotLine(prevTradeDate);
+    console.log(res, date);
+    console.log(curData, prevData);
   }
 }

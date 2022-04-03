@@ -51,8 +51,13 @@ export default class CurdLimitListService {
     return str;
   }
 
-  static async getLimitUNotLine(dateArr: string[]): Promise<string> {
-    const res: string = await CurdLimitListDao.getLimitUNotLine(dateArr);
+  /**
+   * 获取当天短线情绪指标
+   * @param date 日期
+   * @returns Record<string, any>[]
+   */
+  static async getLimitUNotLine(date: string): Promise<Record<string, any>[]> {
+    const res: Record<string, any>[] = await CurdLimitListDao.getLimitUNotLine(date);
     return res;
   }
 }

@@ -72,6 +72,7 @@ export default class CurdTradeCalService {
 
   /**
    * 查询上一个交易日
+   * @param date 日期
    */
   static async getPrevDate(date: string): Promise<string> {
     const res: string = await CurdTradeCalDao.getPrevDate(date);

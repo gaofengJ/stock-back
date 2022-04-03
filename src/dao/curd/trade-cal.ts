@@ -59,6 +59,11 @@ export default class CurdTradeCalDao {
     return tradeCal?.get('isOpen') as number;
   }
 
+  /**
+   * 查询上一个交易日
+   * @param date 日期
+   * @returns string
+   */
   static async getPrevDate(date: string): Promise<string> {
     const tradeCal = await TTradeCal.findOne({
       attributes: ['preTradeDate'],

@@ -70,25 +70,6 @@ const TMarketMood = mysql.define('t_market_mood', {
     type: DataTypes.FLOAT(16, 0),
     allowNull: false,
   },
-  // 上涨家数
-  up: {
-    field: 'up',
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  // 下跌家数
-  down: {
-    field: 'down',
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  // 平盘家数
-  zero: {
-    field: 'zero',
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-
 }, {
   timestamps: false,
 });
