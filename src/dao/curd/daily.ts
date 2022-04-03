@@ -4,7 +4,7 @@ import { Op } from 'sequelize';
 export default class CurdDailyDao {
   /**
    * 每日交易数据批量导入
-   * @param <{ id: string, tsCode: string, name: string, tradeDate: string, open: number,
+   * @param <{ id: string, tsCode: string, tradeDate: string, open: number,
    * high: number, low: number, close: number, preClose: number, change: number,
    * pctChg: number, vol: number, amount: number, }>[]
    * @returns 导入数量
@@ -13,7 +13,6 @@ export default class CurdDailyDao {
     params: {
       id: string,
       tsCode: string,
-      name: string,
       tradeDate: string,
       open: number,
       high: number,

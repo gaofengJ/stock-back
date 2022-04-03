@@ -17,12 +17,6 @@ const TDaily = mysql.define('t_daily', {
     type: DataTypes.STRING(16),
     allowNull: false,
   },
-  // 股票名称
-  name: {
-    field: 'name',
-    type: DataTypes.STRING(16),
-    allowNull: false,
-  },
   // 交易日期
   tradeDate: {
     field: 'trade_date',

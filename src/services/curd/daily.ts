@@ -21,7 +21,6 @@ export default class CurdDailyService {
     params = params.map((i: Record<string, any>) => ({ // 依次添加id
       id: uuidv4(),
       tsCode: i.tsCode,
-      name: i.name,
       tradeDate: i.tradeDate,
       open: i.open,
       high: i.high,
