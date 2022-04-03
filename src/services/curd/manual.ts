@@ -72,6 +72,23 @@ export default class CurdManualService {
   }
 
   static async getDailyMarketMood(date: string): Promise<void> {
-    console.log(date);
+    const prevTradeDate: string = await CurdTradeCalService.getPrevDate(date);
+
+    const res: Record<string, string> = { // 短线情绪指标，以2022年2月2日为例
+      a: '', // 2022年2月2日涨停，非一字涨停，非ST
+      b: '', // 2022年2月1日涨停，非一字涨停，非ST
+      c: '', // 2022年2月1日涨停，非一字涨停，非ST，2022年2月2日高开
+      d: '', // 2022年2月1日涨停，非一字涨停，非ST，2022年2月2日上涨
+      e: '', // 2022年2月2日曾涨停，非ST
+      sentimentA: '', // 非一字涨停 sentimentA = a
+      sentimentB: '', // 打板高开率 sentimentB = c / b
+      sentimentC: '', // 打板成功率 sentimentC = d / b
+      sentimentD: '', // 打板被砸率 sentimentD = e / (a + e)
+      up: '', // 上涨家数
+      down: '', // 下跌家数
+      zero: '', // 平盘家数
+    };
+    res.a = await CurdLimitListService.getLimitUNotLine([date, prevTradeDate]);
+    res.b = await CurdLimitListService.getLimitUNotLine(prevTradeDate);
   }
 }

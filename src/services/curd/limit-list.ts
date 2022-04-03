@@ -50,4 +50,9 @@ export default class CurdLimitListService {
     log(str);
     return str;
   }
+
+  static async getLimitUNotLine(dateArr: string[]): Promise<string> {
+    const res: string = await CurdLimitListDao.getLimitUNotLine(dateArr);
+    return res;
+  }
 }

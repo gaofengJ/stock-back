@@ -58,4 +58,16 @@ export default class CurdTradeCalDao {
     });
     return tradeCal?.get('isOpen') as number;
   }
+
+  static async getPrevDate(date: string): Promise<string> {
+    const tradeCal = await TTradeCal.findOne({
+      attributes: ['preTradeDate'],
+      where: {
+        calDate: {
+          [Op.eq]: date,
+        },
+      },
+    });
+    return tradeCal?.get('preTradeDate') as string;
+  }
 }

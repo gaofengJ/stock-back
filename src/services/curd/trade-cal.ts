@@ -69,4 +69,12 @@ export default class CurdTradeCalService {
     const res: number = await CurdTradeCalDao.getIsOpen(date);
     return !!res;
   }
+
+  /**
+   * 查询上一个交易日
+   */
+  static async getPrevDate(date: string): Promise<string> {
+    const res: string = await CurdTradeCalDao.getPrevDate(date);
+    return res;
+  }
 }
