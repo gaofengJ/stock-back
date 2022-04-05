@@ -1,4 +1,6 @@
 import TDaily from '@/models/t.daily';
+import TDailyLimit from '@/models/t.daily-limit';
+import TStockBasic from '@/models/t.stock-basic';
 import { Op } from 'sequelize';
 
 export default class CurdDailyDao {
@@ -40,6 +42,38 @@ export default class CurdDailyDao {
           [Op.eq]: date,
         },
       },
+    });
+    return res;
+  }
+
+  /**
+   * @param date 日期
+   * 查询每日交易数据
+   */
+  static async getDaily(date: string): Promise<Record<string, any>[]> {
+    const res = await TDaily.findAll({
+      attributes: ['tsCode', 'tradeDate', 'open', 'high', 'low', 'close', 'preClose', 'change', 'pctChg'],
+      raw: true,
+      where: {
+        tradeDate: {
+          [Op.eq]: date,
+        },
+      },
+      include: [
+        {
+          model: TStockBasic,
+          attributes: ['name'],
+        },
+        {
+          model: TDailyLimit,
+          attributes: ['upLimit', 'downLimit'],
+          where: {
+            tradeDate: {
+              [Op.eq]: date,
+            },
+          },
+        },
+      ],
     });
     return res;
   }

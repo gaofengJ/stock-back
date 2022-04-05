@@ -3,6 +3,8 @@ import {
   Post,
   BodyParam,
   Delete,
+  Get,
+  QueryParam,
 } from 'routing-controllers';
 import CurdDailyService from '@/services/curd/daily';
 import { dateFormat } from 'mufeng-tools';
@@ -31,6 +33,18 @@ export default class CurdDailyController {
     // eslint-disable-next-line no-param-reassign
     date = dateFormat(date, 'yyyyMMdd');
     const res: string = await CurdDailyService.destroy(date);
+    return res;
+  }
+
+  /**
+   * @param date 日期
+   * 查询每日交易数据
+   */
+  @Get('/')
+  async getDaily(@QueryParam('date') date: string): Promise<Record<string, any>[]> {
+    // eslint-disable-next-line no-param-reassign
+    date = dateFormat(date, 'yyyyMMdd');
+    const res: Record<string, any>[] = await CurdDailyService.getDaily(date);
     return res;
   }
 }

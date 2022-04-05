@@ -1,5 +1,6 @@
 import TLimitList from '@/models/t.limit-list';
-import { Op, Sequelize } from 'sequelize';
+import TDaily from '@/models/t.daily';
+import { Op } from 'sequelize';
 
 export default class CurdLimitListDao {
   /**
@@ -34,6 +35,7 @@ export default class CurdLimitListDao {
 
   /**
    * 删除每日涨跌停个股
+   * @param date 日期
    * @returns number
    */
   static async destroy(date: string): Promise<number> {
@@ -50,19 +52,57 @@ export default class CurdLimitListDao {
   static async getLimitUNotLine(date: string): Promise<Record<string, any>[]> {
     const res: Record<string, any>[] = await TLimitList.findAll({
       attributes: [
+        'tradeDate',
         'tsCode',
-        [Sequelize.fn('COUNT', Sequelize.col('tsCode')), 'count'],
+        'name',
+        'amp',
       ],
+      raw: true,
       where: {
-        [Op.and]: [
-          {
+        tradeDate: {
+          [Op.eq]: date,
+        },
+        limit: {
+          [Op.eq]: 'U',
+        },
+        name: {
+          [Op.and]: [
+            {
+              [Op.notLike]: '%ST%',
+            },
+            {
+              [Op.notLike]: '%N%',
+            },
+            {
+              [Op.notLike]: '%C%',
+            },
+          ],
+        },
+      },
+      include: [
+        {
+          model: TDaily,
+          attributes: ['open', 'high', 'low', 'close', 'preClose', 'change', 'pctChg'],
+          where: {
             tradeDate: {
               [Op.eq]: date,
             },
           },
-        ],
-      },
+        },
+      ],
     });
-    return res;
+    return res.map((i: Record<string, any>) => ({
+      tradeDate: i.tradeDate,
+      tsCode: i.tsCode,
+      name: i.name,
+      amp: i.amp,
+      open: i['t_daily.open'],
+      high: i['t_daily.high'],
+      low: i['t_daily.low'],
+      close: i['t_daily.close'],
+      preClose: i['t_daily.preClose'],
+      change: i['t_daily.change'],
+      pctChg: i['t_daily.pctChg'],
+    }));
   }
 }

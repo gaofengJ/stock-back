@@ -17,11 +17,11 @@ export default class CurdManualService {
     if (!isOpen) {
       throw new Error(`${date}不是交易日，请重新选择交易日期`);
     }
-    await this.getTradeCal(date); // 每年的最后一个交易日（最后一个周五）导入下一年的交易日历
-    await this.getStockBasic(date); // 每周一导入股票基本信息（导入新增股票）
-    await this.getDailyLimit(date); // 每日涨跌停价
-    await this.getDaily(date); // 每日数据统计
-    await this.getLimitList(date); // 每日涨跌停统计
+    // await this.getTradeCal(date); // 每年的最后一个交易日（最后一个周五）导入下一年的交易日历
+    // await this.getStockBasic(date); // 每周一导入股票基本信息（导入新增股票）
+    // await this.getDailyLimit(date); // 每日涨跌停价
+    // await this.getDaily(date); // 每日数据统计
+    // await this.getLimitList(date); // 每日涨跌停统计
     await this.getDailyMarketMood(date); // 每日短线情绪指标
     return `${date}所有交易数据导入成功`;
   }
@@ -88,22 +88,36 @@ export default class CurdManualService {
    * @param date 日期
    */
   static async getDailyMarketMood(date: string): Promise<void> {
-    const prevTradeDate: string = await CurdTradeCalService.getPrevDate(date);
+    // const prevTradeDate: string = await CurdTradeCalService.getPrevDate(date);
 
-    const res: Record<string, string> = { // 短线情绪指标，以2022年2月2日为例
-      a: '', // 2022年2月2日涨停，非一字涨停，非ST
-      b: '', // 2022年2月1日涨停，非一字涨停，非ST
-      c: '', // 2022年2月1日涨停，非一字涨停，非ST，2022年2月2日高开
-      d: '', // 2022年2月1日涨停，非一字涨停，非ST，2022年2月2日上涨
-      e: '', // 2022年2月2日曾涨停，非ST
-      sentimentA: '', // 非一字涨停 sentimentA = a
-      sentimentB: '', // 打板高开率 sentimentB = c / b
-      sentimentC: '', // 打板成功率 sentimentC = d / b
-      sentimentD: '', // 打板被砸率 sentimentD = e / (a + e)
+    const res: Record<string, number> = { // 短线情绪指标，以2022年2月2日为例
+      a: 0, // 2022年2月2日涨停，非一字涨停，非ST
+      b: 0, // 2022年2月1日涨停，非一字涨停，非ST
+      c: 0, // 2022年2月1日涨停，非一字涨停，非ST，2022年2月2日高开
+      d: 0, // 2022年2月1日涨停，非一字涨停，非ST，2022年2月2日上涨
+      e: 0, // 2022年2月2日曾涨停，非ST
+      sentimentA: 0, // 非一字涨停 sentimentA = a
+      sentimentB: 0, // 打板高开率 sentimentB = c / b
+      sentimentC: 0, // 打板成功率 sentimentC = d / b
+      sentimentD: 0, // 打板被砸率 sentimentD = e / (a + e)
     };
-    const curData = await CurdLimitListService.getLimitUNotLine(date);
-    const prevData = await CurdLimitListService.getLimitUNotLine(prevTradeDate);
-    console.log(res, date);
-    console.log(curData, prevData);
+    // const curLimitData = await CurdLimitListService.getLimitUNotLine(date);
+    const curDailyData = await CurdDailyService.getDaily(date);
+    // const prevLimitData = await CurdLimitListService.getLimitUNotLine(prevTradeDate);
+    console.log(res, curDailyData);
+    // res.a = curLimitData.filter((i) => (i.amp > 0.001)).length;
+    // res.b = prevLimitData.filter((i) => (i.amp > 0.001)).length;
+    // res.c = prevLimitData.filter((i) => {
+    //   if (i.amp < 0.001) return false;
+    //   return curDailyData.find((j) => i.tsCode === j.tsCode)?.pctChg > 0;
+    // }).length;
+    // res.d = prevLimitData.filter((i) => {
+    //   if (i.amp < 0.001) return false;
+    //   const tempDailyData = curDailyData.find((j) => i.tsCode === j.tsCode);
+    //   if (!tempDailyData) return false;
+    //   return tempDailyData.open > tempDailyData.preClose;
+    // }).length;
+    // res.e = curDailyData.filter((i) => i.high !== i.close
+    // && i.high === i.upLimit && !i.name.includes('ST')).length;
   }
 }

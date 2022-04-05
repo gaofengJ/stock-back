@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import mysql from '@/db/mysql';
+import TDaily from './t.daily';
 
 // 每日涨停、跌停个股统计
 const TLimitList = mysql.define('t_limit_list', {
@@ -97,6 +98,12 @@ const TLimitList = mysql.define('t_limit_list', {
   },
 }, {
   timestamps: false,
+});
+
+TDaily.hasMany(TLimitList);
+TLimitList.belongsTo(TDaily, {
+  targetKey: 'tsCode',
+  foreignKey: 'tsCode',
 });
 
 export default TLimitList;

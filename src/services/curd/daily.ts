@@ -39,6 +39,7 @@ export default class CurdDailyService {
 
   /**
    * 删除每日交易数据
+   * @param date 日期
    * @returns number
    */
   static async destroy(date: string): Promise<string> {
@@ -46,5 +47,14 @@ export default class CurdDailyService {
     const str: string = `删除每日交易数据：成功删除${date}共${res}条数据`;
     log(str);
     return str;
+  }
+
+  /**
+   * @param date 日期
+   * 查询每日交易数据
+   */
+  static async getDaily(date: string): Promise<Record<string, any>[]> {
+    const res: Record<string, any>[] = await CurdDailyDao.getDaily(date);
+    return res;
   }
 }

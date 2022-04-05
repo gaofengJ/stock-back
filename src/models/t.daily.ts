@@ -1,5 +1,7 @@
 import { DataTypes } from 'sequelize';
 import mysql from '@/db/mysql';
+import TDailyLimit from './t.daily-limit';
+import TStockBasic from './t.stock-basic';
 
 // 每日统计
 const TDaily = mysql.define('t_daily', {
@@ -79,6 +81,18 @@ const TDaily = mysql.define('t_daily', {
   },
 }, {
   timestamps: false,
+});
+
+TDailyLimit.hasMany(TDaily);
+TDaily.belongsTo(TDailyLimit, {
+  targetKey: 'tsCode',
+  foreignKey: 'tsCode',
+});
+
+TStockBasic.hasMany(TDaily);
+TDaily.belongsTo(TStockBasic, {
+  targetKey: 'tsCode',
+  foreignKey: 'tsCode',
 });
 
 export default TDaily;
