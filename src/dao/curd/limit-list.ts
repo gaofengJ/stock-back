@@ -49,7 +49,12 @@ export default class CurdLimitListDao {
     return res;
   }
 
-  static async getLimitUNotLine(date: string): Promise<Record<string, any>[]> {
+  /**
+   * 查询当日涨停数据
+   * @param date 日期
+   * @returns Record<string, any>[]
+   */
+  static async getLimitU(date: string): Promise<Record<string, any>[]> {
     const res: Record<string, any>[] = await TLimitList.findAll({
       attributes: [
         'tradeDate',

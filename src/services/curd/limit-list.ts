@@ -52,12 +52,12 @@ export default class CurdLimitListService {
   }
 
   /**
-   * 获取当天短线情绪指标
+   * 查询当日涨停数据
    * @param date 日期
    * @returns Record<string, any>[]
    */
-  static async getLimitUNotLine(date: string): Promise<Record<string, any>[]> {
-    const res: Record<string, any>[] = await CurdLimitListDao.getLimitUNotLine(date);
+  static async getLimitU(date: string): Promise<Record<string, any>[]> {
+    const res: Record<string, any>[] = await CurdLimitListDao.getLimitU(date);
     return res;
   }
 }

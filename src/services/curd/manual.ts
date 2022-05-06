@@ -1,10 +1,11 @@
 import { dateFormat, dateGetBeforeDay } from 'mufeng-tools';
+import { log } from 'console';
 import CurdTradeCalService from './trade-cal';
 import CurdStockBasicService from './stock-basic';
 import CurdDailyLimitService from './daily-limit';
 import CurdDailyService from './daily';
 import CurdLimitListService from './limit-list';
-// import { log } from 'console';
+import CurdMarketMoodService from './market-mood';
 
 export default class CurdManualService {
   /**
@@ -23,6 +24,7 @@ export default class CurdManualService {
     // await this.getDaily(date); // 每日数据统计
     // await this.getLimitList(date); // 每日涨跌停统计
     await this.getDailyMarketMood(date); // 每日短线情绪指标
+    log(`${date}所有交易数据导入成功`);
     return `${date}所有交易数据导入成功`;
   }
 
@@ -88,36 +90,51 @@ export default class CurdManualService {
    * @param date 日期
    */
   static async getDailyMarketMood(date: string): Promise<void> {
-    // const prevTradeDate: string = await CurdTradeCalService.getPrevDate(date);
+    const prevTradeDate: string = await CurdTradeCalService.getPrevDate(date); // 查询上一个交易日
 
-    const res: Record<string, number> = { // 短线情绪指标，以2022年2月2日为例
-      a: 0, // 2022年2月2日涨停，非一字涨停，非ST
-      b: 0, // 2022年2月1日涨停，非一字涨停，非ST
-      c: 0, // 2022年2月1日涨停，非一字涨停，非ST，2022年2月2日高开
-      d: 0, // 2022年2月1日涨停，非一字涨停，非ST，2022年2月2日上涨
-      e: 0, // 2022年2月2日曾涨停，非ST
+    const res: Record<string, number> = { // 短线情绪指标，以2022年01月05日为例
+      a: 0, // 2022年01月05日涨停，非一字涨停，非ST
+      b: 0, // 2022年01月04日涨停，非一字涨停，非ST
+      c: 0, // 2022年01月04日涨停，非一字涨停，非ST，2022年201月05日高开
+      d: 0, // 2022年01月04日涨停，非一字涨停，非ST，2022年201月05日上涨
+      e: 0, // 2022年01月05日曾涨停，非ST
       sentimentA: 0, // 非一字涨停 sentimentA = a
       sentimentB: 0, // 打板高开率 sentimentB = c / b
       sentimentC: 0, // 打板成功率 sentimentC = d / b
       sentimentD: 0, // 打板被砸率 sentimentD = e / (a + e)
     };
-    // const curLimitData = await CurdLimitListService.getLimitUNotLine(date);
+    const curLimitData = await CurdLimitListService.getLimitU(date); // 获取当日涨停数据
     const curDailyData = await CurdDailyService.getDaily(date);
-    // const prevLimitData = await CurdLimitListService.getLimitUNotLine(prevTradeDate);
-    console.log(res, curDailyData);
-    // res.a = curLimitData.filter((i) => (i.amp > 0.001)).length;
-    // res.b = prevLimitData.filter((i) => (i.amp > 0.001)).length;
-    // res.c = prevLimitData.filter((i) => {
-    //   if (i.amp < 0.001) return false;
-    //   return curDailyData.find((j) => i.tsCode === j.tsCode)?.pctChg > 0;
-    // }).length;
-    // res.d = prevLimitData.filter((i) => {
-    //   if (i.amp < 0.001) return false;
-    //   const tempDailyData = curDailyData.find((j) => i.tsCode === j.tsCode);
-    //   if (!tempDailyData) return false;
-    //   return tempDailyData.open > tempDailyData.preClose;
-    // }).length;
-    // res.e = curDailyData.filter((i) => i.high !== i.close
-    // && i.high === i.upLimit && !i.name.includes('ST')).length;
+    const prevLimitData = await CurdLimitListService.getLimitU(prevTradeDate); // 查询上一日涨停数据
+    res.a = curLimitData.filter((i) => (i.amp > 0.001)).length;
+    res.b = prevLimitData.filter((i) => (i.amp > 0.001)).length;
+    res.c = prevLimitData.filter((i) => {
+      if (i.amp < 0.001) return false;
+      const tempDailyData = curDailyData.find((j) => i.tsCode === j.tsCode);
+      if (!tempDailyData) return false;
+      return tempDailyData.open > tempDailyData.preClose;
+    }).length;
+    res.d = prevLimitData.filter((i) => {
+      if (i.amp < 0.001) return false;
+      return curDailyData.find((j) => i.tsCode === j.tsCode)?.pctChg > 0;
+    }).length;
+    res.e = curDailyData.filter((i) => i.high !== i.close
+    && i.high === i.upLimit && !i.name.includes('ST')).length;
+    res.sentimentA = res.a;
+    res.sentimentB = Math.floor(res.c / res.b / 0.01);
+    res.sentimentC = Math.floor(res.d / res.b / 0.01);
+    res.sentimentD = Math.floor(res.e / (res.a + res.e) / 0.01);
+    await CurdMarketMoodService.create({
+      tradeDate: date,
+      a: res.a,
+      b: res.b,
+      c: res.c,
+      d: res.d,
+      e: res.e,
+      sentimentA: res.sentimentA,
+      sentimentB: res.sentimentB,
+      sentimentC: res.sentimentC,
+      sentimentD: res.sentimentD,
+    });
   }
 }

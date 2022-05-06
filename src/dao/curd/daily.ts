@@ -75,6 +75,19 @@ export default class CurdDailyDao {
         },
       ],
     });
-    return res;
+    return res.map((i: Record<string, any>) => ({
+      tsCode: i.tsCode,
+      tradeDate: i.tradeDate,
+      open: i.open,
+      high: i.high,
+      low: i.low,
+      close: i.close,
+      preClose: i.preClose,
+      change: i.change,
+      pctChg: i.pctChg,
+      name: i['t_stock_basic.name'],
+      upLimit: i['t_daily_limit.upLimit'],
+      downLimit: i['t_daily_limit.downLimit'],
+    }));
   }
 }
