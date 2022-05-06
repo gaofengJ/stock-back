@@ -13,19 +13,37 @@ export default class CurdManualService {
    * @param date 交易日期
    * @returns string 成功提示
    */
-  static async manual(date: string): Promise<string> {
+  static async manualImport(date: string): Promise<string> {
     const isOpen: boolean = await CurdTradeCalService.getIsOpen(date);
     if (!isOpen) {
       throw new Error(`${date}不是交易日，请重新选择交易日期`);
     }
-    // await this.getTradeCal(date); // 每年的最后一个交易日（最后一个周五）导入下一年的交易日历
-    // await this.getStockBasic(date); // 每周一导入股票基本信息（导入新增股票）
-    // await this.getDailyLimit(date); // 每日涨跌停价
-    // await this.getDaily(date); // 每日数据统计
-    // await this.getLimitList(date); // 每日涨跌停统计
+    await this.getTradeCal(date); // 每年的最后一个交易日（最后一个周五）导入下一年的交易日历
+    await this.getStockBasic(date); // 每周一导入股票基本信息（导入新增股票）
+    await this.getDailyLimit(date); // 每日涨跌停价格
+    await this.getDaily(date); // 每日数据统计
+    await this.getLimitList(date); // 每日涨跌停统计
     await this.getDailyMarketMood(date); // 每日短线情绪指标
     log(`${date}所有交易数据导入成功`);
     return `${date}所有交易数据导入成功`;
+  }
+
+  /**
+   * 手动删除每日数据
+   * @param date 交易日期
+   * @returns string 成功提示
+   */
+  static async manualDestroy(date: string): Promise<string> {
+    const isOpen: boolean = await CurdTradeCalService.getIsOpen(date);
+    if (!isOpen) {
+      throw new Error(`${date}不是交易日，请重新选择交易日期`);
+    }
+    await CurdDailyLimitService.destroy(date); // 删除每日涨跌停价格
+    await CurdDailyService.destroy(date); // 删除每日数据统计
+    await CurdLimitListService.destroy(date); // 删除每日涨跌停统计
+    await CurdMarketMoodService.destroy(date); // 删除每日情绪指标
+    log(`${date}所有交易数据删除成功`);
+    return `${date}所有交易数据删除成功`;
   }
 
   /**

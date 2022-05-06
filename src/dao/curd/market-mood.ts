@@ -1,4 +1,5 @@
 import TMarketMood from '@/models/t.market-mood';
+import { Op } from 'sequelize';
 
 export default class CurdMarketMoodDao {
   /**
@@ -24,5 +25,21 @@ export default class CurdMarketMoodDao {
   ): Promise<string> {
     const MarketMood = await TMarketMood.create(params);
     return MarketMood.get('id') as string; // 返回id
+  }
+
+  /**
+   * 删除每日情绪指标
+   * @param date 日期
+   * @returns number
+   */
+  static async destroy(date: string): Promise<number> {
+    const res: number = await TMarketMood.destroy({
+      where: {
+        tradeDate: {
+          [Op.eq]: date,
+        },
+      },
+    });
+    return res;
   }
 }
