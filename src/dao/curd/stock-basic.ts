@@ -4,7 +4,7 @@ import TStockBasic from '@/models/t.stock-basic';
 export default class CurdStockBasicDao {
   /**
    * 股票基本信息批量导入
-   * @param <{ id: string,
+   * @param <{
       tsCode: string,
       symbol: string,
       name: string,
@@ -16,7 +16,6 @@ export default class CurdStockBasicDao {
    */
   static async bulkCreate(
     params: {
-      id: string,
       tsCode: string,
       symbol: string,
       name: string,

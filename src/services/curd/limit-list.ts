@@ -1,5 +1,4 @@
 import CurdLimitListDao from '@/dao/curd/limit-list';
-import { v4 as uuidv4 } from 'uuid';
 import { getLimitList } from '@/api/tushare/index';
 import { mixinFieldAndItem } from '@/utils';
 import { stringLineToHump } from 'mufeng-tools';
@@ -17,24 +16,7 @@ export default class CurdLimitListService {
     let { fields } = data;
     const { items } = data;
     fields = fields.map((str: string) => (stringLineToHump(str)));
-    let params = mixinFieldAndItem(fields, items);
-    params = params.map((i: Record<string, any>) => ({ // 依次添加id
-      id: uuidv4(),
-      tradeDate: i.tradeDate,
-      tsCode: i.tsCode,
-      name: i.name,
-      close: i.close,
-      pctChg: i.pctChg,
-      amp: i.amp,
-      fcRatio: i.fcRatio,
-      flRatio: i.flRatio,
-      fdAmount: i.fdAmount,
-      firstTime: i.firstTime,
-      lastTime: i.lastTime,
-      openTimes: i.openTimes,
-      strth: i.strth,
-      limit: i.limit,
-    }));
+    const params = mixinFieldAndItem(fields, items);
     const res: number = await CurdLimitListDao.bulkCreate(params);
     log(`导入每日涨跌停个股：成功导入${date}共${res}条数据`);
     return res;

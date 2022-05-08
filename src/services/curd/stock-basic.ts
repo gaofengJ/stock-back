@@ -1,5 +1,4 @@
 import CurdStockBasicDao from '@/dao/curd/stock-basic';
-import { v4 as uuidv4 } from 'uuid';
 import { getStockBasic } from '@/api/tushare/index';
 import { mixinFieldAndItem } from '@/utils';
 import { stringLineToHump } from 'mufeng-tools';
@@ -30,18 +29,14 @@ export default class CurdStockBasicService {
       if (index === 1) {
         len1 = items.length;
       }
-      let innerParams = mixinFieldAndItem(fields, items);
-      innerParams = innerParams.map((i: Record<string, any>) => ({ // 依次添加id
-        id: uuidv4(),
-        tsCode: i.tsCode,
-        symbol: i.symbol,
-        name: i.name,
-        area: i.area,
-        industry: i.industry,
-        market: i.market,
-        listDate: i.listDate,
-      }));
+      const innerParams = mixinFieldAndItem(fields, items);
       params = params.concat(innerParams);
+    });
+    params.forEach((i: Record<string, any>) => {
+      // eslint-disable-next-line no-param-reassign
+      if (!i.area) i.area = '';
+      // eslint-disable-next-line no-param-reassign
+      if (!i.industry) i.industry = '';
     });
     const res: number = await CurdStockBasicDao.bulkCreate(params);
     log(`成功导入股票基本信息：成功导入沪市${len0}条数据，深市${len1}条数据，共${res}条数据`);

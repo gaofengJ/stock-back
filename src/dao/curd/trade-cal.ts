@@ -4,12 +4,11 @@ import { Op } from 'sequelize';
 export default class CurdTradeCalDao {
   /**
    * 交易日历单条导入
-   * @param params { id: string, calDate: string, isOpen: number, preTradeDate: string }
+   * @param params { calDate: string, isOpen: number, preTradeDate: string }
    * @returns id
    */
   static async create(
     params: {
-      id: string,
       calDate: string,
       isOpen: number,
       preTradeDate: string,
@@ -25,7 +24,7 @@ export default class CurdTradeCalDao {
    * @returns 导入数量
    */
   static async bulkCreate(
-    params: { id: string, calDate: string, isOpen: number, preTradeDate: string }[],
+    params: { calDate: string, isOpen: number, preTradeDate: string }[],
   ): Promise<number> {
     const res = await TTradeCal.bulkCreate(params);
     return (res || []).length;

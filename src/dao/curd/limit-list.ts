@@ -1,18 +1,16 @@
 import TLimitList from '@/models/t.limit-list';
-import TDaily from '@/models/t.daily';
 import { Op } from 'sequelize';
 
 export default class CurdLimitListDao {
   /**
    * 每日涨跌停个股批量导入
-   * @param <{ id: string, tradeDate: string, tsCode: string, name: string, close: number,
+   * @param <{ tradeDate: string, tsCode: string, name: string, close: number,
    * pctChg: number, amp: number, fcRatio: number, flRatio: number, fdAmount: number,
    * firstTime: string, lastTime: string, openTimes: number, strth: number, limit: string, }>[]
    * @returns 导入数量
    */
   static async bulkCreate(
     params: {
-      id: string,
       tradeDate: string,
       tsCode: string,
       name: string,
@@ -84,30 +82,7 @@ export default class CurdLimitListDao {
           ],
         },
       },
-      include: [
-        {
-          model: TDaily,
-          attributes: ['open', 'high', 'low', 'close', 'preClose', 'change', 'pctChg'],
-          where: {
-            tradeDate: {
-              [Op.eq]: date,
-            },
-          },
-        },
-      ],
     });
-    return res.map((i: Record<string, any>) => ({
-      tradeDate: i.tradeDate,
-      tsCode: i.tsCode,
-      name: i.name,
-      amp: i.amp,
-      open: i['t_daily.open'],
-      high: i['t_daily.high'],
-      low: i['t_daily.low'],
-      close: i['t_daily.close'],
-      preClose: i['t_daily.preClose'],
-      change: i['t_daily.change'],
-      pctChg: i['t_daily.pctChg'],
-    }));
+    return res;
   }
 }

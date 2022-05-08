@@ -2,7 +2,6 @@ import { dateFormat, dateGetBeforeDay } from 'mufeng-tools';
 import { log } from 'console';
 import CurdTradeCalService from './trade-cal';
 import CurdStockBasicService from './stock-basic';
-import CurdDailyLimitService from './daily-limit';
 import CurdDailyService from './daily';
 import CurdLimitListService from './limit-list';
 import CurdMarketMoodService from './market-mood';
@@ -20,7 +19,6 @@ export default class CurdManualService {
     }
     await this.getTradeCal(date); // 每年的最后一个交易日（最后一个周五）导入下一年的交易日历
     await this.getStockBasic(date); // 每周一导入股票基本信息（导入新增股票）
-    await this.getDailyLimit(date); // 每日涨跌停价格
     await this.getDaily(date); // 每日数据统计
     await this.getLimitList(date); // 每日涨跌停统计
     await this.getDailyMarketMood(date); // 每日短线情绪指标
@@ -38,7 +36,6 @@ export default class CurdManualService {
     if (!isOpen) {
       throw new Error(`${date}不是交易日，请重新选择交易日期`);
     }
-    await CurdDailyLimitService.destroy(date); // 删除每日涨跌停价格
     await CurdDailyService.destroy(date); // 删除每日数据统计
     await CurdLimitListService.destroy(date); // 删除每日涨跌停统计
     await CurdMarketMoodService.destroy(date); // 删除每日情绪指标
@@ -77,14 +74,6 @@ export default class CurdManualService {
     if (day !== 1) return;
     await CurdStockBasicService.truncateDestroy();
     await CurdStockBasicService.bulkCreate(['SSE', 'SZSE']);
-  }
-
-  /**
-   * 导入当日涨跌停价格
-   * @param date 日期
-   */
-  static async getDailyLimit(date: string): Promise<void> {
-    await CurdDailyLimitService.bulkCreate(date);
   }
 
   /**
@@ -134,10 +123,12 @@ export default class CurdManualService {
     }).length;
     res.d = prevLimitData.filter((i) => {
       if (i.amp < 0.001) return false;
-      return curDailyData.find((j) => i.tsCode === j.tsCode)?.pctChg > 0;
+      const tempDailyData = curDailyData.find((j) => i.tsCode === j.tsCode);
+      if (!tempDailyData) return false;
+      return tempDailyData.pctChg > 0;
     }).length;
-    res.e = curDailyData.filter((i) => i.high !== i.close
-    && i.high === i.upLimit && !i.name.includes('ST')).length;
+    res.e = curDailyData.filter((i) => i.high === i.upLimit
+    && i.high !== i.close && !i.name.includes('ST')).length;
     res.sentimentA = res.a;
     res.sentimentB = Math.floor(res.c / res.b / 0.01);
     res.sentimentC = Math.floor(res.d / res.b / 0.01);

@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
-
 import { log } from 'console';
 import CurdMarketMoodDao from '@/dao/curd/market-mood';
 
@@ -29,10 +27,7 @@ export default class CurdMarketMoodService {
       log(`导入每日情绪指标：${params.tradeDate}数据导入失败`);
       return `导入每日情绪指标：${params.tradeDate}数据导入失败`;
     }
-    const res: string = await CurdMarketMoodDao.create({
-      id: uuidv4(),
-      ...params,
-    });
+    const res: string = await CurdMarketMoodDao.create(params);
     log(`导入每日情绪指标：成功导入${params.tradeDate}数据`);
     return res;
   }

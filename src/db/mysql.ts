@@ -26,8 +26,8 @@ const mysql = new Sequelize(
       charset: 'utf8',
       timestamps: true, // 是否添加时间戳（create_at和update_at）
     },
-    // 是否同步
-    sync: { force: true },
+    // 是否强制同步，force：先删除后同步，慎用！！！
+    // sync: { force: true },
     // 连接池配置
     pool: {
       max: 5,
@@ -37,7 +37,7 @@ const mysql = new Sequelize(
   },
 );
 
-// mysql.sync({ alter: true }); // 模型新增字段会在数据库中新增
+mysql.sync({ alter: true }); // 模型新增字段会在数据库中新增
 mysql.authenticate()
   .then(() => {
     log('mysql connect success!');

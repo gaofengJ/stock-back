@@ -1,5 +1,4 @@
 import CurdTradeCalDao from '@/dao/curd/trade-cal';
-import { v4 as uuidv4 } from 'uuid';
 
 import { getTradeCal } from '@/api/tushare/index';
 import { mixinFieldAndItem } from '@/utils';
@@ -18,10 +17,7 @@ export default class CurdTradeCalService {
       preTradeDate: string
     },
   ): Promise<string> {
-    const res: string = await CurdTradeCalDao.create({
-      id: uuidv4(),
-      ...params,
-    });
+    const res: string = await CurdTradeCalDao.create(params);
     return res;
   }
 
@@ -36,13 +32,7 @@ export default class CurdTradeCalService {
     let { fields } = data;
     const { items } = data;
     fields = ['exchange', 'calDate', 'isOpen', 'preTradeDate']; // tushare接口返回字段对不上，所以写死了
-    let params = mixinFieldAndItem(fields, items);
-    params = params.map((i: Record<string, any>) => ({ // 依次添加id
-      id: uuidv4(),
-      calDate: i.calDate,
-      isOpen: i.isOpen,
-      preTradeDate: i.preTradeDate,
-    }));
+    const params = mixinFieldAndItem(fields, items);
     const res: number = await CurdTradeCalDao.bulkCreate(params);
 
     log(`导入交易日历：成功导入${year}年${res}条数据`);

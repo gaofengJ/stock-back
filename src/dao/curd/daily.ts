@@ -1,31 +1,17 @@
 import TDaily from '@/models/t.daily';
-import TDailyLimit from '@/models/t.daily-limit';
 import TStockBasic from '@/models/t.stock-basic';
 import { Op } from 'sequelize';
 
 export default class CurdDailyDao {
   /**
    * 每日交易数据批量导入
-   * @param <{ id: string, tsCode: string, tradeDate: string, open: number,
+   * @param <{ tsCode: string, tradeDate: string, open: number,
    * high: number, low: number, close: number, preClose: number, change: number,
    * pctChg: number, vol: number, amount: number, }>[]
    * @returns 导入数量
    */
   static async bulkCreate(
-    params: {
-      id: string,
-      tsCode: string,
-      tradeDate: string,
-      open: number,
-      high: number,
-      low: number,
-      close: number,
-      preClose: number,
-      change: number,
-      pctChg: number,
-      vol: number,
-      amount: number,
-    }[],
+    params: Record<string, any>[],
   ): Promise<number> {
     const res = await TDaily.bulkCreate(params);
     return (res || []).length;
@@ -52,7 +38,7 @@ export default class CurdDailyDao {
    */
   static async getDaily(date: string): Promise<Record<string, any>[]> {
     const res = await TDaily.findAll({
-      attributes: ['tsCode', 'tradeDate', 'open', 'high', 'low', 'close', 'preClose', 'change', 'pctChg'],
+      attributes: ['tsCode', 'tradeDate', 'upLimit', 'downLimit', 'open', 'high', 'low', 'close', 'preClose', 'change', 'pctChg'],
       raw: true,
       where: {
         tradeDate: {
@@ -63,15 +49,6 @@ export default class CurdDailyDao {
         {
           model: TStockBasic,
           attributes: ['name'],
-        },
-        {
-          model: TDailyLimit,
-          attributes: ['upLimit', 'downLimit'],
-          where: {
-            tradeDate: {
-              [Op.eq]: date,
-            },
-          },
         },
       ],
     });
@@ -85,9 +62,9 @@ export default class CurdDailyDao {
       preClose: i.preClose,
       change: i.change,
       pctChg: i.pctChg,
+      upLimit: i.upLimit,
+      downLimit: i.downLimit,
       name: i['t_stock_basic.name'],
-      upLimit: i['t_daily_limit.upLimit'],
-      downLimit: i['t_daily_limit.downLimit'],
     }));
   }
 }
