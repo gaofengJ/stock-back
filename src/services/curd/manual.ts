@@ -128,7 +128,7 @@ export default class CurdManualService {
       return tempDailyData.pctChg > 0;
     }).length;
     res.e = curDailyData.filter((i) => i.high === i.upLimit
-    && i.high !== i.close && !i.name.includes('ST')).length;
+    && i.high !== i.close && i.name && !i.name.includes('ST')).length;
     res.sentimentA = res.a;
     res.sentimentB = Math.floor(res.c / res.b / 0.01);
     res.sentimentC = Math.floor(res.d / res.b / 0.01);
