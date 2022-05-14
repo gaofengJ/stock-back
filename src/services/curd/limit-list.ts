@@ -1,4 +1,4 @@
-import CurdLimitListDao from '@/dao/curd/limit-list';
+import CurdLimitListDao from '@/dao/limit-list';
 import { getLimitList } from '@/api/tushare/index';
 import { mixinFieldAndItem } from '@/utils';
 import { stringLineToHump } from 'mufeng-tools';

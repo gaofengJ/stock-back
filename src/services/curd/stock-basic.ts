@@ -1,4 +1,4 @@
-import CurdStockBasicDao from '@/dao/curd/stock-basic';
+import CurdStockBasicDao from '@/dao/stock-basic';
 import { getStockBasic } from '@/api/tushare/index';
 import { mixinFieldAndItem } from '@/utils';
 import { stringLineToHump } from 'mufeng-tools';

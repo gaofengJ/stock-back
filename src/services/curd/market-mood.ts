@@ -1,5 +1,5 @@
 import { log } from 'console';
-import CurdMarketMoodDao from '@/dao/curd/market-mood';
+import CurdMarketMoodDao from '@/dao/market-mood';
 
 export default class CurdMarketMoodService {
   /**

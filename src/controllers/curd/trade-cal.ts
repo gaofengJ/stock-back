@@ -44,6 +44,27 @@ export default class CurdTradeCalController {
   }
 
   /**
+   * 获取时间段内的所有交易日
+   * @param startDate 开始日期
+   * @param endDate 结束日期
+   * @returns string[]
+   */
+  @Get('/list')
+  async getList(
+    @QueryParam('startDate') startDate: string,
+    @QueryParam('endDate') endDate: string,
+  ): Promise<Record<string, any>> {
+    // eslint-disable-next-line no-param-reassign
+    startDate = dateFormat(new Date(startDate), 'yyyyMMdd');
+    // eslint-disable-next-line no-param-reassign
+    endDate = dateFormat(new Date(endDate), 'yyyyMMdd');
+    const res: string[] = await CurdTradeCalService.getList(startDate, endDate);
+    return {
+      list: res,
+    };
+  }
+
+  /**
    * 清空交易日历
    * @returns 提示信息
    */

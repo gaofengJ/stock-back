@@ -42,6 +42,29 @@ export default class CurdTradeCalDao {
   }
 
   /**
+   * 获取时间段内的所有交易日
+   * @param startDate 开始日期
+   * @param endDate 结束日期
+   * @returns string[]
+   */
+  static async getList(startDate: string, endDate: string): Promise<string[]> {
+    const list: Record<string, string>[] = await TTradeCal.findAll({
+      attributes: ['calDate'],
+      raw: true,
+      where: {
+        calDate: {
+          [Op.gte]: startDate,
+          [Op.lte]: endDate,
+        },
+        isOpen: {
+          [Op.eq]: 1,
+        },
+      },
+    });
+    return list.map((item: Record<string, string>) => (item.calDate));
+  }
+
+  /**
    * 查询日期是否为交易日
    * @param date 日期
    * @returns isOpen 0：否 1：是

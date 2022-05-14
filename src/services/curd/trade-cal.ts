@@ -1,4 +1,4 @@
-import CurdTradeCalDao from '@/dao/curd/trade-cal';
+import CurdTradeCalDao from '@/dao/trade-cal';
 
 import { getTradeCal } from '@/api/tushare/index';
 import { mixinFieldAndItem } from '@/utils';
@@ -48,6 +48,17 @@ export default class CurdTradeCalService {
     const str = !res ? '清空交易日历：成功' : '清空交易日历：失败';
     log(str);
     return str;
+  }
+
+  /**
+   * 获取时间段内的所有交易日
+   * @param startDate 开始日期
+   * @param endDate 结束日期
+   * @returns string[]
+   */
+  static async getList(startDate: string, endDate: string): Promise<string[]> {
+    const res: string[] = await CurdTradeCalDao.getList(startDate, endDate);
+    return res;
   }
 
   /**

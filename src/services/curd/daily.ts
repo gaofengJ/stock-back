@@ -1,4 +1,4 @@
-import CurdDailyDao from '@/dao/curd/daily';
+import CurdDailyDao from '@/dao/daily';
 import { getDaily, getDailyLimit } from '@/api/tushare/index';
 import { mixinFieldAndItem } from '@/utils';
 import { stringLineToHump } from 'mufeng-tools';

@@ -1,6 +1,6 @@
 import TDaily from '@/models/t.daily';
 import TStockBasic from '@/models/t.stock-basic';
-import { Op } from 'sequelize';
+import { Op, Sequelize } from 'sequelize';
 
 export default class CurdDailyDao {
   /**
@@ -66,5 +66,59 @@ export default class CurdDailyDao {
       downLimit: i.downLimit,
       name: i['t_stock_basic.name'],
     }));
+  }
+
+  /**
+   * @description 查询涨跌统计
+   * @param date 日期
+   * @returns 查询结果
+   */
+  static async getStatistics(date: string): Promise<Record<string, any>[]> {
+    const res: Record<string, any>[] = await TDaily.findAll({
+      attributes: ['pctChg'],
+      // 当raw的值为true时，这些方法对表进行查询操作后返回的值为从数据库中查询到的原始数据；
+      // 当raw的值为false时（默认)，这些方法对表进行查询操作后返回的值为sequelize进行装饰过的数据
+      raw: true,
+      where: {
+        tradeDate: {
+          [Op.eq]: date,
+        },
+      },
+    });
+    return res;
+  }
+
+  /**
+   * 查询日期范围上涨、下跌、平盘数据
+   */
+  static async getNum(
+    startDate: string,
+    endDate: string,
+    field: string,
+  ): Promise<Record<string, any>[]> {
+    const fieldMap: Record<string, any> = {
+      up: { [Op.gt]: 0 },
+      down: { [Op.lt]: 0 },
+      zero: { [Op.eq]: 0 },
+    };
+    const res: Record<string, any>[] = await TDaily.findAll({
+      attributes: [
+        'tradeDate',
+        [Sequelize.fn('COUNT', Sequelize.col('pct_chg')), field],
+      ],
+      raw: true,
+      group: 'tradeDate',
+      where: {
+        tradeDate: {
+          [Op.gte]: startDate,
+          [Op.lte]: endDate,
+        },
+        pctChg: fieldMap[field],
+      },
+      order: [
+        ['tradeDate', 'ASC'],
+      ],
+    });
+    return res;
   }
 }

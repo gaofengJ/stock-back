@@ -1,4 +1,4 @@
-import AnalysisSentimentDao from '@/dao/analysis/sentiment';
+import CurdMarketMoodDao from '@/dao/market-mood';
 
 export default class AnalysisSentimentService {
   /**
@@ -13,7 +13,7 @@ export default class AnalysisSentimentService {
     endDate: string,
     fields: string[],
   ): Promise<Record<string, any>[]> {
-    const res: Record<string, any>[] = await AnalysisSentimentDao.getSentiment(
+    const res: Record<string, any>[] = await CurdMarketMoodDao.getSentiment(
       startDate,
       endDate,
       fields,
