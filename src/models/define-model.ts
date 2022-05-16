@@ -2,7 +2,11 @@
 import { DataTypes } from 'sequelize';
 import mysql from '@/db/mysql';
 
-export default function defineModel(name: string, attributes: Record<string, any>) {
+export default function defineModel(
+  name: string,
+  attributes: Record<string, any>,
+  options: Record<string, any> = {},
+) {
   let attrs: Record<string, any> = {};
   Object.keys(attributes).forEach((key: string) => {
     const value = attributes[key];
@@ -69,5 +73,6 @@ export default function defineModel(name: string, attributes: Record<string, any
         });
       },
     },
+    ...options,
   });
 }

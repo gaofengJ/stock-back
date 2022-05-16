@@ -88,6 +88,23 @@ export const getStockBasic = (exchange: string): Promise<Base.TypeRes> => reques
     params: {
       exchange, // 交易所 SSE 上交所, SZSE 深交所
     },
+    fields: [
+      'ts_code',
+      'symbol',
+      'name',
+      'area',
+      'industry',
+      'fullname',
+      'enname',
+      'cnspell',
+      'market',
+      'exchange',
+      'curr_type',
+      'list_status',
+      'list_date',
+      'delist_date',
+      'is_hs',
+    ],
   },
 });
 
