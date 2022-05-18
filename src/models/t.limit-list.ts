@@ -3,19 +3,19 @@ import defineModel from './define-model';
 
 // 每日涨停、跌停个股统计
 const TLimitList = defineModel('t_limit_list', {
-  // 交易日期
-  tradeDate: {
-    field: 'trade_date',
-    type: DataTypes.STRING(16),
-    allowNull: false,
-    comment: '交易日期',
-  },
   // 股票代码
   tsCode: {
     field: 'ts_code',
     type: DataTypes.STRING(16),
     allowNull: false,
     comment: '股票代码',
+  },
+  // 交易日期
+  tradeDate: {
+    field: 'trade_date',
+    type: DataTypes.STRING(16),
+    allowNull: false,
+    comment: '交易日期',
   },
   // 股票名称
   name: {

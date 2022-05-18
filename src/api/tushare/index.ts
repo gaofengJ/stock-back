@@ -36,48 +36,6 @@ const request = async (config: AxiosRequestConfig) => {
 };
 
 /**
- * @description 涨停价、跌停价
- * @param date 日期
- * @returns AxiosPromise
- */
-export const getDailyLimit = (date: string): Promise<Base.TypeRes> => request({
-  data: {
-    api_name: 'stk_limit',
-    params: {
-      trade_date: date,
-    },
-  },
-});
-
-/**
- * @description 每日统计
- * @param date 日期
- * @returns AxiosPromise
- */
-export const getDaily = (date: string): Promise<Base.TypeRes> => request({
-  data: {
-    api_name: 'daily',
-    params: {
-      trade_date: date,
-    },
-  },
-});
-
-/**
- * @description 涨跌停统计
- * @param date 日期
- * @returns AxiosPromise
- */
-export const getLimitList = (date: string): Promise<Base.TypeRes> => request({
-  data: {
-    api_name: 'limit_list',
-    params: {
-      trade_date: date,
-    },
-  },
-});
-
-/**
  * @description 股票基本信息
  * @param exchange 交易所
  * @returns AxiosPromise
@@ -121,6 +79,62 @@ export const getTradeCal = (year: string): Promise<Base.TypeRes> => request({
       start_date: `${year}0101`,
       end_date: `${year}1231`,
       // is_open: 1 // 是否交易 '0'休市 '1'交易
+    },
+  },
+});
+
+/**
+ * @description 每日统计
+ * @param date 日期
+ * @returns AxiosPromise
+ */
+export const getDaily = (date: string): Promise<Base.TypeRes> => request({
+  data: {
+    api_name: 'daily',
+    params: {
+      trade_date: date,
+    },
+  },
+});
+
+/**
+ * @description 涨停价、跌停价
+ * @param date 日期
+ * @returns AxiosPromise
+ */
+export const getDailyLimit = (date: string): Promise<Base.TypeRes> => request({
+  data: {
+    api_name: 'stk_limit',
+    params: {
+      trade_date: date,
+    },
+  },
+});
+
+/**
+ * 每日指标
+ * @param date 日期
+ * @returns AxiosPromise
+ */
+export const getDailyBasic = (date: string): Promise<Base.TypeRes> => request({
+  data: {
+    api_name: 'daily_basic',
+    params: {
+      trade_date: date,
+    },
+  },
+});
+
+/**
+ * @description 涨跌停统计
+ * @param date 日期
+ * @returns AxiosPromise
+ */
+export const getLimitList = (date: string): Promise<Base.TypeRes> => request({
+  data: {
+    api_name: 'limit_list',
+    params: {
+      trade_date: date,
     },
   },
 });

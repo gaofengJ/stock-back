@@ -23,6 +23,21 @@ export default class CurdManualController {
   }
 
   /**
+   * 手动批量导入每日数据
+   * @param startDate 开始日期
+   * @param endDate 结束日期
+   * @returns string 成功提示
+   */
+  // @Post('/bulk-import')
+  // async manualBulkImport(
+  //   @BodyParam('startDate', { required: true }) startDate: string,
+  //   @BodyParam('endDate', { required: true }) endDate: string,
+  // ): Promise<string> {
+  //   const res: string = await CurdManualService.manualBulkImport(startDate, endDate);
+  //   return res;
+  // }
+
+  /**
    * 手动删除每日数据
    * @param date 交易日期
    * @returns string 成功提示

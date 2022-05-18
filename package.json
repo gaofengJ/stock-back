@@ -17,7 +17,7 @@
     "koa-bodyparser": "^4.3.0",
     "koa-multer": "^1.0.2",
     "koa-router": "^10.1.1",
-    "mufeng-tools": "^1.0.4",
+    "mufeng-tools": "^1.0.5",
     "mysql2": "^2.3.3",
     "puppeteer": "^13.5.0",
     "reflect-metadata": "^0.1.13",

@@ -1,4 +1,4 @@
-import { dateFormat, dateGetBeforeDay } from 'mufeng-tools';
+import { dateFormat, dateGetBeforeDay, dateGetAfterDay } from 'mufeng-tools';
 import { log } from 'console';
 import CurdTradeCalService from './trade-cal';
 import CurdStockBasicService from './stock-basic';
@@ -24,6 +24,26 @@ export default class CurdManualService {
     await this.getDailyMarketMood(date); // 每日短线情绪指标
     log(`${date}所有交易数据导入成功`);
     return `${date}所有交易数据导入成功`;
+  }
+
+  /**
+   * 手动批量导入每日数据
+   * @param startDate 开始日期
+   * @param endDate 结束日期
+   * @returns string 成功提示
+   */
+  static async manualBulkImport(startDate: string, endDate: string): Promise<string> {
+    let curDate: string = startDate;
+    while (curDate <= endDate) {
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        await CurdManualService.manualImport(dateFormat(curDate, 'yyyyMMdd'));
+        curDate = dateGetAfterDay(curDate, 'yyyy-MM-dd') as string;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    return `${startDate}-${endDate}所有交易数据导入成功`;
   }
 
   /**
