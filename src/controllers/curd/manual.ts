@@ -22,12 +22,12 @@ export default class CurdManualController {
     return res;
   }
 
-  // /**
-  //  * 手动批量导入每日数据
-  //  * @param startDate 开始日期
-  //  * @param endDate 结束日期
-  //  * @returns string 成功提示
-  //  */
+  /**
+   * 手动批量导入每日数据
+   * @param startDate 开始日期
+   * @param endDate 结束日期
+   * @returns string 成功提示
+   */
   // @Post('/bulk-import')
   // async manualBulkImport(
   //   @BodyParam('startDate', { required: true }) startDate: string,
