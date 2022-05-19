@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
 import { log } from 'console';
-import { MYSQL_CONF } from '../../db.config';
+import { MYSQL_CONF } from '@/config/db';
 
 const mysql = new Sequelize(
   MYSQL_CONF.database,

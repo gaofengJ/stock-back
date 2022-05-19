@@ -1,5 +1,5 @@
 import Axios, { AxiosRequestConfig } from 'axios';
-import { TUSHARE_CONF } from '../../../db.config';
+import { TUSHARE_CONF } from '@/config/db';
 
 /**
  * @description tushare接口调用
