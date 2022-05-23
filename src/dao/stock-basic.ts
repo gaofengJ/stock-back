@@ -1,5 +1,5 @@
 import TStockBasic from '@/models/t.stock-basic';
-// import { Op } from 'sequelize';
+import { Op } from 'sequelize';
 
 export default class CurdStockBasicDao {
   /**
@@ -38,5 +38,29 @@ export default class CurdStockBasicDao {
       truncate: true,
     });
     return res;
+  }
+
+  /**
+   * 查询股票基本信息
+   * @returns { total, list }
+   */
+  static async getStocks(pageNum: number, pageSize: number): Promise<{
+    total: number,
+    list: Record<string, any>[]
+  }> {
+    const { count: total, rows: list } = await TStockBasic.findAndCountAll({
+      where: {
+        name: {
+          [Op.like]: '%银行%',
+        },
+      },
+      raw: true,
+      offset: pageNum - 1,
+      limit: pageSize,
+    });
+    return {
+      total,
+      list,
+    };
   }
 }
