@@ -2,7 +2,7 @@ import CurdStockBasicDao from '@/dao/stock-basic';
 import CurdTradeCalDao from '@/dao/trade-cal';
 import { dateFormat } from 'mufeng-tools';
 
-export default class CurdStockBasicService {
+export default class BasicStockInfoService {
   static async getStocks(params: Record<string, string | number>): Promise<{
     total: number,
     list: Record<string, any>[]

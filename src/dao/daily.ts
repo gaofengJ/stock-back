@@ -69,6 +69,82 @@ export default class CurdDailyDao {
   }
 
   /**
+   * 获取每日交易数据（带分页）
+   * @param date
+   * @returns
+   */
+  static async getDailyByLimit(params: Record<string, string | number>): Promise<{
+    total: number,
+    list: Record<string, any>[]
+  }> {
+    let where: Record<string, any> = {};
+    if (params.date) {
+      where = {
+        ...where,
+        tradeDate: {
+          [Op.eq]: params.date,
+        },
+      };
+    }
+    if (params.stock) {
+      where = {
+        ...where,
+        symbol: {
+          [Op.like]: `%${params.stock}%`,
+        },
+      };
+    }
+    const { count: total, rows: list } = await TDaily.findAndCountAll({
+      where,
+      attributes: ['id', 'tsCode', 'tradeDate', 'upLimit', 'downLimit', 'open', 'high', 'low', 'close', 'preClose', 'change', 'pctChg', 'vol', 'amount', 'turnoverRate', 'turnoverRateF', 'volumeRatio', 'pe', 'peTtm', 'pb', 'ps', 'psTtm', 'dvRatio', 'dvTtm', 'totalShare', 'floatShare', 'freeShare', 'totalMv', 'circMv'],
+      raw: true,
+      offset: (params.pageNum as number) - 1,
+      limit: params.pageSize as number,
+      include: [
+        {
+          model: TStockBasic,
+          attributes: ['name'],
+        },
+      ],
+    });
+    return {
+      total,
+      list: list.map((i: Record<string, string | number>) => ({
+        id: i.id,
+        tsCode: i.tsCode,
+        tradeDate: i.tradeDate,
+        upLimit: i.upLimit,
+        downLimit: i.downLimit,
+        open: i.open,
+        high: i.high,
+        low: i.low,
+        close: i.close,
+        preClose: i.preClose,
+        change: i.change,
+        pctChg: i.pctChg,
+        vol: i.vol,
+        amount: i.amount,
+        turnoverRate: i.turnoverRate,
+        turnoverRateF: i.turnoverRateF,
+        volumeRatio: i.volumeRatio,
+        pe: i.pe,
+        peTtm: i.peTtm,
+        pb: i.pb,
+        ps: i.ps,
+        psTtm: i.psTtm,
+        dvRatio: i.dvRatio,
+        dvTtm: i.dvTtm,
+        totalShare: i.totalShare,
+        floatShare: i.floatShare,
+        freeShare: i.freeShare,
+        totalMv: i.totalMv,
+        circMv: i.circMv,
+        name: i['t_stock_basic.name'],
+      })),
+    };
+  }
+
+  /**
    * @description 查询涨跌统计
    * @param date 日期
    * @returns 查询结果
