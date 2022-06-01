@@ -1,4 +1,5 @@
 import TStockBasic from '@/models/t.stock-basic';
+import TDaily from '@/models/t.daily';
 import { Op } from 'sequelize';
 
 export default class CurdStockBasicDao {
@@ -44,7 +45,7 @@ export default class CurdStockBasicDao {
    * 查询股票基本信息
    * @returns { total, list }
    */
-  static async getStocks(params: Record<string, string | number>): Promise<{
+  static async getStocks(params: Record<string, string | number>, tradeDate: string): Promise<{
     total: number,
     list: Record<string, any>[]
   }> {
@@ -101,13 +102,60 @@ export default class CurdStockBasicDao {
     // if (params.isHs)
     const { count: total, rows: list } = await TStockBasic.findAndCountAll({
       where,
+      attributes: ['id', 'symbol', 'name', 'fullname', 'industry', 'area', 'market', 'listStatus', 'listDate', 'isHs'],
       raw: true,
       offset: (params.pageNum as number) - 1,
       limit: params.pageSize as number,
+      include: [
+        {
+          model: TDaily,
+          attributes: ['open', 'high', 'low', 'close', 'preClose', 'change', 'pctChg', 'vol', 'amount', 'turnoverRate', 'turnoverRateF', 'volumeRatio', 'pe', 'peTtm', 'pb', 'ps', 'psTtm', 'dvRatio', 'dvTtm', 'totalShare', 'floatShare', 'freeShare', 'totalMv', 'circMv'],
+          where: {
+            tradeDate: {
+              [Op.eq]: tradeDate,
+            },
+          },
+        },
+      ],
     });
     return {
       total,
-      list,
+      list: list.map((i: Record<string, string | number>) => ({
+        id: i.id,
+        symbol: i.symbol,
+        name: i.name,
+        fullname: i.fullname,
+        industry: i.industry,
+        area: i.area,
+        market: i.market,
+        listStatus: i.listStatus,
+        listDate: i.listDate,
+        isHs: i.isHs,
+        open: i['t_dailies.open'],
+        high: i['t_dailies.high'],
+        low: i['t_dailies.low'],
+        close: i['t_dailies.close'],
+        preClose: i['t_dailies.preClose'],
+        change: i['t_dailies.change'],
+        pctChg: i['t_dailies.pctChg'],
+        vol: i['t_dailies.vol'],
+        amount: i['t_dailies.amount'],
+        turnoverRate: i['t_dailies.turnoverRate'],
+        turnoverRateF: i['t_dailies.turnoverRateF'],
+        volumeRatio: i['t_dailies.volumeRatio'],
+        pe: i['t_dailies.pe'],
+        peTtm: i['t_dailies.peTtm'],
+        pb: i['t_dailies.pb'],
+        ps: i['t_dailies.ps'],
+        psTtm: i['t_dailies.psTtm'],
+        dvRatio: i['t_dailies.dvRatio'],
+        dvTtm: i['t_dailies.dvTtm'],
+        totalShare: i['t_dailies.totalShare'],
+        floatShare: i['t_dailies.floatShare'],
+        freeShare: i['t_dailies.freeShare'],
+        totalMv: i['t_dailies.totalMv'],
+        circMv: i['t_dailies.circMv'],
+      })),
     };
   }
 }
