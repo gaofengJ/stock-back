@@ -1,4 +1,4 @@
-import CurdStockBasicDao from '@/dao/stock-basic';
+import CurdDailyDao from '@/dao/daily';
 import CurdTradeCalDao from '@/dao/trade-cal';
 import { dateFormat } from 'mufeng-tools';
 
@@ -10,11 +10,14 @@ export default class BasicStockInfoService {
     const todayStr: string = dateFormat(new Date(), 'yyyyMMdd');
     const isOpen: number = await CurdTradeCalDao.getIsOpen(todayStr);
     const prevTradeDate: string = await CurdTradeCalDao.getPrevDate(todayStr);
-    const tradeDate: string = (!isOpen || new Date().getHours() < 18) ? prevTradeDate : todayStr;
+    const tradeDate: string = (!isOpen || new Date().getHours() < 19) ? prevTradeDate : todayStr;
     const res: {
       total: number,
       list: Record<string, any>[]
-    } = await CurdStockBasicDao.getStocks(params, tradeDate);
+    } = await CurdDailyDao.getStocksByLimit({
+      ...params,
+      date: tradeDate,
+    });
     return res;
   }
 }

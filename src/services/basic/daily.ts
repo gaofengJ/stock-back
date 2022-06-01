@@ -11,7 +11,7 @@ export default class BasicDailyService {
   }> {
     const isOpen: number = await CurdTradeCalDao.getIsOpen(params.date as string);
     const prevTradeDate: string = await CurdTradeCalDao.getPrevDate(params.date as string);
-    const tradeDate: string = (!isOpen || new Date(params.date).getHours() < 18)
+    const tradeDate: string = (!isOpen || new Date(params.date).getHours() < 19)
       ? prevTradeDate : params.date as string;
     const res: {
       total: number,

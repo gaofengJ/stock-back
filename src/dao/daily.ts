@@ -69,9 +69,9 @@ export default class CurdDailyDao {
   }
 
   /**
-   * 获取每日交易数据（带分页）
-   * @param date
-   * @returns
+   * 获取每日交易数据（分页）
+   * @param params
+   * @returns { total, list }
    */
   static async getDailyByLimit(params: Record<string, string | number>): Promise<{
     total: number,
@@ -140,6 +140,125 @@ export default class CurdDailyDao {
         totalMv: i.totalMv,
         circMv: i.circMv,
         name: i['t_stock_basic.name'],
+      })),
+    };
+  }
+
+  /**
+   * 获取股票信息（分页）
+   * @param params
+   * @returns  { total, list }
+   */
+  static async getStocksByLimit(params: Record<string, string | number>): Promise<{
+    total: number,
+    list: Record<string, any>[]
+  }> {
+    let where: Record<string, any> = {};
+    if (params.stock) {
+      where = {
+        ...where,
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: `%${params.stock}%`,
+            },
+          },
+          {
+            symbol: {
+              [Op.like]: `%${params.stock}%`,
+            },
+          },
+          {
+            fullname: {
+              [Op.like]: `%${params.stock}%`,
+            },
+          },
+        ],
+      };
+    }
+    if (params.industry) {
+      where = {
+        ...where,
+        industry: {
+          [Op.like]: `%${params.industry}%`,
+        },
+      };
+    }
+    if (params.area) {
+      where = {
+        ...where,
+        area: {
+          [Op.like]: `%${params.area}%`,
+        },
+      };
+    }
+    if (params.market) {
+      where = {
+        ...where,
+        market: {
+          [Op.eq]: params.market,
+        },
+      };
+    }
+    // if (params.isSubNew) {
+
+    // }
+    // if (params.isHs)
+    const { count: total, rows: list } = await TDaily.findAndCountAll({
+      where: {
+        tradeDate: {
+          [Op.eq]: params.date,
+        },
+      },
+      attributes: ['open', 'high', 'low', 'close', 'preClose', 'change', 'pctChg', 'vol', 'amount', 'turnoverRate', 'turnoverRateF', 'volumeRatio', 'pe', 'peTtm', 'pb', 'ps', 'psTtm', 'dvRatio', 'dvTtm', 'totalShare', 'floatShare', 'freeShare', 'totalMv', 'circMv'],
+      raw: true,
+      offset: (params.pageNum as number) - 1,
+      limit: params.pageSize as number,
+      include: [
+        {
+          model: TStockBasic,
+          attributes: ['id', 'symbol', 'name', 'fullname', 'industry', 'area', 'market', 'listStatus', 'listDate', 'isHs'],
+          where,
+        },
+      ],
+    });
+    return {
+      total,
+      list: list.map((i: Record<string, string | number>) => ({
+        id: i['t_stock_basic.id'],
+        symbol: i['t_stock_basic.symbol'],
+        name: i['t_stock_basic.name'],
+        fullname: i['t_stock_basic.fullname'],
+        industry: i['t_stock_basic.industry'],
+        area: i['t_stock_basic.area'],
+        market: i['t_stock_basic.market'],
+        listStatus: i['t_stock_basic.listStatus'],
+        listDate: i['t_stock_basic.listDate'],
+        isHs: i['t_stock_basic.isHs'],
+        open: i.open,
+        high: i.high,
+        low: i.low,
+        close: i.close,
+        preClose: i.preClose,
+        change: i.change,
+        pctChg: i.pctChg,
+        vol: i.vol,
+        amount: i.amount,
+        turnoverRate: i.turnoverRate,
+        turnoverRateF: i.turnoverRateF,
+        volumeRatio: i.volumeRatio,
+        pe: i.pe,
+        peTtm: i.peTtm,
+        pb: i.pb,
+        ps: i.ps,
+        psTtm: i.psTtm,
+        dvRatio: i.dvRatio,
+        dvTtm: i.dvTtm,
+        totalShare: i.totalShare,
+        floatShare: i.floatShare,
+        freeShare: i.freeShare,
+        totalMv: i.totalMv,
+        circMv: i.circMv,
       })),
     };
   }
