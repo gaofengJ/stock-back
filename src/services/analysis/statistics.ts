@@ -1,4 +1,5 @@
 import CurdDailyDao from '@/dao/daily';
+import CurdTradeCalDao from '@/dao/trade-cal';
 
 export default class AnalysisStatisticsService {
   /**
@@ -7,7 +8,11 @@ export default class AnalysisStatisticsService {
    * @returns Record<string, string | number>[]
    */
   static async getStatistics(date: string): Promise<Record<string, any>[]> {
-    const res: Record<string, any>[] = await CurdDailyDao.getStatistics(date);
+    const isOpen: number = await CurdTradeCalDao.getIsOpen(date as string);
+    const prevTradeDate: string = await CurdTradeCalDao.getPrevDate(date as string);
+    const tradeDate: string = (!isOpen || new Date(date).getHours() < 19)
+      ? prevTradeDate : date as string;
+    const res: Record<string, any>[] = await CurdDailyDao.getStatistics(tradeDate);
     const ret: Record<string, string | number>[] = [
       { key: '<-9', value: 0 },
       { key: '-9~-8', value: 0 },

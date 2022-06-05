@@ -302,7 +302,6 @@ export default class CurdDailyDao {
         [Sequelize.fn('COUNT', Sequelize.col('pct_chg')), field],
       ],
       raw: true,
-      group: 'tradeDate',
       where: {
         tradeDate: {
           [Op.gte]: startDate,
@@ -310,6 +309,7 @@ export default class CurdDailyDao {
         },
         pctChg: fieldMap[field],
       },
+      group: 'tradeDate',
       order: [
         ['tradeDate', 'ASC'],
       ],

@@ -1,5 +1,5 @@
 import TLimitList from '@/models/t.limit-list';
-import { Op } from 'sequelize';
+import { Op, Sequelize } from 'sequelize';
 
 export default class CurdLimitListDao {
   /**
@@ -82,6 +82,53 @@ export default class CurdLimitListDao {
           ],
         },
       },
+    });
+    return res;
+  }
+
+  /**
+   * 查询当日涨跌停数量
+   * @param startDate 开始日期
+   * @param endDate 结束日期
+   * @param limitType 涨停（U）/跌停（D）
+   */
+  static async getLimits(
+    startDate: string,
+    endDate: string,
+    limitType: string,
+  ): Promise<Record<string, any>[]> {
+    const res: Record<string, any>[] = await TLimitList.findAll({
+      attributes: [
+        'tradeDate',
+        [Sequelize.fn('COUNT', Sequelize.col('limit')), 'count'],
+      ],
+      raw: true,
+      where: {
+        tradeDate: {
+          [Op.gte]: startDate,
+          [Op.lte]: endDate,
+        },
+        name: {
+          [Op.and]: [
+            {
+              [Op.notLike]: '%ST%',
+            },
+            {
+              [Op.notLike]: '%N%',
+            },
+            {
+              [Op.notLike]: '%C%',
+            },
+          ],
+        },
+        limit: {
+          [Op.eq]: limitType,
+        },
+      },
+      group: 'tradeDate',
+      order: [
+        ['tradeDate', 'ASC'],
+      ],
     });
     return res;
   }

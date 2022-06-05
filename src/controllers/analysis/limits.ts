@@ -5,18 +5,18 @@ import {
   // BadRequestError,
 } from 'routing-controllers';
 import { dateFormat } from 'mufeng-tools';
-import AnalysisNumService from '@/services/analysis/num';
+import AnalysisLimitService from '@/services/analysis/limits';
 
-@JsonController('/analysis/num')
-export default class AnalysisNumController {
+@JsonController('/analysis/limits')
+export default class AnalysisLimitController {
   /**
-   * @description 查询上涨、下跌、平盘数据
+   * @description 查询涨停家数、跌停家数
    * @param startDate 开始日期
    * @param endDate 结束日期
    * @returns { total, list }
    */
   @Get('/')
-  async getNum(
+  async getLimits(
     @QueryParam('startDate', { required: true }) startDate: string,
     @QueryParam('endDate', { required: true }) endDate: string,
       // @QueryParam('fields', { required: true, type: 'string' }) fields: string | string[],
@@ -25,16 +25,9 @@ export default class AnalysisNumController {
     startDate = dateFormat(new Date(startDate), 'yyyyMMdd');
     // eslint-disable-next-line no-param-reassign
     endDate = dateFormat(new Date(endDate), 'yyyyMMdd');
-    // eslint-disable-next-line no-param-reassign
-    // fields = getType(fields) === 'string' ? [fields as string] : fields;
-    // if ((fields as string[])?.some((i: any) => !['up', 'down', 'zero'].includes(i))) {
-    //   throw new BadRequestError('fields参数错误');
-    // }
-    // eslint-disable-next-line no-param-reassign
-    const list: Record<string, any>[] = await AnalysisNumService.getNum(
+    const list: Record<string, any>[] = await AnalysisLimitService.getLimits(
       startDate,
       endDate,
-      // fields as string[],
     );
     return {
       total: list.length,
