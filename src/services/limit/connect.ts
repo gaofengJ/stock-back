@@ -63,11 +63,11 @@ export default class LimitConnectService {
       const curObj = {
         tradeDate: dateList[i],
         count: tempCodeList.length,
-        promotion: (tempCodeList.length / tempPrevCodeList.length / 0.01).toFixed(2),
+        promotion: (tempCodeList.length / tempPrevCodeList.length / 0.01).toFixed(0),
         tsCodeList: tempCodeList,
       };
       ret.push(curObj);
     });
-    return ret;
+    return ret.reverse();
   }
 }
