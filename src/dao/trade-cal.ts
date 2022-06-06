@@ -97,4 +97,60 @@ export default class CurdTradeCalDao {
     });
     return tradeCal?.get('preTradeDate') as string;
   }
+
+  /**
+   * 查询区间内的所有交易日
+   * @param startDate 开始日期
+   * @param endDate 结束日期
+   */
+  static async getTradeDateByRange(
+    startDate: string,
+    endDate: string,
+  ): Promise<string[]> {
+    const dateList = await TTradeCal.findAll({
+      attributes: ['calDate'],
+      raw: true,
+      where: {
+        calDate: {
+          [Op.gte]: startDate,
+          [Op.lte]: endDate,
+        },
+        isOpen: {
+          [Op.eq]: 1,
+        },
+      },
+      order: [
+        ['calDate', 'DESC'],
+      ],
+    });
+    return dateList.map((i: Record<string, string>) => (i.calDate));
+  }
+
+  /**
+   * 查询所选日期前的num个交易日（不包含当日）
+   * @param date 日期
+   * @param num 数量
+   */
+  static async getTradeDateByNum(
+    date: string,
+    num?: number,
+  ): Promise<string[]> {
+    const dateList = await TTradeCal.findAll({
+      attributes: ['calDate'],
+      raw: true,
+      where: {
+        calDate: {
+          [Op.lt]: date,
+        },
+        isOpen: {
+          [Op.eq]: 1,
+        },
+      },
+      limit: num,
+      order: [
+        ['calDate', 'DESC'],
+      ],
+    });
+    return dateList.map((i: Record<string, string>) => (i.calDate));
+  }
 }

@@ -132,4 +132,47 @@ export default class CurdLimitListDao {
     });
     return res;
   }
+
+  /**
+   * 查询当日
+   */
+  static async getConnects(
+    startDate: string,
+    endDate: string,
+  ): Promise<Record<string, any>[]> {
+    const res: Record<string, any>[] = await TLimitList.findAll({
+      attributes: [
+        'tradeDate',
+        'tsCode',
+        'name',
+      ],
+      raw: true,
+      where: {
+        tradeDate: {
+          [Op.gte]: startDate,
+          [Op.lte]: endDate,
+        },
+        name: {
+          [Op.and]: [
+            {
+              [Op.notLike]: '%ST%',
+            },
+            {
+              [Op.notLike]: '%N%',
+            },
+            {
+              [Op.notLike]: '%C%',
+            },
+          ],
+        },
+        limit: {
+          [Op.eq]: 'U',
+        },
+      },
+      order: [
+        ['tradeDate', 'DESC'],
+      ],
+    });
+    return res;
+  }
 }

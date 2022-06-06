@@ -7,7 +7,7 @@ const rule = new schedule.RecurrenceRule();
 
 rule.dayOfWeek = [1, 2, 3, 4, 5]; // 每周一到周五执行
 rule.hour = 18;
-rule.minute = 50;
+rule.minute = 55;
 rule.second = 0;
 
 /**
