@@ -6,8 +6,8 @@ import CurdManualService from '@/services/curd/manual';
 const rule = new schedule.RecurrenceRule();
 
 rule.dayOfWeek = [1, 2, 3, 4, 5]; // 每周一到周五执行
-rule.hour = 18;
-rule.minute = 55;
+rule.hour = 19;
+rule.minute = 20;
 rule.second = 0;
 
 /**
