@@ -30,6 +30,6 @@ export default class LimitReviewService {
         (innerItem: Record<string, any>) => item.tsCode === innerItem.tsCode,
       )?.connectNum,
     }));
-    return res.sort((a: any, b: any) => a.connectNum - b.connectNum);
+    return res.sort((a: any, b: any) => b.connectNum - a.connectNum);
   }
 }
