@@ -52,9 +52,9 @@ export default class CurdLimitListDao {
    * @param date 日期
    * @returns Record<string, any>[]
    */
-  static async getLimitU(date: string): Promise<Record<string, any>[]> {
+  static async getLimitU(date: string, fields?: string[]): Promise<Record<string, any>[]> {
     const res: Record<string, any>[] = await TLimitList.findAll({
-      attributes: [
+      attributes: fields || [
         'tradeDate',
         'tsCode',
         'name',
@@ -87,7 +87,7 @@ export default class CurdLimitListDao {
   }
 
   /**
-   * 查询当日涨跌停数量
+   * 查询多日涨跌停数量（附带count）
    * @param startDate 开始日期
    * @param endDate 结束日期
    * @param limitType 涨停（U）/跌停（D）
@@ -134,7 +134,9 @@ export default class CurdLimitListDao {
   }
 
   /**
-   * 查询当日
+   * 查询多日涨跌停数量
+   * @param startDate 开始日期
+   * @param endDate 结束日期
    */
   static async getConnects(
     startDate: string,

@@ -43,6 +43,18 @@ export default class CurdStockBasicDao {
 
   /**
    * 查询股票基本信息
+   * @returns Record<string, any>[]
+   */
+  static async getStocksBasic(): Promise<Record<string, any>[]> {
+    const res: Record<string, any>[] = await TStockBasic.findAll({
+      attributes: ['id', 'tsCode', 'symbol', 'name', 'fullname', 'industry', 'area', 'market', 'listStatus', 'listDate', 'isHs'],
+      raw: true,
+    });
+    return res;
+  }
+
+  /**
+   * 查询股票基本信息（附带市盈率等信息）
    * @returns { total, list }
    */
   static async getStocks(params: Record<string, string | number>, tradeDate: string): Promise<{
