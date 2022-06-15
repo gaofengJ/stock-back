@@ -7,13 +7,13 @@ import {
 import { dateFormat } from 'mufeng-tools';
 import LimitEchelonService from '@/services/limit/echelon';
 
-@JsonController('/limit')
+@JsonController('/limit/echelon')
 export default class LimitEchelonController {
   /**
    * 查询连板梯队
    * @param date 日期
    */
-  @Get('/echelon')
+  @Get('/')
   async getEchelon(
     @QueryParam('date', { required: true }) date: string,
   ): Promise<Base.listRes> {

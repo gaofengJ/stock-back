@@ -7,13 +7,13 @@ import {
 import { dateFormat } from 'mufeng-tools';
 import LimitReviewService from '@/services/limit/review';
 
-@JsonController('/limit')
+@JsonController('/limit/review')
 export default class LimitReviewController {
   /**
    * 查询涨停板复盘数据
    * @param date 日期
    */
-  @Get('/review')
+  @Get('/')
   async getReview(
     @QueryParam('date', { required: true }) date: string,
   ): Promise<Base.listRes> {
