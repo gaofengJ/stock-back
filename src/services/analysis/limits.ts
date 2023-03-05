@@ -21,13 +21,13 @@ export default class AnalysisLimitService {
       endDate,
       'D',
     );
-    const res: Record<string, any>[] = resU.map(((itemU: Record<string, any>, i: number) => ({
+    const ret: Record<string, any>[] = resU.map(((itemU: Record<string, any>, i: number) => ({
       tradeDate: resU[i]?.tradeDate,
       up: resU[i]?.count,
       down: resD.find(
         (itemD: Record<string, any>) => (itemD.tradeDate === itemU.tradeDate),
       )?.count || 0,
     })));
-    return res;
+    return ret;
   }
 }

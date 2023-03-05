@@ -15,8 +15,8 @@ export default class CurdStockBasicController {
   @Post('/bulk-create')
   async bulkCreate(): Promise<number | null> {
     const exchanges: string[] = ['SSE', 'SZSE'];
-    const res: number | null = await CurdStockBasicService.bulkCreate(exchanges);
-    return res;
+    const ret: number | null = await CurdStockBasicService.bulkCreate(exchanges);
+    return ret;
   }
 
   /**
@@ -25,7 +25,7 @@ export default class CurdStockBasicController {
    */
   @Delete('/truncate-destroy')
   async truncateDestroy(): Promise<string> {
-    const res: string = await CurdStockBasicService.truncateDestroy();
-    return res;
+    const ret: string = await CurdStockBasicService.truncateDestroy();
+    return ret;
   }
 }

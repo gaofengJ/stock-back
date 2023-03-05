@@ -26,8 +26,8 @@ export default class CurdTradeCalDao {
   static async bulkCreate(
     params: { calDate: string, isOpen: number, preTradeDate: string }[],
   ): Promise<number> {
-    const res = await TTradeCal.bulkCreate(params);
-    return (res || []).length;
+    const ret = await TTradeCal.bulkCreate(params);
+    return (ret || []).length;
   }
 
   /**
@@ -35,10 +35,10 @@ export default class CurdTradeCalDao {
    * @returns number
    */
   static async truncateDestroy(): Promise<number> {
-    const res: number = await TTradeCal.destroy({
+    const ret: number = await TTradeCal.destroy({
       truncate: true,
     });
-    return res;
+    return ret;
   }
 
   /**

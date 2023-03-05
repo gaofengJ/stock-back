@@ -17,7 +17,6 @@ export default class AnalysisStatisticsController {
   async getStatistics(
     @QueryParam('date', { required: true }) date: string,
   ): Promise<Base.listRes> {
-    // eslint-disable-next-line no-param-reassign
     date = dateFormat(date, 'yyyyMMdd');
     const list: Record<string, any>[] = await AnalysisStatisticsService.getStatistics(date);
     return {

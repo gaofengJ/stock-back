@@ -26,8 +26,8 @@ export default class CurdStockBasicDao {
       listDate: string,
     }[],
   ): Promise<number> {
-    const res = await TStockBasic.bulkCreate(params);
-    return (res || []).length;
+    const ret = await TStockBasic.bulkCreate(params);
+    return (ret || []).length;
   }
 
   /**
@@ -35,10 +35,10 @@ export default class CurdStockBasicDao {
    * @returns number
    */
   static async truncateDestroy(): Promise<number> {
-    const res: number = await TStockBasic.destroy({
+    const ret: number = await TStockBasic.destroy({
       truncate: true,
     });
-    return res;
+    return ret;
   }
 
   /**
@@ -46,11 +46,11 @@ export default class CurdStockBasicDao {
    * @returns Record<string, any>[]
    */
   static async getStocksBasic(): Promise<Record<string, any>[]> {
-    const res: Record<string, any>[] = await TStockBasic.findAll({
+    const ret: Record<string, any>[] = await TStockBasic.findAll({
       attributes: ['id', 'tsCode', 'symbol', 'name', 'fullname', 'industry', 'area', 'market', 'listStatus', 'listDate', 'isHs'],
       raw: true,
     });
-    return res;
+    return ret;
   }
 
   /**

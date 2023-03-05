@@ -13,8 +13,8 @@ export default class CurdDailyDao {
   static async bulkCreate(
     params: Record<string, any>[],
   ): Promise<number> {
-    const res = await TDaily.bulkCreate(params);
-    return (res || []).length;
+    const ret = await TDaily.bulkCreate(params);
+    return (ret || []).length;
   }
 
   /**
@@ -22,14 +22,14 @@ export default class CurdDailyDao {
    * @returns number
    */
   static async destroy(date: string): Promise<number> {
-    const res: number = await TDaily.destroy({
+    const ret: number = await TDaily.destroy({
       where: {
         tradeDate: {
           [Op.eq]: date,
         },
       },
     });
-    return res;
+    return ret;
   }
 
   /**
@@ -37,7 +37,7 @@ export default class CurdDailyDao {
    * 查询每日交易数据
    */
   static async getDaily(date: string): Promise<Record<string, any>[]> {
-    const res = await TDaily.findAll({
+    const ret = await TDaily.findAll({
       attributes: ['tsCode', 'tradeDate', 'upLimit', 'downLimit', 'open', 'high', 'low', 'close', 'preClose', 'change', 'pctChg'],
       raw: true,
       where: {
@@ -52,7 +52,7 @@ export default class CurdDailyDao {
         },
       ],
     });
-    return res.map((i: Record<string, any>) => ({
+    return ret.map((i: Record<string, any>) => ({
       tsCode: i.tsCode,
       tradeDate: i.tradeDate,
       open: i.open,
@@ -269,7 +269,7 @@ export default class CurdDailyDao {
    * @returns 查询结果
    */
   static async getStatistics(date: string): Promise<Record<string, any>[]> {
-    const res: Record<string, any>[] = await TDaily.findAll({
+    const ret: Record<string, any>[] = await TDaily.findAll({
       attributes: ['pctChg'],
       // 当raw的值为true时，这些方法对表进行查询操作后返回的值为从数据库中查询到的原始数据；
       // 当raw的值为false时（默认)，这些方法对表进行查询操作后返回的值为sequelize进行装饰过的数据
@@ -280,7 +280,7 @@ export default class CurdDailyDao {
         },
       },
     });
-    return res;
+    return ret;
   }
 
   /**
@@ -296,7 +296,7 @@ export default class CurdDailyDao {
       down: { [Op.lt]: 0 },
       zero: { [Op.eq]: 0 },
     };
-    const res: Record<string, any>[] = await TDaily.findAll({
+    const ret: Record<string, any>[] = await TDaily.findAll({
       attributes: [
         'tradeDate',
         [Sequelize.fn('COUNT', Sequelize.col('pct_chg')), field],
@@ -314,6 +314,6 @@ export default class CurdDailyDao {
         ['tradeDate', 'ASC'],
       ],
     });
-    return res;
+    return ret;
   }
 }

@@ -21,8 +21,8 @@ export default class LimitReviewService {
 
     // 查询今日涨停数据
     const fields = ['tradeDate', 'tsCode', 'name', 'close', 'pctChg', 'amp', 'fcRatio', 'flRatio', 'fdAmount', 'firstTime', 'lastTime', 'openTimes', 'strth'];
-    let res: Record<string, any>[] = await CurdLimitListDao.getLimitU(date, fields);
-    res = res.map((item: Record<string, any>) => ({
+    let ret: Record<string, any>[] = await CurdLimitListDao.getLimitU(date, fields);
+    ret = ret.map((item: Record<string, any>) => ({
       ...item,
       industry: tempStockObj[item.tsCode]?.industry,
       market: tempStockObj[item.tsCode]?.market,
@@ -30,6 +30,6 @@ export default class LimitReviewService {
         (innerItem: Record<string, any>) => item.tsCode === innerItem.tsCode,
       )?.connectNum,
     }));
-    return res.sort((a: any, b: any) => b.connectNum - a.connectNum);
+    return ret.sort((a: any, b: any) => b.connectNum - a.connectNum);
   }
 }

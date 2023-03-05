@@ -17,9 +17,9 @@ export default class CurdLimitListService {
     const { items } = data;
     fields = fields.map((str: string) => (stringLineToHump(str)));
     const params = mixinFieldAndItem(fields, items);
-    const res: number = await CurdLimitListDao.bulkCreate(params);
-    log(`导入每日涨跌停个股：成功导入${date}共${res}条数据`);
-    return res;
+    const ret: number = await CurdLimitListDao.bulkCreate(params);
+    log(`导入每日涨跌停个股：成功导入${date}共${ret}条数据`);
+    return ret;
   }
 
   /**
@@ -27,8 +27,8 @@ export default class CurdLimitListService {
    * @returns number
    */
   static async destroy(date: string): Promise<string> {
-    const res: number = await CurdLimitListDao.destroy(date);
-    const str: string = `删除每日涨跌停个股：成功删除${date}共${res}条数据`;
+    const ret: number = await CurdLimitListDao.destroy(date);
+    const str: string = `删除每日涨跌停个股：成功删除${date}共${ret}条数据`;
     log(str);
     return str;
   }
@@ -39,7 +39,7 @@ export default class CurdLimitListService {
    * @returns Record<string, any>[]
    */
   static async getLimitU(date: string): Promise<Record<string, any>[]> {
-    const res: Record<string, any>[] = await CurdLimitListDao.getLimitU(date);
-    return res;
+    const ret: Record<string, any>[] = await CurdLimitListDao.getLimitU(date);
+    return ret;
   }
 }

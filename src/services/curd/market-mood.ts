@@ -27,9 +27,9 @@ export default class CurdMarketMoodService {
       log(`导入每日情绪指标：${params.tradeDate}数据导入失败`);
       return `导入每日情绪指标：${params.tradeDate}数据导入失败`;
     }
-    const res: string = await CurdMarketMoodDao.create(params);
+    const ret: string = await CurdMarketMoodDao.create(params);
     log(`导入每日情绪指标：成功导入${params.tradeDate}数据`);
-    return res;
+    return ret;
   }
 
   /**
@@ -37,8 +37,8 @@ export default class CurdMarketMoodService {
    * @returns number
    */
   static async destroy(date: string): Promise<string> {
-    const res: number = await CurdMarketMoodDao.destroy(date);
-    const str: string = `删除每日情绪指标：成功删除${date}共${res}条数据`;
+    const ret: number = await CurdMarketMoodDao.destroy(date);
+    const str: string = `删除每日情绪指标：成功删除${date}共${ret}条数据`;
     log(str);
     return str;
   }

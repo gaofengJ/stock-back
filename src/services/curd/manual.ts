@@ -119,7 +119,7 @@ export default class CurdManualService {
   static async getDailyMarketMood(date: string): Promise<void> {
     const prevTradeDate: string = await CurdTradeCalService.getPrevDate(date); // 查询上一个交易日
 
-    const res: Record<string, number> = { // 短线情绪指标，以2022年01月05日为例
+    const ret: Record<string, number> = { // 短线情绪指标，以2022年01月05日为例
       a: 0, // 2022年01月05日涨停，非一字涨停，非ST
       b: 0, // 2022年01月04日涨停，非一字涨停，非ST
       c: 0, // 2022年01月04日涨停，非一字涨停，非ST，2022年201月05日高开
@@ -133,37 +133,37 @@ export default class CurdManualService {
     const curLimitData = await CurdLimitListService.getLimitU(date); // 获取当日涨停数据
     const curDailyData = await CurdDailyService.getDaily(date);
     const prevLimitData = await CurdLimitListService.getLimitU(prevTradeDate); // 查询上一日涨停数据
-    res.a = curLimitData.filter((i) => (i.amp > 0.001)).length;
-    res.b = prevLimitData.filter((i) => (i.amp > 0.001)).length;
-    res.c = prevLimitData.filter((i) => {
+    ret.a = curLimitData.filter((i) => (i.amp > 0.001)).length;
+    ret.b = prevLimitData.filter((i) => (i.amp > 0.001)).length;
+    ret.c = prevLimitData.filter((i) => {
       if (i.amp < 0.001) return false;
       const tempDailyData = curDailyData.find((j) => i.tsCode === j.tsCode);
       if (!tempDailyData) return false;
       return tempDailyData.open > tempDailyData.preClose;
     }).length;
-    res.d = prevLimitData.filter((i) => {
+    ret.d = prevLimitData.filter((i) => {
       if (i.amp < 0.001) return false;
       const tempDailyData = curDailyData.find((j) => i.tsCode === j.tsCode);
       if (!tempDailyData) return false;
       return tempDailyData.pctChg > 0;
     }).length;
-    res.e = curDailyData.filter((i) => i.high === i.upLimit
+    ret.e = curDailyData.filter((i) => i.high === i.upLimit
     && i.high !== i.close && i.name && !i.name.includes('ST')).length;
-    res.sentimentA = res.a;
-    res.sentimentB = Math.floor(res.c / res.b / 0.01);
-    res.sentimentC = Math.floor(res.d / res.b / 0.01);
-    res.sentimentD = Math.floor(res.e / (res.a + res.e) / 0.01);
+    ret.sentimentA = ret.a;
+    ret.sentimentB = Math.floor(ret.c / ret.b / 0.01);
+    ret.sentimentC = Math.floor(ret.d / ret.b / 0.01);
+    ret.sentimentD = Math.floor(ret.e / (ret.a + ret.e) / 0.01);
     await CurdMarketMoodService.create({
       tradeDate: date,
-      a: res.a,
-      b: res.b,
-      c: res.c,
-      d: res.d,
-      e: res.e,
-      sentimentA: res.sentimentA,
-      sentimentB: res.sentimentB,
-      sentimentC: res.sentimentC,
-      sentimentD: res.sentimentD,
+      a: ret.a,
+      b: ret.b,
+      c: ret.c,
+      d: ret.d,
+      e: ret.e,
+      sentimentA: ret.sentimentA,
+      sentimentB: ret.sentimentB,
+      sentimentC: ret.sentimentC,
+      sentimentD: ret.sentimentD,
     });
   }
 }

@@ -6,7 +6,7 @@ const targetUrl: string = 'https://weixin.sogou.com/';
 const queryStr: string = '2020-7-21 爱在冰川复盘';
 
 async function crawl(): Promise<any> {
-  const res: Record<string, any> = {
+  const ret: Record<string, any> = {
     title: '',
     date: '',
     content: '',
@@ -44,11 +44,11 @@ async function crawl(): Promise<any> {
 
     const article = await page.$('#js_article');
 
-    res.title = (await article?.$eval('#activity-name', (el) => el.innerHTML) as string); // 文章标题
-    res.date = res.title.slice(res.title.indexOf('（') + 1, res.title.length - 8); // 日期
-    res.content = (await article?.$eval('#js_content', (el) => el.innerHTML.trim()) as string); // 文章内容
+    ret.title = (await article?.$eval('#activity-name', (el) => el.innerHTML) as string); // 文章标题
+    ret.date = ret.title.slice(ret.title.indexOf('（') + 1, ret.title.length - 8); // 日期
+    ret.content = (await article?.$eval('#js_content', (el) => el.innerHTML.trim()) as string); // 文章内容
 
-    console.log(res);
+    console.log(ret);
   } catch (e) {
     console.log(e);
   }

@@ -21,7 +21,6 @@ export default class BasicStockInfoController {
     total: number,
     list: Record<string, any>[]
   }> {
-    // eslint-disable-next-line no-param-reassign
     date = dateFormat(date, 'yyyyMMdd');
     const params: Record<string, string | number> = {
       pageNum,
@@ -29,10 +28,10 @@ export default class BasicStockInfoController {
       date,
       stock, // 股票代码
     };
-    const res: {
+    const ret: {
       total: number,
       list: Record<string, any>[]
     } = await BasicDailyService.getDaily(params);
-    return res;
+    return ret;
   }
 }

@@ -16,10 +16,9 @@ export default class CurdManualController {
    */
   @Post('/import')
   async manualImport(@BodyParam('date') date: string): Promise<string> {
-    // eslint-disable-next-line no-param-reassign
     date = dateFormat(new Date(date), 'yyyyMMdd');
-    const res: string = await CurdManualService.manualImport(date);
-    return res;
+    const ret: string = await CurdManualService.manualImport(date);
+    return ret;
   }
 
   /**
@@ -33,8 +32,8 @@ export default class CurdManualController {
   //   @BodyParam('startDate', { required: true }) startDate: string,
   //   @BodyParam('endDate', { required: true }) endDate: string,
   // ): Promise<string> {
-  //   const res: string = await CurdManualService.manualBulkImport(startDate, endDate);
-  //   return res;
+  //   const ret: string = await CurdManualService.manualBulkImport(startDate, endDate);
+  //   return ret;
   // }
 
   /**
@@ -44,9 +43,8 @@ export default class CurdManualController {
    */
   @Delete('/destroy')
   async manualDestroy(@BodyParam('date') date: string): Promise<string> {
-    // eslint-disable-next-line no-param-reassign
     date = dateFormat(new Date(date), 'yyyyMMdd');
-    const res: string = await CurdManualService.manualDestroy(date);
-    return res;
+    const ret: string = await CurdManualService.manualDestroy(date);
+    return ret;
   }
 }

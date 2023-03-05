@@ -27,8 +27,8 @@ export default class CurdLimitListDao {
       limit: string,
     }[],
   ): Promise<number> {
-    const res = await TLimitList.bulkCreate(params);
-    return (res || []).length;
+    const ret = await TLimitList.bulkCreate(params);
+    return (ret || []).length;
   }
 
   /**
@@ -37,14 +37,14 @@ export default class CurdLimitListDao {
    * @returns number
    */
   static async destroy(date: string): Promise<number> {
-    const res: number = await TLimitList.destroy({
+    const ret: number = await TLimitList.destroy({
       where: {
         tradeDate: {
           [Op.eq]: date,
         },
       },
     });
-    return res;
+    return ret;
   }
 
   /**
@@ -53,7 +53,7 @@ export default class CurdLimitListDao {
    * @returns Record<string, any>[]
    */
   static async getLimitU(date: string, fields?: string[]): Promise<Record<string, any>[]> {
-    const res: Record<string, any>[] = await TLimitList.findAll({
+    const ret: Record<string, any>[] = await TLimitList.findAll({
       attributes: fields || [
         'tradeDate',
         'tsCode',
@@ -83,7 +83,7 @@ export default class CurdLimitListDao {
         },
       },
     });
-    return res;
+    return ret;
   }
 
   /**
@@ -97,7 +97,7 @@ export default class CurdLimitListDao {
     endDate: string,
     limitType: string,
   ): Promise<Record<string, any>[]> {
-    const res: Record<string, any>[] = await TLimitList.findAll({
+    const ret: Record<string, any>[] = await TLimitList.findAll({
       attributes: [
         'tradeDate',
         [Sequelize.fn('COUNT', Sequelize.col('limit')), 'count'],
@@ -130,7 +130,7 @@ export default class CurdLimitListDao {
         ['tradeDate', 'ASC'],
       ],
     });
-    return res;
+    return ret;
   }
 
   /**
@@ -142,7 +142,7 @@ export default class CurdLimitListDao {
     startDate: string,
     endDate: string,
   ): Promise<Record<string, any>[]> {
-    const res: Record<string, any>[] = await TLimitList.findAll({
+    const ret: Record<string, any>[] = await TLimitList.findAll({
       attributes: [
         'tradeDate',
         'tsCode',
@@ -175,6 +175,6 @@ export default class CurdLimitListDao {
         ['tradeDate', 'DESC'],
       ],
     });
-    return res;
+    return ret;
   }
 }

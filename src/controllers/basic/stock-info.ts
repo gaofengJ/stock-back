@@ -31,10 +31,10 @@ export default class BasicStockInfoController {
       isSubNew, // 是否为次新 0 fasle, 1: true
       isHs, // 是否为沪深港通 0 fasle, 1: true
     };
-    const res: {
+    const ret: {
       total: number,
       list: Record<string, any>[]
     } = await BasicStockInfoService.getStocks(params);
-    return res;
+    return ret;
   }
 }

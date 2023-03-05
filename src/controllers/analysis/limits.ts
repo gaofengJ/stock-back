@@ -21,9 +21,7 @@ export default class AnalysisLimitController {
     @QueryParam('endDate', { required: true }) endDate: string,
       // @QueryParam('fields', { required: true, type: 'string' }) fields: string | string[],
   ): Promise<Base.listRes> {
-    // eslint-disable-next-line no-param-reassign
     startDate = dateFormat(new Date(startDate), 'yyyyMMdd');
-    // eslint-disable-next-line no-param-reassign
     endDate = dateFormat(new Date(endDate), 'yyyyMMdd');
     const list: Record<string, any>[] = await AnalysisLimitService.getLimits(
       startDate,

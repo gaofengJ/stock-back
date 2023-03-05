@@ -13,11 +13,11 @@ export default class AnalysisSentimentService {
     endDate: string,
     fields: string[],
   ): Promise<Record<string, any>[]> {
-    const res: Record<string, any>[] = await CurdMarketMoodDao.getSentiment(
+    const ret: Record<string, any>[] = await CurdMarketMoodDao.getSentiment(
       startDate,
       endDate,
       fields,
     );
-    return res;
+    return ret;
   }
 }

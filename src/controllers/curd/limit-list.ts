@@ -16,10 +16,9 @@ export default class CurdLimitListController {
    */
   @Post('/bulk-create')
   async bulkCreate(@BodyParam('date') date: string): Promise<number | null> {
-    // eslint-disable-next-line no-param-reassign
     date = dateFormat(date, 'yyyyMMdd');
-    const res: number | null = await CurdLimitListService.bulkCreate(date);
-    return res;
+    const ret: number | null = await CurdLimitListService.bulkCreate(date);
+    return ret;
   }
 
   /**
@@ -28,9 +27,8 @@ export default class CurdLimitListController {
    */
   @Delete('/destroy')
   async destroy(@BodyParam('date') date: string): Promise<string> {
-    // eslint-disable-next-line no-param-reassign
     date = dateFormat(date, 'yyyyMMdd');
-    const res: string = await CurdLimitListService.destroy(date);
-    return res;
+    const ret: string = await CurdLimitListService.destroy(date);
+    return ret;
   }
 }

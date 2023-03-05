@@ -11,14 +11,14 @@ export default class CurdStockBasicService {
    * @returns 导入数量
    */
   static async bulkCreate(exchanges: string[]): Promise<number | null> {
-    const [res0, res1] = await Promise.all([
+    const [ret0, ret1] = await Promise.all([
       getStockBasic(exchanges[0]), // SSE
       getStockBasic(exchanges[1]), // SZSE
     ]);
     let params: any[] = [];
     let len0: number = 0; // SSE数量
     let len1: number = 0; // SZSE数量
-    [res0, res1].forEach((obj: Record<string, any>, index: number) => {
+    [ret0, ret1].forEach((obj: Record<string, any>, index: number) => {
       if (obj.code) return;
       let { fields } = obj.data;
       const { items } = obj.data;
@@ -33,14 +33,12 @@ export default class CurdStockBasicService {
       params = params.concat(innerParams);
     });
     params.forEach((i: Record<string, any>) => {
-      // eslint-disable-next-line no-param-reassign
       if (!i.area) i.area = '';
-      // eslint-disable-next-line no-param-reassign
       if (!i.industry) i.industry = '';
     });
-    const res: number = await CurdStockBasicDao.bulkCreate(params);
-    log(`成功导入股票基本信息：成功导入沪市${len0}条数据，深市${len1}条数据，共${res}条数据`);
-    return res;
+    const ret: number = await CurdStockBasicDao.bulkCreate(params);
+    log(`成功导入股票基本信息：成功导入沪市${len0}条数据，深市${len1}条数据，共${ret}条数据`);
+    return ret;
   }
 
   /**
@@ -48,8 +46,8 @@ export default class CurdStockBasicService {
    * @returns number
    */
   static async truncateDestroy(): Promise<string> {
-    const res: number = await CurdStockBasicDao.truncateDestroy();
-    const str = !res ? '清空股票基本信息：成功' : '清空股票基本信息：失败';
+    const ret: number = await CurdStockBasicDao.truncateDestroy();
+    const str = !ret ? '清空股票基本信息：成功' : '清空股票基本信息：失败';
     log(str);
     return str;
   }

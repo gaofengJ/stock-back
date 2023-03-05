@@ -66,9 +66,9 @@ export default class CurdDailyService {
     basicFields = basicFields.map((str: string) => (stringLineToHump(str)));
     const basicParams = mixinFieldAndItem(basicFields, basicItems);
     const params: Record<string, any>[] = mixinDailyAndLimit(dailyParams, limitParams, basicParams);
-    const res: number = await CurdDailyDao.bulkCreate(params);
-    log(`导入每日交易数据：成功导入${date}共${res}条数据`);
-    return res;
+    const ret: number = await CurdDailyDao.bulkCreate(params);
+    log(`导入每日交易数据：成功导入${date}共${ret}条数据`);
+    return ret;
   }
 
   /**
@@ -77,8 +77,8 @@ export default class CurdDailyService {
    * @returns number
    */
   static async destroy(date: string): Promise<string> {
-    const res: number = await CurdDailyDao.destroy(date);
-    const str: string = `删除每日交易数据：成功删除${date}共${res}条数据`;
+    const ret: number = await CurdDailyDao.destroy(date);
+    const str: string = `删除每日交易数据：成功删除${date}共${ret}条数据`;
     log(str);
     return str;
   }
@@ -88,7 +88,7 @@ export default class CurdDailyService {
    * 查询每日交易数据
    */
   static async getDaily(date: string): Promise<Record<string, any>[]> {
-    const res: Record<string, any>[] = await CurdDailyDao.getDaily(date);
-    return res;
+    const ret: Record<string, any>[] = await CurdDailyDao.getDaily(date);
+    return ret;
   }
 }

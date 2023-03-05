@@ -17,7 +17,6 @@ export default class LimitReviewController {
   async getReview(
     @QueryParam('date', { required: true }) date: string,
   ): Promise<Base.listRes> {
-    // eslint-disable-next-line no-param-reassign
     date = dateFormat(new Date(date), 'yyyyMMdd');
     const list: Record<string, any>[] = await LimitReviewService.getReview(
       date,

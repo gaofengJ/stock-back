@@ -17,7 +17,7 @@ const dailyImport = () => {
   console.log('定时任务-导入每日数据启动');
   schedule.scheduleJob(rule, async () => {
     console.log(`定时任务-导入每日数据开始，导入日期：${dateFormat(new Date(), 'yyyyMMdd')}`);
-    // eslint-disable-next-line no-param-reassign
+
     const date: string = dateFormat(new Date(), 'yyyyMMdd');
     await CurdManualService.manualImport(date);
     console.log(`定时任务-导入每日数据结束，导入日期：${dateFormat(new Date(), 'yyyyMMdd')}`);

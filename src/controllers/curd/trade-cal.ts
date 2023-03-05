@@ -24,12 +24,12 @@ export default class CurdTradeCalController {
     @BodyParam('isOpen') isOpen: number,
     @BodyParam('preTradeDate') preTradeDate: string,
   ): Promise<string> {
-    const res: string = await CurdTradeCalService.create({
+    const ret: string = await CurdTradeCalService.create({
       calDate,
       isOpen,
       preTradeDate,
     });
-    return res;
+    return ret;
   }
 
   /**
@@ -39,8 +39,8 @@ export default class CurdTradeCalController {
    */
   @Post('/bulk-create')
   async bulkCreate(@BodyParam('year') year: string): Promise<number | null> {
-    const res: number | null = await CurdTradeCalService.bulkCreate(year);
-    return res;
+    const ret: number | null = await CurdTradeCalService.bulkCreate(year);
+    return ret;
   }
 
   /**
@@ -53,14 +53,12 @@ export default class CurdTradeCalController {
   async getList(
     @QueryParam('startDate') startDate: string,
     @QueryParam('endDate') endDate: string,
-  ): Promise<Record<string, any>> {
-    // eslint-disable-next-line no-param-reassign
+  ): Promise<{list: string[]}> {
     startDate = dateFormat(new Date(startDate), 'yyyyMMdd');
-    // eslint-disable-next-line no-param-reassign
     endDate = dateFormat(new Date(endDate), 'yyyyMMdd');
-    const res: string[] = await CurdTradeCalService.getList(startDate, endDate);
+    const ret: string[] = await CurdTradeCalService.getList(startDate, endDate);
     return {
-      list: res,
+      list: ret,
     };
   }
 
@@ -69,9 +67,9 @@ export default class CurdTradeCalController {
    * @returns 提示信息
    */
   @Delete('/truncate-destroy')
-  async truncateDestroy(): Promise<string> {
-    const res: string = await CurdTradeCalService.truncateDestroy();
-    return res;
+  async truncateDestroy(): Promise<number> {
+    const ret: number = await CurdTradeCalService.truncateDestroy();
+    return ret;
   }
 
   /**
@@ -83,10 +81,9 @@ export default class CurdTradeCalController {
   async getIsOpen(
     @QueryParam('date', { required: true }) date: string,
   ): Promise<boolean> {
-    // eslint-disable-next-line no-param-reassign
     date = dateFormat(new Date(date), 'yyyyMMdd');
-    const res: boolean = await CurdTradeCalService.getIsOpen(date);
-    return res;
+    const ret: boolean = await CurdTradeCalService.getIsOpen(date);
+    return ret;
   }
 
   /**
@@ -97,9 +94,8 @@ export default class CurdTradeCalController {
   async getPrevDate(
     @QueryParam('date', { required: true }) date: string,
   ): Promise<string> {
-    // eslint-disable-next-line no-param-reassign
     date = dateFormat(new Date(date), 'yyyyMMdd');
-    const res: string = await CurdTradeCalService.getPrevDate(date);
-    return res;
+    const ret: string = await CurdTradeCalService.getPrevDate(date);
+    return ret;
   }
 }

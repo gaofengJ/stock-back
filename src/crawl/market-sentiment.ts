@@ -37,7 +37,7 @@ class MarketSentiment {
   }
 
   async crawl(date: string): Promise<any> {
-    const res = { // 短线情绪指标，以2020年7月7日为例
+    const ret = { // 短线情绪指标，以2020年7月7日为例
       a: 0, // 2020年7月7日涨停，非一字涨停，非ST
       b: 0, // 2020年7月6日涨停，非一字涨停，非ST
       c: 0, // 2020年7月6日涨停，非一字涨停，非ST，2020年7月7日高开
@@ -76,7 +76,7 @@ class MarketSentiment {
       await page.type('textarea.search-input', `${currentDateFormat}涨停，非一字涨停，非ST`);
       await page.keyboard.press('Enter'); // 输入内容搜索
       await page.waitForSelector('.table-count strong'); // 等待元素加载
-      res.a = +await page.$eval('.table-count strong', (el) => el.innerHTML);
+      ret.a = +await page.$eval('.table-count strong', (el) => el.innerHTML);
 
       await clearInput(page, 'textarea.search-input'); // 清空搜索框内容
       await timeout(3000);
@@ -84,7 +84,7 @@ class MarketSentiment {
       await page.type('textarea.search-input', `${beforeDateFormat}涨停，非一字涨停，非ST`);
       await page.keyboard.press('Enter'); // 输入内容搜索
       await timeout(3000); // 由于两次使用的是同一元素，所以等待3000ms
-      res.b = +await page.$eval('.table-count strong', (el) => el.innerHTML);
+      ret.b = +await page.$eval('.table-count strong', (el) => el.innerHTML);
 
       await clearInput(page, 'textarea.search-input'); // 清空搜索框内容
       await timeout(3000);
@@ -92,7 +92,7 @@ class MarketSentiment {
       await page.type('textarea.search-input', `${beforeDateFormat}涨停，非一字涨停，非ST，${currentDateFormat}高开`);
       await page.keyboard.press('Enter'); // 输入内容搜索
       await timeout(3000);
-      res.c = +await page.$eval('.table-count strong', (el) => el.innerHTML);
+      ret.c = +await page.$eval('.table-count strong', (el) => el.innerHTML);
 
       await clearInput(page, 'textarea.search-input'); // 清空搜索框内容
       await timeout(3000);
@@ -100,7 +100,7 @@ class MarketSentiment {
       await page.type('textarea.search-input', `${beforeDateFormat}涨停，非一字涨停，非ST，${currentDateFormat}上涨`);
       await page.keyboard.press('Enter'); // 输入内容搜索
       await timeout(3000);
-      res.d = +await page.$eval('.table-count strong', (el) => el.innerHTML);
+      ret.d = +await page.$eval('.table-count strong', (el) => el.innerHTML);
 
       await clearInput(page, 'textarea.search-input'); // 清空搜索框内容
       await timeout(3000);
@@ -108,16 +108,16 @@ class MarketSentiment {
       await page.type('textarea.search-input', `${currentDateFormat}曾涨停，非ST`);
       await page.keyboard.press('Enter'); // 输入内容搜索
       await timeout(3000);
-      res.e = +await page.$eval('.table-count strong', (el) => el.innerHTML);
+      ret.e = +await page.$eval('.table-count strong', (el) => el.innerHTML);
 
       await clearInput(page, 'textarea.search-input'); // 清空搜索框内容
 
-      res.sentimentA = res.a; // a 非一字涨停
-      res.sentimentB = Math.floor(res.c / res.b / 0.01); // 打板高开率
-      res.sentimentC = Math.floor(res.d / res.b / 0.01); // 打板成功率
-      res.sentimentD = Math.floor(res.e / (res.a + res.e) / 0.01); // 打板被砸率
+      ret.sentimentA = ret.a; // a 非一字涨停
+      ret.sentimentB = Math.floor(ret.c / ret.b / 0.01); // 打板高开率
+      ret.sentimentC = Math.floor(ret.d / ret.b / 0.01); // 打板成功率
+      ret.sentimentD = Math.floor(ret.e / (ret.a + ret.e) / 0.01); // 打板被砸率
 
-      return res;
+      return ret;
     } catch (e) {
       return console.log('e', e);
     } finally {

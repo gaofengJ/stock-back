@@ -34,9 +34,8 @@ export default class CurdMarketMoodController {
     @BodyParam('sentimentC') sentimentC: number,
     @BodyParam('sentimentD') sentimentD: number,
   ): Promise<string> {
-    // eslint-disable-next-line no-param-reassign
     tradeDate = dateFormat(tradeDate, 'yyyyMMdd');
-    const res: string = await CurdMarketMoodService.create({
+    const ret: string = await CurdMarketMoodService.create({
       tradeDate,
       a,
       b,
@@ -48,6 +47,6 @@ export default class CurdMarketMoodController {
       sentimentC,
       sentimentD,
     });
-    return res;
+    return ret;
   }
 }

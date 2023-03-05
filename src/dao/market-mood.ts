@@ -32,14 +32,14 @@ export default class CurdMarketMoodDao {
    * @returns number
    */
   static async destroy(date: string): Promise<number> {
-    const res: number = await TMarketMood.destroy({
+    const ret: number = await TMarketMood.destroy({
       where: {
         tradeDate: {
           [Op.eq]: date,
         },
       },
     });
-    return res;
+    return ret;
   }
 
   /**

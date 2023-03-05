@@ -17,7 +17,6 @@ export default class LimitEchelonController {
   async getEchelon(
     @QueryParam('date', { required: true }) date: string,
   ): Promise<Base.listRes> {
-    // eslint-disable-next-line no-param-reassign
     date = dateFormat(new Date(date), 'yyyyMMdd');
     const list: Record<string, any>[] = await LimitEchelonService.getEchelon(
       date,

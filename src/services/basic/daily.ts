@@ -13,13 +13,13 @@ export default class BasicDailyService {
     const prevTradeDate: string = await CurdTradeCalDao.getPrevDate(params.date as string);
     const tradeDate: string = (!isOpen || new Date(params.date).getHours() < 19)
       ? prevTradeDate : params.date as string;
-    const res: {
+    const ret: {
       total: number,
       list: Record<string, any>[]
     } = await CurdDailyDao.getDailyByLimit({
       ...params,
       date: tradeDate,
     });
-    return res;
+    return ret;
   }
 }

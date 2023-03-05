@@ -17,8 +17,8 @@ export default class CurdTradeCalService {
       preTradeDate: string
     },
   ): Promise<string> {
-    const res: string = await CurdTradeCalDao.create(params);
-    return res;
+    const ret: string = await CurdTradeCalDao.create(params);
+    return ret;
   }
 
   /**
@@ -33,21 +33,21 @@ export default class CurdTradeCalService {
     const { items } = data;
     fields = ['exchange', 'calDate', 'isOpen', 'preTradeDate']; // tushare接口返回字段对不上，所以写死了
     const params = mixinFieldAndItem(fields, items);
-    const res: number = await CurdTradeCalDao.bulkCreate(params);
+    const ret: number = await CurdTradeCalDao.bulkCreate(params);
 
-    log(`导入交易日历：成功导入${year}年${res}条数据`);
-    return res;
+    log(`导入交易日历：成功导入${year}年${ret}条数据`);
+    return ret;
   }
 
   /**
    * 清空交易日历
    * @returns number
    */
-  static async truncateDestroy(): Promise<string> {
-    const res: number = await CurdTradeCalDao.truncateDestroy();
-    const str = !res ? '清空交易日历：成功' : '清空交易日历：失败';
+  static async truncateDestroy(): Promise<number> {
+    const ret: number = await CurdTradeCalDao.truncateDestroy();
+    const str = ret === 0 ? '清空交易日历：成功' : '清空交易日历：失败';
     log(str);
-    return str;
+    return ret;
   }
 
   /**
@@ -57,8 +57,8 @@ export default class CurdTradeCalService {
    * @returns string[]
    */
   static async getList(startDate: string, endDate: string): Promise<string[]> {
-    const res: string[] = await CurdTradeCalDao.getList(startDate, endDate);
-    return res;
+    const ret: string[] = await CurdTradeCalDao.getList(startDate, endDate);
+    return ret;
   }
 
   /**
@@ -67,8 +67,8 @@ export default class CurdTradeCalService {
    * @returns isOpen 0：否 1：是
    */
   static async getIsOpen(date: string): Promise<boolean> {
-    const res: number = await CurdTradeCalDao.getIsOpen(date);
-    return !!res;
+    const ret: number = await CurdTradeCalDao.getIsOpen(date);
+    return !!ret;
   }
 
   /**
@@ -76,7 +76,7 @@ export default class CurdTradeCalService {
    * @param date 日期
    */
   static async getPrevDate(date: string): Promise<string> {
-    const res: string = await CurdTradeCalDao.getPrevDate(date);
-    return res;
+    const ret: string = await CurdTradeCalDao.getPrevDate(date);
+    return ret;
   }
 }

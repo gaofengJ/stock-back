@@ -1,5 +1,6 @@
 import Axios, { AxiosRequestConfig } from 'axios';
 import { TUSHARE_CONF } from '@/config/db';
+import type { ITuShareRes } from '@/types/base';
 
 /**
  * @description tushare接口调用
@@ -40,28 +41,28 @@ const request = async (config: AxiosRequestConfig) => {
  * @param exchange 交易所
  * @returns AxiosPromise
  */
-export const getStockBasic = (exchange: string): Promise<Base.TypeRes> => request({
+export const getStockBasic = (exchange: string): Promise<ITuShareRes> => request({
   data: {
     api_name: 'stock_basic',
     params: {
-      exchange, // 交易所 SSE 上交所, SZSE 深交所
+      exchange, // 交易所 SSE 上交所, SZSE 深交所，BSE 北交所
     },
     fields: [
-      'ts_code',
-      'symbol',
-      'name',
-      'area',
-      'industry',
-      'fullname',
-      'enname',
-      'cnspell',
-      'market',
-      'exchange',
-      'curr_type',
-      'list_status',
-      'list_date',
-      'delist_date',
-      'is_hs',
+      'ts_code', // ts代码
+      'symbol', // 股票代码
+      'name', // 股票名称
+      'area', // 地域
+      'industry', // 所属行业
+      'fullname', // 股票全称
+      'enname', // 英文全称
+      'cnspell', // 拼音缩写
+      'market', // 市场类型
+      'exchange', // 交易所代码
+      'curr_type', // 交易货币
+      'list_status', // 上市状态 L上市，D退市，P暂停上市
+      'list_date', // 上市日期
+      'delist_date', // 退市日期
+      'is_hs', // 是否沪深港通标的 N否，H沪股通，S深股通
     ],
   },
 });
@@ -71,7 +72,7 @@ export const getStockBasic = (exchange: string): Promise<Base.TypeRes> => reques
  * @param year 年份
  * @returns AxiosPromise
  */
-export const getTradeCal = (year: string): Promise<Base.TypeRes> => request({
+export const getTradeCal = (year: string): Promise<ITuShareRes> => request({
   data: {
     api_name: 'trade_cal',
     params: {
@@ -84,11 +85,11 @@ export const getTradeCal = (year: string): Promise<Base.TypeRes> => request({
 });
 
 /**
- * @description 每日统计
+ * @description 每日统计-日线数据
  * @param date 日期
  * @returns AxiosPromise
  */
-export const getDaily = (date: string): Promise<Base.TypeRes> => request({
+export const getDaily = (date: string): Promise<ITuShareRes> => request({
   data: {
     api_name: 'daily',
     params: {
@@ -102,7 +103,7 @@ export const getDaily = (date: string): Promise<Base.TypeRes> => request({
  * @param date 日期
  * @returns AxiosPromise
  */
-export const getDailyLimit = (date: string): Promise<Base.TypeRes> => request({
+export const getDailyLimit = (date: string): Promise<ITuShareRes> => request({
   data: {
     api_name: 'stk_limit',
     params: {
@@ -112,11 +113,11 @@ export const getDailyLimit = (date: string): Promise<Base.TypeRes> => request({
 });
 
 /**
- * 每日指标
+ * @description 每日指标-获取全部股票每日重要的基本面指标
  * @param date 日期
  * @returns AxiosPromise
  */
-export const getDailyBasic = (date: string): Promise<Base.TypeRes> => request({
+export const getDailyBasic = (date: string): Promise<ITuShareRes> => request({
   data: {
     api_name: 'daily_basic',
     params: {
@@ -130,7 +131,7 @@ export const getDailyBasic = (date: string): Promise<Base.TypeRes> => request({
  * @param date 日期
  * @returns AxiosPromise
  */
-export const getLimitList = (date: string): Promise<Base.TypeRes> => request({
+export const getLimitList = (date: string): Promise<ITuShareRes> => request({
   data: {
     api_name: 'limit_list',
     params: {

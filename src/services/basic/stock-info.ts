@@ -11,13 +11,13 @@ export default class BasicStockInfoService {
     const isOpen: number = await CurdTradeCalDao.getIsOpen(todayStr);
     const prevTradeDate: string = await CurdTradeCalDao.getPrevDate(todayStr);
     const tradeDate: string = (!isOpen || new Date().getHours() < 19) ? prevTradeDate : todayStr;
-    const res: {
+    const ret: {
       total: number,
       list: Record<string, any>[]
     } = await CurdDailyDao.getStocksByLimit({
       ...params,
       date: tradeDate,
     });
-    return res;
+    return ret;
   }
 }

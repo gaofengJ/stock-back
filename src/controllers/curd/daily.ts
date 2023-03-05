@@ -18,10 +18,9 @@ export default class CurdDailyController {
    */
   @Post('/bulk-create')
   async bulkCreate(@BodyParam('date') date: string): Promise<number | null> {
-    // eslint-disable-next-line no-param-reassign
     date = dateFormat(date, 'yyyyMMdd');
-    const res: number | null = await CurdDailyService.bulkCreate(date);
-    return res;
+    const ret: number | null = await CurdDailyService.bulkCreate(date);
+    return ret;
   }
 
   /**
@@ -30,10 +29,9 @@ export default class CurdDailyController {
    */
   @Delete('/destroy')
   async destroy(@BodyParam('date') date: string): Promise<string> {
-    // eslint-disable-next-line no-param-reassign
     date = dateFormat(date, 'yyyyMMdd');
-    const res: string = await CurdDailyService.destroy(date);
-    return res;
+    const ret: string = await CurdDailyService.destroy(date);
+    return ret;
   }
 
   /**
@@ -42,9 +40,8 @@ export default class CurdDailyController {
    */
   @Get('/')
   async getDaily(@QueryParam('date') date: string): Promise<Record<string, any>[]> {
-    // eslint-disable-next-line no-param-reassign
     date = dateFormat(date, 'yyyyMMdd');
-    const res: Record<string, any>[] = await CurdDailyService.getDaily(date);
-    return res;
+    const ret: Record<string, any>[] = await CurdDailyService.getDaily(date);
+    return ret;
   }
 }

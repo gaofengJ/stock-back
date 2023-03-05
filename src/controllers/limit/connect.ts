@@ -19,9 +19,7 @@ export default class LimitConnectController {
     @QueryParam('endDate', { required: true }) endDate: string,
     @QueryParam('num', { required: true }) num: number,
   ): Promise<Base.listRes> {
-    // eslint-disable-next-line no-param-reassign
     startDate = dateFormat(new Date(startDate), 'yyyyMMdd');
-    // eslint-disable-next-line no-param-reassign
     endDate = dateFormat(new Date(endDate), 'yyyyMMdd');
     const list: Record<string, any>[] = await LimitConnectService.getConnects(
       startDate,
