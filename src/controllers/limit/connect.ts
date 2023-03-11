@@ -6,6 +6,7 @@ import {
 } from 'routing-controllers';
 import { dateFormat } from 'mufeng-tools';
 import LimitConnectService from '@/services/limit/connect';
+import type { IList } from '@/types/base';
 
 @JsonController('/limit')
 export default class LimitConnectController {
@@ -18,7 +19,7 @@ export default class LimitConnectController {
     @QueryParam('startDate', { required: true }) startDate: string,
     @QueryParam('endDate', { required: true }) endDate: string,
     @QueryParam('num', { required: true }) num: number,
-  ): Promise<Base.listRes> {
+  ): Promise<IList<any>> {
     startDate = dateFormat(new Date(startDate), 'yyyyMMdd');
     endDate = dateFormat(new Date(endDate), 'yyyyMMdd');
     const list: Record<string, any>[] = await LimitConnectService.getConnects(

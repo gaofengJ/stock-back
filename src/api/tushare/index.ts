@@ -133,7 +133,7 @@ export const getDailyBasic = (date: string): Promise<ITuShareRes> => request({
  */
 export const getLimitList = (date: string): Promise<ITuShareRes> => request({
   data: {
-    api_name: 'limit_list',
+    api_name: 'limit_list_d',
     params: {
       trade_date: date,
     },

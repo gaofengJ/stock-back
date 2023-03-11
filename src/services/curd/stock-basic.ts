@@ -2,7 +2,6 @@ import CurdStockBasicDao from '@/dao/stock-basic';
 import { getStockBasic } from '@/api/tushare/index';
 import { mixinFieldAndItem } from '@/utils';
 import { stringLineToHump } from 'mufeng-tools';
-import { log } from 'console';
 
 export default class CurdStockBasicService {
   /**
@@ -11,14 +10,16 @@ export default class CurdStockBasicService {
    * @returns 导入数量
    */
   static async bulkCreate(exchanges: string[]): Promise<number | null> {
-    const [ret0, ret1] = await Promise.all([
+    const [ret0, ret1, ret2] = await Promise.all([
       getStockBasic(exchanges[0]), // SSE
       getStockBasic(exchanges[1]), // SZSE
+      getStockBasic(exchanges[2]), // BSE
     ]);
     let params: any[] = [];
     let len0: number = 0; // SSE数量
     let len1: number = 0; // SZSE数量
-    [ret0, ret1].forEach((obj: Record<string, any>, index: number) => {
+    let len2: number = 0; // BSE数量
+    [ret0, ret1, ret2].forEach((obj: Record<string, any>, index: number) => {
       if (obj.code) return;
       let { fields } = obj.data;
       const { items } = obj.data;
@@ -29,6 +30,9 @@ export default class CurdStockBasicService {
       if (index === 1) {
         len1 = items.length;
       }
+      if (index === 2) {
+        len2 = items.length;
+      }
       const innerParams = mixinFieldAndItem(fields, items);
       params = params.concat(innerParams);
     });
@@ -37,7 +41,7 @@ export default class CurdStockBasicService {
       if (!i.industry) i.industry = '';
     });
     const ret: number = await CurdStockBasicDao.bulkCreate(params);
-    log(`成功导入股票基本信息：成功导入沪市${len0}条数据，深市${len1}条数据，共${ret}条数据`);
+    console.info(`成功导入股票基本信息：成功导入沪市${len0}条数据，深市${len1}条数据，北交所${len2}条数据，共${ret}条数据`);
     return ret;
   }
 
@@ -48,7 +52,7 @@ export default class CurdStockBasicService {
   static async truncateDestroy(): Promise<string> {
     const ret: number = await CurdStockBasicDao.truncateDestroy();
     const str = !ret ? '清空股票基本信息：成功' : '清空股票基本信息：失败';
-    log(str);
+    console.info(str);
     return str;
   }
 }

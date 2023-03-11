@@ -2,7 +2,6 @@ import CurdTradeCalDao from '@/dao/trade-cal';
 
 import { getTradeCal } from '@/api/tushare/index';
 import { mixinFieldAndItem } from '@/utils';
-import { log } from 'console';
 
 export default class CurdTradeCalService {
   /**
@@ -35,7 +34,7 @@ export default class CurdTradeCalService {
     const params = mixinFieldAndItem(fields, items);
     const ret: number = await CurdTradeCalDao.bulkCreate(params);
 
-    log(`导入交易日历：成功导入${year}年${ret}条数据`);
+    console.info(`导入交易日历：成功导入${year}年${ret}条数据`);
     return ret;
   }
 
@@ -46,7 +45,7 @@ export default class CurdTradeCalService {
   static async truncateDestroy(): Promise<number> {
     const ret: number = await CurdTradeCalDao.truncateDestroy();
     const str = ret === 0 ? '清空交易日历：成功' : '清空交易日历：失败';
-    log(str);
+    console.info(str);
     return ret;
   }
 

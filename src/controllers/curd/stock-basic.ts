@@ -14,7 +14,7 @@ export default class CurdStockBasicController {
    */
   @Post('/bulk-create')
   async bulkCreate(): Promise<number | null> {
-    const exchanges: string[] = ['SSE', 'SZSE'];
+    const exchanges: string[] = ['SSE', 'SZSE', 'BSE'];
     const ret: number | null = await CurdStockBasicService.bulkCreate(exchanges);
     return ret;
   }

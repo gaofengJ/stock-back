@@ -48,9 +48,9 @@ async function crawl(): Promise<any> {
     ret.date = ret.title.slice(ret.title.indexOf('（') + 1, ret.title.length - 8); // 日期
     ret.content = (await article?.$eval('#js_content', (el) => el.innerHTML.trim()) as string); // 文章内容
 
-    console.log(ret);
+    console.info(ret);
   } catch (e) {
-    console.log(e);
+    console.info(e);
   }
 }
 

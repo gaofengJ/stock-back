@@ -4,27 +4,29 @@ import { Op, Sequelize } from 'sequelize';
 export default class CurdLimitListDao {
   /**
    * 每日涨跌停个股批量导入
-   * @param <{ tradeDate: string, tsCode: string, name: string, close: number,
-   * pctChg: number, amp: number, fcRatio: number, flRatio: number, fdAmount: number,
-   * firstTime: string, lastTime: string, openTimes: number, strth: number, limit: string, }>[]
+   * @param params[]
    * @returns 导入数量
    */
   static async bulkCreate(
     params: {
-      tradeDate: string,
-      tsCode: string,
-      name: string,
-      close: number,
-      pctChg: number,
-      amp: number,
-      fcRatio: number,
-      flRatio: number,
-      fdAmount: number,
-      firstTime: string,
-      lastTime: string,
-      openTimes: number,
-      strth: number,
-      limit: string,
+      tsCode: string;
+      tradeDate: string;
+      name: string;
+      industry: string;
+      close: number;
+      pctChg: number;
+      amount: number;
+      limitAmount: number;
+      floatMv: number;
+      totalMv: number;
+      turnoverRatio: number;
+      fdAmount: number;
+      firstTime: string;
+      lastTime: string;
+      openTimes: number;
+      upStat: string;
+      limitTimes: number;
+      limit: string;
     }[],
   ): Promise<number> {
     const ret = await TLimitList.bulkCreate(params);
@@ -52,21 +54,18 @@ export default class CurdLimitListDao {
    * @param date 日期
    * @returns Record<string, any>[]
    */
-  static async getLimitU(date: string, fields?: string[]): Promise<Record<string, any>[]> {
+  static async getLimit(date: string, fields?: string[]): Promise<Record<string, any>[]> {
     const ret: Record<string, any>[] = await TLimitList.findAll({
       attributes: fields || [
         'tradeDate',
         'tsCode',
         'name',
-        'amp',
+        'limit',
       ],
       raw: true,
       where: {
         tradeDate: {
           [Op.eq]: date,
-        },
-        limit: {
-          [Op.eq]: 'U',
         },
         name: {
           [Op.and]: [

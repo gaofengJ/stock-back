@@ -51,7 +51,7 @@ export default class LimitEchelonService {
     });
 
     const fields = ['tradeDate', 'tsCode', 'name', 'close', 'pctChg', 'amp', 'fcRatio', 'flRatio', 'fdAmount', 'firstTime', 'lastTime', 'openTimes', 'strth'];
-    const curDayRes: Record<string, any>[] = await CurdLimitListDao.getLimitU(date, fields);
+    const curDayRes: Record<string, any>[] = await CurdLimitListDao.getLimit(date, fields);
 
     const ret: Record<string, any>[] = curDayRes.map((item: Record<string, any>) => ({
       ...item,

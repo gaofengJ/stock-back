@@ -5,6 +5,7 @@ import {
 } from 'routing-controllers';
 import { dateFormat } from 'mufeng-tools';
 import AnalysisStatisticsService from '@/services/analysis/statistics';
+import type { IList } from '@/types/base';
 
 @JsonController('/analysis/statistics')
 export default class AnalysisStatisticsController {
@@ -16,7 +17,7 @@ export default class AnalysisStatisticsController {
   @Get('/')
   async getStatistics(
     @QueryParam('date', { required: true }) date: string,
-  ): Promise<Base.listRes> {
+  ): Promise<IList<any>> {
     date = dateFormat(date, 'yyyyMMdd');
     const list: Record<string, any>[] = await AnalysisStatisticsService.getStatistics(date);
     return {

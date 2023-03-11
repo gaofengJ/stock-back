@@ -6,6 +6,7 @@ import {
 } from 'routing-controllers';
 import { dateFormat } from 'mufeng-tools';
 import AnalysisNumService from '@/services/analysis/num';
+import type { IList } from '@/types/base';
 
 @JsonController('/analysis/num')
 export default class AnalysisNumController {
@@ -20,7 +21,7 @@ export default class AnalysisNumController {
     @QueryParam('startDate', { required: true }) startDate: string,
     @QueryParam('endDate', { required: true }) endDate: string,
       // @QueryParam('fields', { required: true, type: 'string' }) fields: string | string[],
-  ): Promise<Base.listRes> {
+  ): Promise<IList<any>> {
     startDate = dateFormat(new Date(startDate), 'yyyyMMdd');
     endDate = dateFormat(new Date(endDate), 'yyyyMMdd');
     // fields = getType(fields) === 'string' ? [fields as string] : fields;

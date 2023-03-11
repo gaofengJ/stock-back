@@ -1,4 +1,3 @@
-import { log } from 'console';
 import CurdMarketMoodDao from '@/dao/market-mood';
 
 export default class CurdMarketMoodService {
@@ -24,11 +23,11 @@ export default class CurdMarketMoodService {
   ): Promise<string> {
     if (!params.a || !params.b || !params.c || !params.d || !params.e
       || !params.sentimentA || !params.sentimentB || !params.sentimentC || !params.sentimentD) {
-      log(`导入每日情绪指标：${params.tradeDate}数据导入失败`);
+      console.info(`导入每日情绪指标：${params.tradeDate}数据导入失败`);
       return `导入每日情绪指标：${params.tradeDate}数据导入失败`;
     }
     const ret: string = await CurdMarketMoodDao.create(params);
-    log(`导入每日情绪指标：成功导入${params.tradeDate}数据`);
+    console.info(`导入每日情绪指标：成功导入${params.tradeDate}数据`);
     return ret;
   }
 
@@ -39,7 +38,7 @@ export default class CurdMarketMoodService {
   static async destroy(date: string): Promise<string> {
     const ret: number = await CurdMarketMoodDao.destroy(date);
     const str: string = `删除每日情绪指标：成功删除${date}共${ret}条数据`;
-    log(str);
+    console.info(str);
     return str;
   }
 }

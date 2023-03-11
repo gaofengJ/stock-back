@@ -6,6 +6,7 @@ import {
 } from 'routing-controllers';
 import { dateFormat } from 'mufeng-tools';
 import LimitEchelonService from '@/services/limit/echelon';
+import type { IList } from '@/types/base';
 
 @JsonController('/limit')
 export default class LimitEchelonController {
@@ -16,7 +17,7 @@ export default class LimitEchelonController {
   @Get('/echelon')
   async getEchelon(
     @QueryParam('date', { required: true }) date: string,
-  ): Promise<Base.listRes> {
+  ): Promise<IList<any>> {
     date = dateFormat(new Date(date), 'yyyyMMdd');
     const list: Record<string, any>[] = await LimitEchelonService.getEchelon(
       date,

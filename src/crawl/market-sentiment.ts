@@ -119,7 +119,7 @@ class MarketSentiment {
 
       return ret;
     } catch (e) {
-      return console.log('e', e);
+      return console.info('e', e);
     } finally {
       browser.close();
     }

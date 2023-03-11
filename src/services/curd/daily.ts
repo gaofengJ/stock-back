@@ -2,9 +2,8 @@ import CurdDailyDao from '@/dao/daily';
 import { getDaily, getDailyLimit, getDailyBasic } from '@/api/tushare/index';
 import { mixinFieldAndItem } from '@/utils';
 import { stringLineToHump } from 'mufeng-tools';
-import { log } from 'console';
 
-// 合并每日交易数据和每日涨跌停价格数据
+// 合并每日交易和每日涨跌停价格和股票基本信息
 function mixinDailyAndLimit(
   dailyArr: Record<string, any>[],
   limitArr: Record<string, any>[],
@@ -67,7 +66,7 @@ export default class CurdDailyService {
     const basicParams = mixinFieldAndItem(basicFields, basicItems);
     const params: Record<string, any>[] = mixinDailyAndLimit(dailyParams, limitParams, basicParams);
     const ret: number = await CurdDailyDao.bulkCreate(params);
-    log(`导入每日交易数据：成功导入${date}共${ret}条数据`);
+    console.info(`导入每日交易数据：成功导入${date}共${ret}条数据`);
     return ret;
   }
 
@@ -79,7 +78,7 @@ export default class CurdDailyService {
   static async destroy(date: string): Promise<string> {
     const ret: number = await CurdDailyDao.destroy(date);
     const str: string = `删除每日交易数据：成功删除${date}共${ret}条数据`;
-    log(str);
+    console.info(str);
     return str;
   }
 

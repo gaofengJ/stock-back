@@ -6,6 +6,7 @@ import {
 } from 'routing-controllers';
 import { dateFormat } from 'mufeng-tools';
 import LimitReviewService from '@/services/limit/review';
+import type { IList } from '@/types/base';
 
 @JsonController('/limit')
 export default class LimitReviewController {
@@ -16,7 +17,7 @@ export default class LimitReviewController {
   @Get('/review')
   async getReview(
     @QueryParam('date', { required: true }) date: string,
-  ): Promise<Base.listRes> {
+  ): Promise<IList<any>> {
     date = dateFormat(new Date(date), 'yyyyMMdd');
     const list: Record<string, any>[] = await LimitReviewService.getReview(
       date,

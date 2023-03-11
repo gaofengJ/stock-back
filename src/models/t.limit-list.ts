@@ -24,6 +24,13 @@ const TLimitList = defineModel('t_limit_list', {
     allowNull: false,
     comment: '股票名称',
   },
+  // 所属行业
+  industry: {
+    field: 'industry',
+    type: DataTypes.STRING(64),
+    allowNull: true,
+    comment: '所属行业',
+  },
   // 收盘价
   close: {
     field: 'close',
@@ -38,68 +45,89 @@ const TLimitList = defineModel('t_limit_list', {
     allowNull: false,
     comment: '涨跌幅',
   },
-  // 振幅
-  amp: {
-    field: 'amp',
+  // 成交额（千元）
+  amount: {
+    field: 'amount',
     type: DataTypes.FLOAT(16, 2),
-    allowNull: false,
-    comment: '振幅',
+    allowNull: true,
+    comment: '成交额（千元）',
   },
-  // 封单金额 / 日成交金额
-  fcRatio: {
-    field: 'fc_ratio',
+  // 板上成交额（千元）
+  limitAmount: {
+    field: 'limit_amount',
     type: DataTypes.FLOAT(16, 2),
-    allowNull: false,
-    comment: '封单金额 / 日成交金额',
+    allowNull: true,
+    comment: '板上成交额（千元）',
   },
-  // 封单手数 / 流通股本
-  flRatio: {
-    field: 'fl_ratio',
+  // 流通市值
+  floatMv: {
+    field: 'float_mv',
     type: DataTypes.FLOAT(16, 2),
-    allowNull: false,
-    comment: '封单手数 / 流通股本',
+    allowNull: true,
+    comment: '流通市值',
+  },
+  // 总市值
+  totalMv: {
+    field: 'total_mv',
+    type: DataTypes.FLOAT(16, 2),
+    allowNull: true,
+    comment: '总市值',
+  },
+  // 换手率
+  turnoverRatio: {
+    field: 'turnover_ratio',
+    type: DataTypes.FLOAT(16, 2),
+    allowNull: true,
+    comment: '换手率',
   },
   // 封单金额
   fdAmount: {
     field: 'fd_amount',
     type: DataTypes.FLOAT(16, 2),
-    allowNull: false,
+    allowNull: true,
     comment: '封单金额',
   },
-  // 首次触板时间
+  // 首次封板时间
   firstTime: {
     field: 'first_time',
     type: DataTypes.STRING(16),
-    allowNull: false,
-    comment: '首次触板时间',
+    allowNull: true,
+    comment: '首次封板时间',
   },
   // 最后封板时间
   lastTime: {
     field: 'last_time',
     type: DataTypes.STRING(16),
-    allowNull: false,
+    allowNull: true,
     comment: '最后封板时间',
   },
   // 打开次数
   openTimes: {
     field: 'open_times',
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     comment: '打开次数',
   },
-  // 涨跌停强度
-  strth: {
-    field: 'strth',
-    type: DataTypes.FLOAT(16),
-    allowNull: false,
-    comment: '涨跌停强度',
+  // 涨停统计
+  upStat: {
+    field: 'up_stat',
+    type: DataTypes.STRING(16),
+    allowNull: true,
+    comment: '涨停统计（N/T T天有N次涨停）',
+  },
+  // 连板数
+  limitTimes: {
+    field: 'limit_times',
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    comment: '连板数',
   },
   // D跌停，U涨停
   limit: {
     field: 'limit',
     type: DataTypes.STRING(1),
-    allowNull: false,
-    comment: 'D跌停，U涨停',
+    allowNull: true,
+    comment: 'D跌停，U涨停，Z炸板',
   },
 });
 

@@ -1,5 +1,4 @@
 import { dateFormat, dateGetBeforeDay, dateGetAfterDay } from 'mufeng-tools';
-import { log } from 'console';
 import CurdTradeCalService from './trade-cal';
 import CurdStockBasicService from './stock-basic';
 import CurdDailyService from './daily';
@@ -22,7 +21,7 @@ export default class CurdManualService {
     await this.getDaily(date); // 每日数据统计
     await this.getLimitList(date); // 每日涨跌停统计
     await this.getDailyMarketMood(date); // 每日短线情绪指标
-    log(`${date}所有交易数据导入成功`);
+    console.info(`${date}所有交易数据导入成功`);
     return `${date}所有交易数据导入成功`;
   }
 
@@ -40,7 +39,7 @@ export default class CurdManualService {
         await CurdManualService.manualImport(dateFormat(curDate, 'yyyyMMdd'));
         curDate = dateGetAfterDay(curDate, 'yyyy-MM-dd') as string;
       } catch (e) {
-        console.log(e);
+        console.info(e);
       }
     }
     return `${startDate}-${endDate}所有交易数据导入成功`;
@@ -59,7 +58,7 @@ export default class CurdManualService {
     await CurdDailyService.destroy(date); // 删除每日数据统计
     await CurdLimitListService.destroy(date); // 删除每日涨跌停统计
     await CurdMarketMoodService.destroy(date); // 删除每日情绪指标
-    log(`${date}所有交易数据删除成功`);
+    console.info(`${date}所有交易数据删除成功`);
     return `${date}所有交易数据删除成功`;
   }
 
@@ -93,7 +92,7 @@ export default class CurdManualService {
     const day: number = new Date(dateFormated).getDay();
     if (day !== 1) return;
     await CurdStockBasicService.truncateDestroy();
-    await CurdStockBasicService.bulkCreate(['SSE', 'SZSE']);
+    await CurdStockBasicService.bulkCreate(['SSE', 'SZSE', 'BSE']);
   }
 
   /**
@@ -122,33 +121,47 @@ export default class CurdManualService {
     const ret: Record<string, number> = { // 短线情绪指标，以2022年01月05日为例
       a: 0, // 2022年01月05日涨停，非一字涨停，非ST
       b: 0, // 2022年01月04日涨停，非一字涨停，非ST
-      c: 0, // 2022年01月04日涨停，非一字涨停，非ST，2022年201月05日高开
-      d: 0, // 2022年01月04日涨停，非一字涨停，非ST，2022年201月05日上涨
+      c: 0, // 2022年01月04日涨停，非一字涨停，非ST，2022年01月05日高开
+      d: 0, // 2022年01月04日涨停，非一字涨停，非ST，2022年01月05日上涨
       e: 0, // 2022年01月05日曾涨停，非ST
       sentimentA: 0, // 非一字涨停 sentimentA = a
       sentimentB: 0, // 打板高开率 sentimentB = c / b
       sentimentC: 0, // 打板成功率 sentimentC = d / b
       sentimentD: 0, // 打板被砸率 sentimentD = e / (a + e)
     };
-    const curLimitData = await CurdLimitListService.getLimitU(date); // 获取当日涨停数据
-    const curDailyData = await CurdDailyService.getDaily(date);
-    const prevLimitData = await CurdLimitListService.getLimitU(prevTradeDate); // 查询上一日涨停数据
-    ret.a = curLimitData.filter((i) => (i.amp > 0.001)).length;
-    ret.b = prevLimitData.filter((i) => (i.amp > 0.001)).length;
-    ret.c = prevLimitData.filter((i) => {
-      if (i.amp < 0.001) return false;
+    const curLimitData = await CurdLimitListService.getLimit(date); // 获取当日涨停数据
+    const curDailyData = await CurdDailyService.getDaily(date); // 查询当日数据
+    const prevLimitData = await CurdLimitListService.getLimit(prevTradeDate); // 查询上一日涨停数据
+    const prevDailyData = await CurdDailyService.getDaily(prevTradeDate); // 查詢上一日数据
+
+    ret.a = curLimitData.filter((i) => {
       const tempDailyData = curDailyData.find((j) => i.tsCode === j.tsCode);
       if (!tempDailyData) return false;
-      return tempDailyData.open > tempDailyData.preClose;
+      return i.limit === 'U' && tempDailyData.high !== tempDailyData.low;
+    }).length;
+    ret.b = prevLimitData.filter((i) => {
+      const tempDailyData = prevDailyData.find((j) => i.tsCode === j.tsCode);
+      if (!tempDailyData) return false;
+      return i.limit === 'U' && tempDailyData.high !== tempDailyData.low;
+    }).length;
+    ret.c = prevLimitData.filter((i) => {
+      const tempPrevDailyData = prevDailyData.find((j) => i.tsCode === j.tsCode);
+      if (!tempPrevDailyData) return false;
+      if (tempPrevDailyData.high === tempPrevDailyData.low) return false;
+      const tempDailyData = curDailyData.find((j) => i.tsCode === j.tsCode);
+      if (!tempDailyData) return false;
+      return i.limit === 'U' && tempDailyData.open > tempDailyData.preClose;
     }).length;
     ret.d = prevLimitData.filter((i) => {
-      if (i.amp < 0.001) return false;
+      const tempPrevDailyData = prevDailyData.find((j) => i.tsCode === j.tsCode);
+      if (!tempPrevDailyData) return false;
+      if (tempPrevDailyData.high === tempPrevDailyData.low) return false;
       const tempDailyData = curDailyData.find((j) => i.tsCode === j.tsCode);
       if (!tempDailyData) return false;
-      return tempDailyData.pctChg > 0;
+      return i.limit === 'U' && tempDailyData.pctChg > 0;
     }).length;
-    ret.e = curDailyData.filter((i) => i.high === i.upLimit
-    && i.high !== i.close && i.name && !i.name.includes('ST')).length;
+    ret.e = curLimitData.filter((i) => (i.limit === 'Z')).length;
+
     ret.sentimentA = ret.a;
     ret.sentimentB = Math.floor(ret.c / ret.b / 0.01);
     ret.sentimentC = Math.floor(ret.d / ret.b / 0.01);

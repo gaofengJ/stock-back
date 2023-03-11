@@ -14,13 +14,13 @@ rule.second = 0;
  * 导入每日数据
  */
 const dailyImport = () => {
-  console.log('定时任务-导入每日数据启动');
+  console.info('定时任务-导入每日数据启动');
   schedule.scheduleJob(rule, async () => {
-    console.log(`定时任务-导入每日数据开始，导入日期：${dateFormat(new Date(), 'yyyyMMdd')}`);
+    console.info(`定时任务-导入每日数据开始，导入日期：${dateFormat(new Date(), 'yyyyMMdd')}`);
 
     const date: string = dateFormat(new Date(), 'yyyyMMdd');
     await CurdManualService.manualImport(date);
-    console.log(`定时任务-导入每日数据结束，导入日期：${dateFormat(new Date(), 'yyyyMMdd')}`);
+    console.info(`定时任务-导入每日数据结束，导入日期：${dateFormat(new Date(), 'yyyyMMdd')}`);
   });
 };
 
