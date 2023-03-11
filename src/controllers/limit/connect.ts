@@ -8,13 +8,13 @@ import { dateFormat } from 'mufeng-tools';
 import LimitConnectService from '@/services/limit/connect';
 import type { IList } from '@/types/base';
 
-@JsonController('/limit')
+@JsonController('/limit/connects')
 export default class LimitConnectController {
   /**
    * 查询连板数据
    * @param date 日期
    */
-  @Get('/connects')
+  @Get('/')
   async getConnects(
     @QueryParam('startDate', { required: true }) startDate: string,
     @QueryParam('endDate', { required: true }) endDate: string,
