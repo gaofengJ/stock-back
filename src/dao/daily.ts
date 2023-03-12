@@ -1,5 +1,6 @@
 import TDaily from '@/models/t.daily';
 import TStockBasic from '@/models/t.stock-basic';
+import type { IDailyItem } from '@/types/daily';
 import { Op, Sequelize } from 'sequelize';
 
 export default class CurdDailyDao {
@@ -36,9 +37,11 @@ export default class CurdDailyDao {
    * @param date 日期
    * 查询每日交易数据
    */
-  static async getDaily(date: string): Promise<Record<string, any>[]> {
+  static async getDaily(date: string): Promise<IDailyItem[]> {
     const ret = await TDaily.findAll({
-      attributes: ['tsCode', 'tradeDate', 'upLimit', 'downLimit', 'open', 'high', 'low', 'close', 'preClose', 'change', 'pctChg'],
+      attributes: ['tsCode', 'tradeDate', 'upLimit', 'downLimit',
+        'open', 'high', 'low', 'close', 'preClose', 'change', 'pctChg',
+        'vol', 'amount', 'turnoverRate', 'turnoverRateF', 'volumeRatio'],
       raw: true,
       where: {
         tradeDate: {
@@ -52,7 +55,7 @@ export default class CurdDailyDao {
         },
       ],
     });
-    return ret.map((i: Record<string, any>) => ({
+    return ret.map((i: IDailyItem) => ({
       tsCode: i.tsCode,
       tradeDate: i.tradeDate,
       open: i.open,
@@ -64,6 +67,11 @@ export default class CurdDailyDao {
       pctChg: i.pctChg,
       upLimit: i.upLimit,
       downLimit: i.downLimit,
+      vol: i.vol,
+      amount: i.amount,
+      turnoverRate: i.turnoverRate,
+      turnoverRateF: i.turnoverRateF,
+      volumeRatio: i.volumeRatio,
       name: i['t_stock_basic.name'],
     }));
   }

@@ -1,4 +1,5 @@
 import { dateFormat, dateGetBeforeDay, dateGetAfterDay } from 'mufeng-tools';
+import CustomGapService from '@/services/custom/gap';
 import CurdTradeCalService from './trade-cal';
 import CurdStockBasicService from './stock-basic';
 import CurdDailyService from './daily';
@@ -21,6 +22,7 @@ export default class CurdManualService {
     await this.getDaily(date); // 每日数据统计
     await this.getLimitList(date); // 每日涨跌停统计
     await this.getDailyMarketMood(date); // 每日短线情绪指标
+    await CustomGapService.bulkImport(date); // 每日缺口数据
     console.info(`${date}所有交易数据导入成功`);
     return `${date}所有交易数据导入成功`;
   }

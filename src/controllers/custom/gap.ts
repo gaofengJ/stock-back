@@ -7,7 +7,15 @@ import {
 } from 'routing-controllers';
 import { dateFormat } from 'mufeng-tools';
 import CustomGapService from '@/services/custom/gap';
+import type { IGapCreateRet } from '@/types/gap';
 
+/**
+ * 需求
+ * 一、每天新增出前两个交易日有缺口且未回补的的股票，列入股票池（无需建表）
+ * 二、每天剔除缺口被回补的股票 done
+ * 三、统计这些股票加入表中五日内的累计涨幅，累计涨幅等
+ * 需要更新的字段 gapDays，gapPctChg1，gapPctChg2，gapPctChg3，gapPctChg4，gapPctChg5，gapPctChg
+ */
 @JsonController('/custom/gap')
 export default class CustomGapController {
   /**
@@ -15,33 +23,21 @@ export default class CustomGapController {
    * @param date 日期
    * @returns 导入数量
    */
-  @Post('/bulk-create')
-  async bulkCreate(@BodyParam('date') date: string): Promise<Record<string, number>> {
-    // eslint-disable-next-line no-param-reassign
+  @Post('/bulk-import')
+  async bulkCreate(@BodyParam('date') date: string): Promise<IGapCreateRet> {
     date = dateFormat(date, 'yyyyMMdd');
-    const res: Record<string, number> = await CustomGapService.bulkCreate(date);
-    return res;
+    const ret: IGapCreateRet = await CustomGapService.bulkImport(date);
+    return ret;
   }
 
   /**
-   * 更新每日缺口
-   * @param params
-   * @returns 导入数量
-   */
-  @Post('/update')
-  async update(@BodyParam('params') params: Record<string, any>): Promise<any> {
-    const res: Record<string, number> = await CustomGapService.update(params);
-    return res;
-  }
-
-  /**
-   * 删除缺口数据
+   * 清空缺口信息表
    * @returns 提示信息
    */
-  @Delete('/destroy')
-  async destroy(@BodyParam('tsCode') tsCode: string): Promise<string> {
-    const res: string = await CustomGapService.destroy(tsCode);
-    return res;
+  @Delete('/truncate-destroy')
+  async truncateDestroy(): Promise<string> {
+    const ret: string = await CustomGapService.truncateDestroy();
+    return ret;
   }
 
   /**
@@ -49,7 +45,7 @@ export default class CustomGapController {
    */
   @Get('/')
   async getGap(): Promise<Record<string, any>[]> {
-    const res: Record<string, any>[] = await CustomGapService.getGap();
-    return res;
+    const ret: Record<string, any>[] = await CustomGapService.getGap();
+    return ret;
   }
 }

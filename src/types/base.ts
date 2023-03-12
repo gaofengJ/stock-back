@@ -3,6 +3,7 @@ export interface ITuShareRes {
   msg?: string,
   data: any,
 }
+
 export interface IList<T> {
   total: number,
   list: T[]

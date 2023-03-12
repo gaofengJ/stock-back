@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { DataTypes } from 'sequelize';
 import mysql from '@/db/mysql';
 
