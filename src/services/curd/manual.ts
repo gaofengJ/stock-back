@@ -38,7 +38,7 @@ export default class CurdManualService {
     while (curDate <= endDate) {
       try {
         // eslint-disable-next-line no-await-in-loop
-        await CurdManualService.manualImport(dateFormat(curDate, 'yyyyMMdd'));
+        await this.manualImport(dateFormat(curDate, 'yyyyMMdd'));
         curDate = dateGetAfterDay(curDate, 'yyyy-MM-dd') as string;
       } catch (e) {
         console.info(e);
